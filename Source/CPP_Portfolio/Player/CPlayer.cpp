@@ -37,6 +37,7 @@ ACPlayer::ACPlayer()
 
 	GetMesh()->SetSkeletalMesh(mesh);
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
+	GetMesh()->SetRelativeRotation(FQuat(FRotator(0, -90, 0)));
 	GetMesh()->SetAnimInstanceClass(animInstance);
 	
 
