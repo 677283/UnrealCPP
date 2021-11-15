@@ -11,7 +11,7 @@
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
 
 #define ACPlayer_DEBUG
-
+//Test
 ACPlayer::ACPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
