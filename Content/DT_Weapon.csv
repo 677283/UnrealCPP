@@ -1,0 +1,2 @@
+,WeaponName,WeaponType,Damage,LeftActionMontage,RightActionMontage,EquipMontage,EquipSocket,UnEquipSocket,Durability
+1,SilverBlade,Dual,10,AnimMontage'/Game/__ProjectFile/Montages/Dual/Frank_RPG_Dual_Combo01_1_Montage.Frank_RPG_Dual_Combo01_1_Montage',AnimMontage'/Game/__ProjectFile/Montages/Dual/Frank_RPG_Dual_Combo03_1_Montage.Frank_RPG_Dual_Combo03_1_Montage',AnimMontage'/Game/Frank_Slash_Pack/Frank_RPG_Dual/Animations/Mannequin_RM/Frank_RPG_Dual_Draw_Montage.Frank_RPG_Dual_Draw_Montage',Dual_Hand,Dual_Holster,100
