@@ -17,7 +17,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	void AddSkill(class CSkill* InSkill);
+	void AddSkill(class UCSkill* InSkill);
+	class UCSkill* GetSkill(FName InSkillName);
 
 private:
 	TMap<FName, class UCSkill*> Skills;

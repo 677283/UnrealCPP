@@ -16,8 +16,6 @@ class CPP_PORTFOLIO_API UCSkill : public UObject
 	GENERATED_BODY()
 protected:
 	UPROPERTY(EditDefaultsOnly)
-		float Cooldown;
-	UPROPERTY(EditDefaultsOnly)
 		FName Name;
 	UPROPERTY(EditDefaultsOnly)
 		class UTexture2D* Icon;

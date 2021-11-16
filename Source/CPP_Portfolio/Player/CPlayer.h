@@ -19,6 +19,9 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* Camera;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCSkillComponent* Skill;
 #pragma endregion
 
 public:

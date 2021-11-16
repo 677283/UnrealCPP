@@ -15,5 +15,12 @@ void UCSkillComponent::BeginPlay()
 
 void UCSkillComponent::AddSkill(class UCSkill* InSkill)
 {
-	Skills.Add(InSkill->GetName(), InSkill);
+	CheckNull(InSkill);
+
+	Skills.Add(InSkill->GetSkillName(), InSkill);
+}
+
+UCSkill* UCSkillComponent::GetSkill(FName InSkillName)
+{
+	return *(Skills.Find(InSkillName));
 }

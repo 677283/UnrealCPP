@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/CEquipComponent.h"
+#include "Components/CSkillComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Items/Equip/Weapon/CWeaponAsset.h"
 #include "Items/Equip/Weapon/CEquipment.h"
@@ -22,6 +23,7 @@ ACPlayer::ACPlayer()
 
 	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetRootComponent());
 	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
+	CHelpers::CreateActorComponent<UCSkillComponent>(this, &Skill, "Skill");
 
 	SpringArm->SetRelativeLocation(FVector(0, 0, 60));
 	SpringArm->TargetArmLength = 300;
@@ -56,6 +58,8 @@ void ACPlayer::BeginPlay()
 
 	Equip->EquipItem(Weapon_Dual);
 	Slash = NewObject<UCSkill_Active_Slash>(this, SlashClass);
+
+	Skill->AddSkill(Slash);
 }
 
 void ACPlayer::Tick(float DeltaTime)
