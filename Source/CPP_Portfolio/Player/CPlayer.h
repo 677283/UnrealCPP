@@ -52,7 +52,6 @@ private:
 		float MouseSensitivity = 0.5;
 public:
 	class UCWeaponAsset* Weapon_Dual;
-	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<class UCSkill> SlashClass;
 	class UCSkill* Slash;
+	TSubclassOf<UCSkill> SlashClass;
 };

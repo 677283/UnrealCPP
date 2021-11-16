@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotify.h"
-#include "CAnimNotify_BeginDoSkill.generated.h"
+#include "CAnimNotify_EndDoSkill.generated.h"
 
 UCLASS()
-class CPP_PORTFOLIO_API UCAnimNotify_BeginDoSkill : public UAnimNotify
+class CPP_PORTFOLIO_API UCAnimNotify_EndDoSkill : public UAnimNotify
 {
 	GENERATED_BODY()
 protected:

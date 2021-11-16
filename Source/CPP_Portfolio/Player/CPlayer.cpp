@@ -12,27 +12,28 @@
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
 
 #define ACPlayer_DEBUG
-//player
+
 ACPlayer::ACPlayer()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetMesh());
+	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
+	CHelpers::CreateActorComponent<UCSkillComponent>(this, &Skill, "Skill");
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
-	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetRootComponent());
-	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
-	CHelpers::CreateActorComponent<UCSkillComponent>(this, &Skill, "Skill");
 
-	SpringArm->SetRelativeLocation(FVector(0, 0, 60));
-	SpringArm->TargetArmLength = 300;
+	SpringArm->SetRelativeLocation(FVector(0, 0, 140));
+	SpringArm->SetRelativeRotation(FRotator(0, 90, 0));
+	SpringArm->TargetArmLength = 200;
 	SpringArm->bDoCollisionTest = false;
 	SpringArm->bUsePawnControlRotation = true;
+	SpringArm->bEnableCameraLag = true;
 	SpringArm->SocketOffset = FVector(0, 60, 0);
 
 	USkeletalMesh* mesh;
-	CHelpers::GetAsset(&mesh, "SkeletalMesh'/Game/ParagonGideon/Characters/Heroes/Gideon/Skins/Inquisitor/Meshes/Gideon_Inquisitor.Gideon_Inquisitor'");
+	CHelpers::GetAsset<USkeletalMesh>(&mesh, "SkeletalMesh'/Game/ParagonGideon/Characters/Heroes/Gideon/Skins/Inquisitor/Meshes/Gideon_Inquisitor.Gideon_Inquisitor'");
 	
 	TSubclassOf<UAnimInstance> animInstance;
 	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/__ProjectFile/Player/Animation/ABP_CPlayer.ABP_CPlayer_C'");
@@ -47,6 +48,10 @@ ACPlayer::ACPlayer()
 
 	CHelpers::GetAsset(&Weapon_Dual, "CWeaponAsset'/Game/__ProjectFile/Items/Equip/Weapon/Dual_Silver.Dual_Silver'");
 	
+
+	CHelpers::GetClass<UCSkill>(&SlashClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Slash/BP_CSkill_Active_Slash.BP_CSkill_Active_Slash_C'");
+	
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ACPlayer::BeginPlay()
@@ -57,8 +62,9 @@ void ACPlayer::BeginPlay()
 	Weapon_Dual->GetEquipment()->OffHands();
 
 	Equip->EquipItem(Weapon_Dual);
-	Slash = NewObject<UCSkill_Active_Slash>(this, SlashClass);
 
+	Slash = NewObject<UCSkill>(this, SlashClass);
+	Slash->BeginPlay(this);
 	Skill->AddSkill(Slash);
 }
 

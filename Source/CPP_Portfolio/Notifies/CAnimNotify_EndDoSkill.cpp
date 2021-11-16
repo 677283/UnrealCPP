@@ -1,15 +1,16 @@
-#include "CAnimNotify_BeginDoSkill.h"
+#include "CAnimNotify_EndDoSkill.h"
 #include "Global.h"
 #include "Player/CPlayer.h"
 #include "Components/CSkillComponent.h"
 #include "Skill/CSkill.h"
+#include "Animation/AnimSequenceBase.h"
 
-FString UCAnimNotify_BeginDoSkill::GetNotifyName_Implementation() const
+FString UCAnimNotify_EndDoSkill::GetNotifyName_Implementation() const
 {
-	return "Begin_DoSkill";
+	return "End_DoSkill";
 }
 
-void UCAnimNotify_BeginDoSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCAnimNotify_EndDoSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	Super::Notify(MeshComp, Animation);
 	CheckNull(MeshComp);
@@ -23,5 +24,6 @@ void UCAnimNotify_BeginDoSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSe
 
 	CheckNull(skill);
 
-	skill->BeginDoSkill();
+	skill->EndDoSkill();
+	
 }

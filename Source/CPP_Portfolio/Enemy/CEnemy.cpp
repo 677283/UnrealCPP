@@ -1,6 +1,6 @@
 #include "CEnemy.h"
 #include "Global.h"
-//enemy
+
 ACEnemy::ACEnemy()
 {
 	USkeletalMesh* mesh;
