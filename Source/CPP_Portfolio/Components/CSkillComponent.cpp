@@ -1,4 +1,6 @@
 #include "CSkillComponent.h"
+#include "Global.h"
+#include "Skill/CSkill.h"
 
 UCSkillComponent::UCSkillComponent()
 {
@@ -11,7 +13,7 @@ void UCSkillComponent::BeginPlay()
 
 }
 
-void UCSkillComponent::AddSkill(class CSkill* InSkill)
+void UCSkillComponent::AddSkill(class UCSkill* InSkill)
 {
-	Skills.Add(InSkill->Get)
+	Skills.Add(InSkill->GetName(), InSkill);
 }

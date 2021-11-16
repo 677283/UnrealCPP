@@ -20,6 +20,6 @@ public:
 	void AddSkill(class CSkill* InSkill);
 
 private:
-	TMap<FName, class CSkill*> Skills;
+	TMap<FName, class UCSkill*> Skills;
 		
 };
