@@ -2,6 +2,8 @@
 #include "Global.h"
 #include "GameFramework/Character.h"
 #include "Components/CStateComponent.h"
+#include "Components/ShapeComponent.h"
+#include "Skill/Active/Dual_Slash/CSlashProjectile.h"
 
 void UCSkill_Active_Slash::DoSkill()
 {
@@ -20,10 +22,21 @@ void UCSkill_Active_Slash::BeginDoSkill()
 	FActorSpawnParameters param;
 	param.Owner = OwnerCharacter;
 	ACSlashProjectile* projectile = OwnerCharacter->GetWorld()->SpawnActor<ACSlashProjectile>(ProjectileClass, transform, param);
-
+	TArray<UShapeComponent*> components;
+	projectile->GetComponents<UShapeComponent>(components);
+	
+	for (UShapeComponent* component : components)
+	{
+		component->OnComponentBeginOverlap.AddDynamic(this, &UCSkill_Active_Slash::OnComponentBeginOverlap);
+	}
 }
 
 void UCSkill_Active_Slash::EndDoSkill()
 {
 	State->SetStateIdle();
+}
+
+void UCSkill_Active_Slash::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	//TODO 데미지 주기
 }

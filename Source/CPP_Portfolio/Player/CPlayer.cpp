@@ -45,10 +45,7 @@ ACPlayer::ACPlayer()
 
 	CHelpers::GetAsset(&Weapon_Dual, "CWeaponAsset'/Game/__ProjectFile/Items/Equip/Weapon/Dual_Silver.Dual_Silver'");
 	
-	
 }
-
-#pragma region UnrealOverride
 
 void ACPlayer::BeginPlay()
 {
@@ -80,15 +77,12 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released);
 	PlayerInputComponent->BindAction("EquipWeapon_1", EInputEvent::IE_Pressed, this, &ACPlayer::Equip_Weapon);
 	PlayerInputComponent->BindAction("BasicAttack", EInputEvent::IE_Pressed, this, &ACPlayer::BasicAttack);
+	PlayerInputComponent->BindAction("Skill_1", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_1);
 
 	//델리게이트를 이용해서 키 바인딩에 데이터 보내는 방법. 델리게이트 만들어준뒤 Template 이용
 	/*PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Pressed, this, &ACPlayer::Sprint_Pressed, 1);
 	PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released, 2);*/
 }
-
-#pragma endregion
-
-#pragma region Function
 
 void ACPlayer::Sprint_Pressed()
 {
@@ -111,7 +105,11 @@ void ACPlayer::BasicAttack(FKey InKey)
 	Equip->GetWeapon()->GetDoAction()->DoAction(InKey);
 }
 
-#pragma region MoveInput
+void ACPlayer::Skill_1()
+{
+	Slash->DoSkill();
+}
+
 void ACPlayer::OnMoveForward(float AxisValue)
 {
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
@@ -146,6 +144,3 @@ void ACPlayer::OnVerticalLook(float AxisValue)
 
 	AddControllerPitchInput(AxisValue * MouseSensitivity);
 }
-#pragma endregion
-
-#pragma endregion

@@ -31,10 +31,10 @@ public:
 	virtual void BeginDoSkill() {};
 	virtual void EndDoSkill() {};
 
+	FORCEINLINE FName GetSkillName() { return Name; }
 protected:
 	void SetSkillType(ESkillType InSkillType) { Type = InSkillType; }
 
 protected:
 	class ACharacter* OwnerCharacter;
-	int32 SkillLevel;
 };

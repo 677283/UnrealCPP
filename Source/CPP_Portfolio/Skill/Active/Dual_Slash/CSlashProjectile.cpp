@@ -19,7 +19,10 @@ ACSlashProjectile::ACSlashProjectile()
 void ACSlashProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-
+	FRotator rotator = UKismetMathLibrary::RandomRotator(true);
+	rotator.Pitch = 0;
+	rotator.Yaw = 0;
+	SetActorRotation(FQuat(rotator));
 }
 
 void ACSlashProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
