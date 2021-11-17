@@ -1,6 +1,7 @@
 #include "CPushingComponent.h"
 #include "Global.h"
 #include "GameFramework/Character.h"
+#include "Enemy/CEnemy.h"
 
 
 #define PUSHINCOMPONENT_DEBUG
@@ -8,7 +9,7 @@
 UCPushingComponent::UCPushingComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-
+	OnComponentBeginOverlap.AddDynamic(this, &UCPushingComponent::OnBeginOverlap);
 }
 
 void UCPushingComponent::BeginPlay()
@@ -17,11 +18,31 @@ void UCPushingComponent::BeginPlay()
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 	SetCollisionProfileName("Pushing");
+	
 }
 
 void UCPushingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	/*TArray<AActor*> hits;
+	GetOverlappingActors(hits, ACEnemy::StaticClass());
+	hits.Remove(OwnerCharacter);
+
+	if (hits.Num() <= 0)
+	{
+		SetComponentTickEnabled(false);
+		CLog::Print("Off");
+		return;
+	}
+
+	for (AActor* actor : hits)
+	{
+		FVector offset = actor->GetActorLocation() - GetComponentLocation();
+		offset.Normalize();
+		offset *= PushingPower * Radius;
+		actor->AddActorWorldOffset(offset);
+	}*/
 
 	TArray<AActor*> ignoreActors;
 	ignoreActors.Add(OwnerCharacter);
@@ -45,6 +66,17 @@ void UCPushingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 		hitResult.Actor->AddActorWorldOffset(offset);
 	}
 
-
 }
 
+void UCPushingComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ACharacter* character = Cast<ACharacter>(OtherActor);
+	if (!!OtherActor)
+	{
+		SetComponentTickEnabled(true);
+		/*FVector offset = character->GetActorLocation() - GetComponentLocation();
+		offset.Normalize();
+		offset *= PushingPower * Radius;
+		character->AddActorWorldOffset(offset);*/
+	}
+}

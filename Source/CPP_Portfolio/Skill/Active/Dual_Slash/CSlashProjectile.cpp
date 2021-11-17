@@ -11,9 +11,12 @@ ACSlashProjectile::ACSlashProjectile()
 	CHelpers::CreateComponent<UBoxComponent>(this, &Box, "Box");
 	CHelpers::CreateComponent<UStaticMeshComponent>(this, &Mesh, "Mesh", Box);
 
+	Mesh->SetCollisionProfileName("NoCollision");
+
 	Projectile->ProjectileGravityScale = 0;
 
 	Box->OnComponentBeginOverlap.AddDynamic(this, &ACSlashProjectile::OnBoxBeginOverlap);
+	Box->SetCollisionProfileName("Projectile");
 }
 
 void ACSlashProjectile::BeginPlay()
@@ -23,7 +26,7 @@ void ACSlashProjectile::BeginPlay()
 	rotator.Pitch = 0;
 	rotator.Yaw = 0;
 	AddActorLocalRotation(rotator);
-	SetLifeSpan(2);
+	SetLifeSpan(20);
 }
 
 void ACSlashProjectile::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)

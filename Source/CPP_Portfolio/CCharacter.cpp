@@ -23,7 +23,6 @@ void ACCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	Health = MaxHealth;
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACCharacter::OnBeginOverlap);
 }
 
 void ACCharacter::Tick(float DeltaTime)
@@ -35,11 +34,5 @@ void ACCharacter::Tick(float DeltaTime)
 void ACCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
-
-void ACCharacter::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
-{
-	Pushing->SetComponentTickEnabled(true);
 }
 
