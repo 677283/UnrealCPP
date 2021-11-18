@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "GameFramework/Character.h"
 #include "Enemy/CEnemy.h"
+#include "Player/CPlayer.h"
 
 
 #define PUSHINCOMPONENT_DEBUG
@@ -32,16 +33,20 @@ void UCPushingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	if (hits.Num() <= 0)	
 	{
 		SetComponentTickEnabled(false);
-		CLog::Print("Off");
 		return;
 	}
-
+	ACPlayer* player = Cast<ACPlayer>(OwnerCharacter);
 	for (AActor* actor : hits)
 	{
 		FVector offset = actor->GetActorLocation() - GetComponentLocation();
 		offset.Normalize();
 		offset *= PushingPower * GetScaledSphereRadius();
 		actor->AddActorWorldOffset(offset);
+		if (!!player)
+		{
+			FRotator rotator = UKismetMathLibrary::FindLookAtRotation(actor->GetActorLocation(), OwnerCharacter->GetActorLocation());
+			actor->SetActorRotation(rotator);
+		}
 	}
 /*
 	TArray<AActor*> ignoreActors;

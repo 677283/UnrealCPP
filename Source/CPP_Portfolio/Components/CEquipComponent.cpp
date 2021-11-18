@@ -14,7 +14,6 @@ void UCEquipComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
 }
 
 UCEquipAsset* UCEquipComponent::EquipItem(UCEquipAsset* InItem)
@@ -51,7 +50,6 @@ UCEquipAsset* UCEquipComponent::EquipItem(UCEquipAsset* InItem)
 		{
 			Weapon = Cast<UCWeaponAsset>(InItem);
 			Weapon->GetEquipment()->Equip();
-			bOnHands = Weapon->GetEquipment()->GetHands();
 		}
 		break;
 	case EEquipType::Armor:
@@ -60,4 +58,10 @@ UCEquipAsset* UCEquipComponent::EquipItem(UCEquipAsset* InItem)
 	}
 
 	return outEquip;
+}
+
+bool UCEquipComponent::IsHandsOn()
+
+{
+	return *(Weapon->GetEquipment()->GetHands());
 }

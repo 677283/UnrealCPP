@@ -22,12 +22,23 @@ void UCSkill_Active::DoSkill()
 
 bool UCSkill_Active::WeaponCheck()
 {
-	if (bNeedWeapon)
+	if (bNeedWeapon) //무기를 들고 있어야 하는가?
 	{
-		if (!Equip->IsHandsOn())
+		if (!Equip->IsHandsOn()) //무기를 들고 있는가?
 			return false;
-		if (NeedWeaponType != EWeaponType::Max && Equip->GetWeapon()->GetWeaponType() != NeedWeaponType)
-			return false;
+		if (NeedWeaponTypes.Num() > 0)
+		{
+			int32 typeSum = 0;
+			int32 weaponType = (int32)Equip->GetWeapon()->GetWeaponType();
+
+			for (EWeaponType type : NeedWeaponTypes)
+			{
+				typeSum += pow(2, (int32)type);
+			}
+
+			if (!(typeSum | weaponType))
+				return false;
+		}
 	}
 
 	return true;

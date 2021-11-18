@@ -13,7 +13,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 		float Cooldown = 0;
 	UPROPERTY(EditDefaultsOnly)
-		EWeaponType NeedWeaponType = EWeaponType::Max;
+		TArray<EWeaponType> NeedWeaponTypes;
+
 	UPROPERTY(EditDefaultsOnly)
 		bool bNeedWeapon;
 public:
