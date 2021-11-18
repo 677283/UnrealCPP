@@ -10,6 +10,7 @@ UCSkill_Active::UCSkill_Active()
 void UCSkill_Active::BeginPlay(class ACharacter* InOwner)
 {
 	Super::BeginPlay(InOwner);
+
 	State = CHelpers::GetComponent<UCStateComponent>(InOwner);
 	Equip = CHelpers::GetComponent<UCEquipComponent>(InOwner);
 }
@@ -19,7 +20,7 @@ void UCSkill_Active::DoSkill()
 	Super::DoSkill();
 }
 
-void UCSkill_Active::WeaponCheck()
+bool UCSkill_Active::WeaponCheck()
 {
 	if (bNeedWeapon)
 	{

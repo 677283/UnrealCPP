@@ -22,8 +22,7 @@ void UCSkill_Active_Slash::DoSkill()
 	Super::DoSkill();
 
 	CheckFalse(State->IsStateIdle());
-	
-	
+	CheckFalse(WeaponCheck());
 
 	OwnerCharacter->PlayAnimMontage(Montage, PlayRatio);
 	State->SetStateSkill();
@@ -37,8 +36,10 @@ void UCSkill_Active_Slash::BeginDoSkill()
 	FVector vector = OwnerCharacter->GetActorForwardVector() * 100;
 	transform.SetLocation(OwnerCharacter->GetActorLocation() + vector);
 	transform.SetRotation(FQuat(OwnerCharacter->GetActorRotation()));
+
 	FActorSpawnParameters param;
 	param.Owner = OwnerCharacter;
+
 	ACSlashProjectile* projectile = OwnerCharacter->GetWorld()->SpawnActor<ACSlashProjectile>(ProjectileClass, transform, param);
 }
 
