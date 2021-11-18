@@ -25,11 +25,11 @@ void UCPushingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	/*TArray<AActor*> hits;
+	TArray<AActor*> hits;
 	GetOverlappingActors(hits, ACEnemy::StaticClass());
 	hits.Remove(OwnerCharacter);
 
-	if (hits.Num() <= 0)
+	if (hits.Num() <= 0)	
 	{
 		SetComponentTickEnabled(false);
 		CLog::Print("Off");
@@ -40,10 +40,10 @@ void UCPushingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	{
 		FVector offset = actor->GetActorLocation() - GetComponentLocation();
 		offset.Normalize();
-		offset *= PushingPower * Radius;
+		offset *= PushingPower * GetScaledSphereRadius();
 		actor->AddActorWorldOffset(offset);
-	}*/
-
+	}
+/*
 	TArray<AActor*> ignoreActors;
 	ignoreActors.Add(OwnerCharacter);
 
@@ -65,7 +65,7 @@ void UCPushingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 		offset *= PushingPower * Radius;
 		hitResult.Actor->AddActorWorldOffset(offset);
 	}
-
+*/
 }
 
 void UCPushingComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

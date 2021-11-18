@@ -19,7 +19,11 @@ void UCSkill_Active_Slash::BeginPlay(class ACharacter* InOwner)
 
 void UCSkill_Active_Slash::DoSkill()
 {
+	Super::DoSkill();
+
 	CheckFalse(State->IsStateIdle());
+	
+	
 
 	OwnerCharacter->PlayAnimMontage(Montage, PlayRatio);
 	State->SetStateSkill();
@@ -27,6 +31,8 @@ void UCSkill_Active_Slash::DoSkill()
 
 void UCSkill_Active_Slash::BeginDoSkill()
 {
+	Super::BeginDoSkill();
+
 	FTransform transform;
 	FVector vector = OwnerCharacter->GetActorForwardVector() * 100;
 	transform.SetLocation(OwnerCharacter->GetActorLocation() + vector);
@@ -38,5 +44,7 @@ void UCSkill_Active_Slash::BeginDoSkill()
 
 void UCSkill_Active_Slash::EndDoSkill()
 {
+	Super::EndDoSkill();
+
 	State->SetStateIdle();
 }

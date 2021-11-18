@@ -25,14 +25,12 @@ private:
 private:
 	UPROPERTY(EditAnywhere, Category = "Debug")
 		TEnumAsByte<EDrawDebugTrace::Type> DrawDebugType;
-	UPROPERTY(EditDefaultsOnly)
-		float Radius = 35;
+
 	UPROPERTY(EditDefaultsOnly)
 		float PushingPower = 0.1;
 
 private:
 	UFUNCTION()
-		//void OnPushingBeginOverlap(UPrimitiveComponent* OnComponentBeginOverlap, UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 		void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 };

@@ -75,6 +75,7 @@ public:
 	UFUNCTION()
 		void OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage);
 
+
 private:
 	class ACEquipActor* EquipActor;
 	class UCDoAction* DoAction;

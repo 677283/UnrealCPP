@@ -27,6 +27,7 @@ UCEquipAsset* UCEquipComponent::EquipItem(UCEquipAsset* InItem)
 	case EEquipType::Weapon:
 		if (!!Weapon)
 		{
+			//TODO
 			/*if (Weapon->IsHands())
 			{
 				Weapon->OffHands();
@@ -50,6 +51,7 @@ UCEquipAsset* UCEquipComponent::EquipItem(UCEquipAsset* InItem)
 		{
 			Weapon = Cast<UCWeaponAsset>(InItem);
 			Weapon->GetEquipment()->Equip();
+			bOnHands = Weapon->GetEquipment()->GetHands();
 		}
 		break;
 	case EEquipType::Armor:

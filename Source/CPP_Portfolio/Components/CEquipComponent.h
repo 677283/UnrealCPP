@@ -19,7 +19,9 @@ protected:
 public:
 	class UCEquipAsset* EquipItem(class UCEquipAsset* InItem);
 	FORCEINLINE class UCWeaponAsset* GetWeapon() { return Weapon; }
+	FORCEINLINE bool IsHandsOn() { return *bOnHands; }
 
 private:
 	class UCWeaponAsset* Weapon;
+	const bool* bOnHands;
 };
