@@ -35,6 +35,7 @@ void UCPushingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 		SetComponentTickEnabled(false);
 		return;
 	}
+
 	ACPlayer* player = Cast<ACPlayer>(OwnerCharacter);
 	for (AActor* actor : hits)
 	{
