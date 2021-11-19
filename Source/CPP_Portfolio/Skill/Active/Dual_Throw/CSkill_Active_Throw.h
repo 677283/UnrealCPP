@@ -2,21 +2,22 @@
 
 #include "CoreMinimal.h"
 #include "Skill/Active/CSkill_Active.h"
-#include "CSkill_Active_Slash.generated.h"
+#include "CSkill_Active_Throw.generated.h"
 
 UCLASS()
-class CPP_PORTFOLIO_API UCSkill_Active_Slash : public UCSkill_Active
+class CPP_PORTFOLIO_API UCSkill_Active_Throw : public UCSkill_Active
 {
 	GENERATED_BODY()
+	
 public:
-	UCSkill_Active_Slash();
+	UCSkill_Active_Throw();
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<class ACSlashProjectile> ProjectileClass;
+		float ThrowSpeed;
 
 public:
-	virtual void BeginPlay(class ACharacter* InOwner) override;
+	virtual void BeginPlay(class ACharacter* InOwner);
 	virtual void DoSkill() override;
 	virtual void BeginDoSkill() override;
 	virtual void EndDoSkill() override;

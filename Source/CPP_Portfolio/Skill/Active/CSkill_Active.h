@@ -12,11 +12,19 @@ class CPP_PORTFOLIO_API UCSkill_Active : public UCSkill
 protected:
 	UPROPERTY(EditDefaultsOnly)
 		float Cooldown = 0;
+
 	UPROPERTY(EditDefaultsOnly)
 		TArray<EWeaponType> NeedWeaponTypes;
 
 	UPROPERTY(EditDefaultsOnly)
 		bool bNeedWeapon;
+
+	UPROPERTY(EditDefaultsOnly)
+		class UAnimMontage* Montage;
+
+	UPROPERTY(EditDefaultsOnly)
+		float PlayRatio = 1;
+
 public:
 	UCSkill_Active();
 

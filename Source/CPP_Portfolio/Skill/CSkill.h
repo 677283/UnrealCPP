@@ -17,8 +17,10 @@ class CPP_PORTFOLIO_API UCSkill : public UObject
 protected:
 	UPROPERTY(EditDefaultsOnly)
 		FName Name;
+
 	UPROPERTY(EditDefaultsOnly)
 		class UTexture2D* Icon;
+
 	UPROPERTY(VisibleDefaultsOnly)
 		ESkillType Type = ESkillType::Max;
 
