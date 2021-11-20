@@ -25,7 +25,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	void SetBoomerang(class UCSkill* InSkill, class AActor* InWeapon);
+	void SetBoomerang(class UCSkill* InSkill, class AActor* InWeapon, int32 InDirection);
 private:
 	UFUNCTION()
 		void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
@@ -34,6 +34,8 @@ private:
 private:
 	class UCSkill* Skill;
 	class AActor* Weapon;
+	TArray<class UShapeComponent*> Comps;
+	int32 Direction;
 private:
 	FThrowBeginOverlap OnThrowBeginOverlap;
 };

@@ -22,6 +22,7 @@ void UCSkill_Active_Throw::DoSkill()
 
 	CheckFalse(State->IsStateIdle());
 
+	OwnerCharacter->PlayAnimMontage(Montage);
 	State->SetStateSkill();
 }
 
@@ -34,13 +35,15 @@ void UCSkill_Active_Throw::BeginDoSkill()
 	FTransform transform;
 
 	ACBoomerang_Throw* boomerang = OwnerCharacter->GetWorld()->SpawnActorDeferred<ACBoomerang_Throw>(ACBoomerang_Throw::StaticClass(), transform, OwnerCharacter, NULL, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-	boomerang->SetBoomerang(this, Weapon);
+	boomerang->SetBoomerang(this, Weapon, 1);
 	Boomerangs.Add(boomerang);
+	transform = Weapon->GetActorTransform();
 	UGameplayStatics::FinishSpawningActor(boomerang, transform);
 	
 	boomerang = OwnerCharacter->GetWorld()->SpawnActorDeferred<ACBoomerang_Throw>(ACBoomerang_Throw::StaticClass(), transform, OwnerCharacter, NULL, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-	boomerang->SetBoomerang(this, Weapon->GetSubWeapon());
+	boomerang->SetBoomerang(this, Weapon->GetSubWeapon(), -1);
 	Boomerangs.Add(boomerang);
+	transform = Weapon->GetSubWeapon()->GetActorTransform();
 	UGameplayStatics::FinishSpawningActor(boomerang, transform);
 
 	Weapon->SetVisibility(false);

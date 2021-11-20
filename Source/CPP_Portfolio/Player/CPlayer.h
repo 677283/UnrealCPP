@@ -54,4 +54,6 @@ public:
 	class UCWeaponAsset* Weapon_Dual;
 	class UCSkill* Slash;
 	TSubclassOf<UCSkill> SlashClass;
+	class UCSkill* Throw;
+	TSubclassOf<UCSkill> ThrowClass;
 };

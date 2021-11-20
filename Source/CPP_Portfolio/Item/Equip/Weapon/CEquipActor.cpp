@@ -5,7 +5,10 @@
 
 ACEquipActor::ACEquipActor()
 {
-	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "SkeletalMesh");
+	USceneComponent* scene;
+	CHelpers::CreateComponent<USceneComponent>(this, &scene, "Root");
+	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "SkeletalMesh", scene);
+	Mesh->SetCollisionProfileName("NoCollision");
 }
 
 void ACEquipActor::BeginPlay()

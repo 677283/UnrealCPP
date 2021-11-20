@@ -15,14 +15,18 @@ ACBoomerang_Throw::ACBoomerang_Throw()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh");
+	Mesh->SetCollisionProfileName("NoCollision");
 }
 
 void ACBoomerang_Throw::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetActorLocation(Weapon->GetActorLocation() + Weapon->GetActorForwardVector() * 100);
-
+	//SetActorRotation(FRotator::ZeroRotator);
+	SetActorRotation(FRotator(0, 0, 90));
+	CLog::Log(Comps[0]->GetRelativeRotation());
+	AddActorLocalRotation(-1 * Comps[0]->GetRelativeRotation());
+	AddActorWorldOffset(GetOwner()->GetActorForwardVector() * 400);
 	/*sphere = NewObject<USphereComponent>(this);
 
 	sphere->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
@@ -40,9 +44,10 @@ void ACBoomerang_Throw::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	AddActorWorldRotation(FRotator(0, Direction * 1680 * DeltaTime, 0));
 }
 
-void ACBoomerang_Throw::SetBoomerang(class UCSkill* InSkill, class AActor* InWeapon)
+void ACBoomerang_Throw::SetBoomerang(class UCSkill* InSkill, class AActor* InWeapon, int32 InDirection)
 {
 	CheckNull(InWeapon);
 	USkeletalMeshComponent* skeletal = CHelpers::GetComponent<USkeletalMeshComponent>(InWeapon);
@@ -75,15 +80,13 @@ void ACBoomerang_Throw::SetBoomerang(class UCSkill* InSkill, class AActor* InWea
 		comp->RegisterComponent();
 
 		comp->OnComponentBeginOverlap.AddDynamic(this, &ACBoomerang_Throw::OnComponentBeginOverlap);
-	}
-
-	if (collisions[0]->GetUpVector() == FVector::UpVector || collisions[0]->GetUpVector() == (-1 * FVector::UpVector) ||
-		collisions[0]->GetForwardVector() == FVector::UpVector || collisions[0]->GetForwardVector() == (-1 * FVector::UpVector))
-	{
-		collisions[0]->SetRelativeRotation(FQuat(FRotator(0, 0, 90)));
+		comp->SetRelativeTransform(collision->GetRelativeTransform());
+		Comps.Add(comp);
 	}
 
 	Weapon = InWeapon;
+
+	Direction = InDirection;
 }
 
 void ACBoomerang_Throw::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)

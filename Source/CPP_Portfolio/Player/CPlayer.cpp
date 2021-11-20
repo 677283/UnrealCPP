@@ -50,6 +50,7 @@ ACPlayer::ACPlayer()
 	CHelpers::GetAsset(&Weapon_Dual, "CWeaponAsset'/Game/__ProjectFile/Items/Equip/Weapon/Dual_Silver.Dual_Silver'");
 
 	CHelpers::GetClass<UCSkill>(&SlashClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Slash/BP_CSkill_Active_Slash.BP_CSkill_Active_Slash_C'");
+	CHelpers::GetClass<UCSkill>(&ThrowClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Throw/BP_CSkill_Active_Throw.BP_CSkill_Active_Throw_C'");
 	
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -66,6 +67,10 @@ void ACPlayer::BeginPlay()
 	Slash = NewObject<UCSkill>(this, SlashClass);
 	Slash->BeginPlay(this);
 	Skill->AddSkill(Slash);
+
+	Throw = NewObject<UCSkill>(this, ThrowClass);
+	Throw->BeginPlay(this);
+	Skill->AddSkill(Throw);
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -117,7 +122,8 @@ void ACPlayer::BasicAttack(FKey InKey)
 
 void ACPlayer::Skill_1()
 {
-	Slash->DoSkill();
+	Throw->DoSkill();
+	//Slash->DoSkill();
 }
 
 void ACPlayer::OnMoveForward(float AxisValue)
