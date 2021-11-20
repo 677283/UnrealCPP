@@ -36,6 +36,7 @@ public:
 
 	void OnCollision();
 	void OffCollision();
+	void SetVisibility(bool InBool);
 
 private:
 	TArray<class UShapeComponent*> Collisions;

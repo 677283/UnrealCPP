@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Skill/CSkill.h"
-#include "Items/Equip/Weapon/CWeaponAsset.h"
+#include "Item/Equip/Weapon/CWeaponAsset.h"
 #include "CSkill_Active.generated.h"
 
 UCLASS()

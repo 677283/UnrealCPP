@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Items/Equip/CEquipAsset.h"
+#include "Item/Equip/CEquipAsset.h"
 #include "GameFramework/Character.h"
 #include "CWeaponAsset.generated.h"
 

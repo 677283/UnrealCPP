@@ -1,6 +1,6 @@
 #include "CStatusComponent.h"
 #include "Skill/CSkill.h"
-#include "Items/CItemAsset.h"
+#include "Item/CItemAsset.h"
 
 UCStatusComponent::UCStatusComponent()
 {

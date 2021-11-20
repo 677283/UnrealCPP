@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Items/CItemAsset.h"
+#include "Item/CItemAsset.h"
 #include "CEquipAsset.generated.h"
 
 UENUM(BlueprintType)

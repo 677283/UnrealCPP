@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Items/Equip/Weapon/CDoAction.h"
+#include "Item/Equip/Weapon/CDoAction.h"
 #include "CDoAction_DoubleCombo.generated.h"
 
 UCLASS()

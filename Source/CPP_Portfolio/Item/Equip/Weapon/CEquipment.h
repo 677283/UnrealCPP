@@ -41,7 +41,7 @@ public:
 	bool bHands;
 private:
 	class ACharacter* OwnerCharacter;
-
+	class UCStateComponent* State;
 
 public:
 	FToggleHands OnEquipmentToggleHands;

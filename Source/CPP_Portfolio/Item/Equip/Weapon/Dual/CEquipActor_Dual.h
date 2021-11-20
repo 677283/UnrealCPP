@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Items/Equip/Weapon/CEquipActor.h"
+#include "Item/Equip/Weapon/CEquipActor.h"
 #include "CEquipActor_Dual.generated.h"
 
 UCLASS()
@@ -20,6 +20,7 @@ protected:
 
 public:
 	virtual void AttachTo(FName InSocketName) override;
+	FORCEINLINE ACEquipActor* GetSubWeapon() { return SubActor; }
 
 private:
 	class ACEquipActor* SubActor;

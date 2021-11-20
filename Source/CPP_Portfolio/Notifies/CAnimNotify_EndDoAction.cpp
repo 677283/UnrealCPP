@@ -1,8 +1,8 @@
 #include "Notifies/CAnimNotify_EndDoAction.h"
 #include "Global.h"
 #include "Components/CEquipComponent.h"
-#include "Items/Equip/Weapon/CDoAction.h"
-#include "Items/Equip/Weapon/CWeaponAsset.h"
+#include "Item/Equip/Weapon/CDoAction.h"
+#include "Item/Equip/Weapon/CWeaponAsset.h"
 
 FString UCAnimNotify_EndDoAction::GetNotifyName_Implementation() const
 {

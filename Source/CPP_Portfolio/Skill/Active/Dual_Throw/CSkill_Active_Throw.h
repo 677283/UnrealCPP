@@ -22,4 +22,10 @@ public:
 	virtual void BeginDoSkill() override;
 	virtual void EndDoSkill() override;
 
+private:
+	void OnBoomerangBeginOverlap(class AActor* OtherActor);
+
+private:
+	class ACEquipActor_Dual* Weapon;
+	TArray<class AActor*> Boomerangs;
 };

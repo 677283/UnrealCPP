@@ -17,9 +17,12 @@ void ACEquipActor::BeginPlay()
 	for (UShapeComponent* collision : Collisions)
 	{
 		collision->OnComponentBeginOverlap.AddDynamic(this, &ACEquipActor::OnComponentBeginOverlap);
+		CLog::Log("Up : " + collision->GetUpVector().ToString());
 	}
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
+
+
 }
 
 void ACEquipActor::AttachTo(FName InSocketName)
@@ -58,4 +61,9 @@ void ACEquipActor::OffCollision()
 
 	if (OffEquipActorCollision.IsBound())
 		OffEquipActorCollision.Broadcast();
+}
+
+void ACEquipActor::SetVisibility(bool InBool)
+{
+	Mesh->SetVisibility(InBool);
 }

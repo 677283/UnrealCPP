@@ -1,8 +1,8 @@
 #include "CAnimNotify_Begin_OnHands.h"
 #include "Global.h"
 #include "Player/CPlayer.h"
-#include "Items/Equip/Weapon/CWeaponAsset.h"
-#include "Items/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CWeaponAsset.h"
 #include "Components/CEquipComponent.h"
 
 FString UCAnimNotify_Begin_OnHands::GetNotifyName_Implementation() const

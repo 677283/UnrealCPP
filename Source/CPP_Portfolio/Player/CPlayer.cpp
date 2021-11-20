@@ -6,10 +6,11 @@
 #include "Components/CEquipComponent.h"
 #include "Components/CSkillComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Items/Equip/Weapon/CWeaponAsset.h"
-#include "Items/Equip/Weapon/CEquipment.h"
-#include "Items/Equip/Weapon/CDoAction.h"
+#include "Item/Equip/Weapon/CWeaponAsset.h"
+#include "Item/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CDoAction.h"
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
+#include "Rendering/SkeletalMeshRenderData.h"
 
 #define ACPlayer_DEBUG
 
@@ -47,7 +48,6 @@ ACPlayer::ACPlayer()
 	GetCapsuleComponent()->SetCollisionProfileName("Player");
 
 	CHelpers::GetAsset(&Weapon_Dual, "CWeaponAsset'/Game/__ProjectFile/Items/Equip/Weapon/Dual_Silver.Dual_Silver'");
-	
 
 	CHelpers::GetClass<UCSkill>(&SlashClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Slash/BP_CSkill_Active_Slash.BP_CSkill_Active_Slash_C'");
 	

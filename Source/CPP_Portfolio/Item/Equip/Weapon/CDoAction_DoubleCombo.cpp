@@ -9,6 +9,7 @@ void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 	Super::DoAction(InKey);
 
 	CheckFalse(*bHands);
+
 	if (bComboEnable)
 	{
 		LastKey = InKey;

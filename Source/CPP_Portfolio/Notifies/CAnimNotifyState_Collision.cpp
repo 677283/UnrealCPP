@@ -1,8 +1,8 @@
 #include "CAnimNotifyState_Collision.h"
 #include "Global.h"
 #include "Components/CEquipComponent.h"
-#include "Items/Equip/Weapon/CWeaponAsset.h"
-#include "Items/Equip/Weapon/CEquipActor.h"
+#include "Item/Equip/Weapon/CWeaponAsset.h"
+#include "Item/Equip/Weapon/CEquipActor.h"
 
 FString UCAnimNotifyState_Collision::GetNotifyName_Implementation() const
 {

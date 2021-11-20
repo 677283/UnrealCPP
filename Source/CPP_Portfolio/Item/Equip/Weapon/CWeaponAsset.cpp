@@ -1,9 +1,9 @@
 #include "CWeaponAsset.h"
 #include "Global.h"
 #include "GameFramework/Character.h"
-#include "Items/Equip/Weapon/CEquipActor.h"
-#include "Items/Equip/Weapon/CDoAction.h"
-#include "Items/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CEquipActor.h"
+#include "Item/Equip/Weapon/CDoAction.h"
+#include "Item/Equip/Weapon/CEquipment.h"
 
 UCWeaponAsset::UCWeaponAsset()
 {

@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "Items/Equip/Weapon/CWeaponAsset.h"
+#include "Item/Equip/Weapon/CWeaponAsset.h"
 #include "CAnimInstance.generated.h"
 
 UCLASS()

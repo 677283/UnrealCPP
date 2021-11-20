@@ -2,7 +2,7 @@
 #include "Global.h"
 #include "GameFramework/Character.h"
 #include "Components/CEquipComponent.h"
-#include "Items/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CEquipment.h"
 
 void UCAnimInstance::NativeBeginPlay()
 {
