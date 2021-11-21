@@ -14,7 +14,7 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		float ThrowSpeed;
+		TSubclassOf<class ACBoomerang_Throw> BoomerangClass;
 
 public:
 	virtual void BeginPlay(class ACharacter* InOwner);

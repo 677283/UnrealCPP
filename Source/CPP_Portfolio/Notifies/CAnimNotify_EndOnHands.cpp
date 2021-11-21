@@ -1,16 +1,16 @@
-#include "CAnimNotify_Begin_OnHands.h"
+#include "CAnimNotify_EndOnHands.h"
 #include "Global.h"
 #include "Player/CPlayer.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CWeaponAsset.h"
 #include "Components/CEquipComponent.h"
 
-FString UCAnimNotify_Begin_OnHands::GetNotifyName_Implementation() const
+FString UCAnimNotify_EndOnHands::GetNotifyName_Implementation() const
 {
-	return "Begin_OnHands";
+	return "End_OnHands";
 }
 
-void UCAnimNotify_Begin_OnHands::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCAnimNotify_EndOnHands::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	Super::Notify(MeshComp, Animation);
 	CheckNull(MeshComp);
@@ -19,5 +19,5 @@ void UCAnimNotify_Begin_OnHands::Notify(USkeletalMeshComponent* MeshComp, UAnimS
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(MeshComp->GetOwner());
 
 	CheckNull(equip);
-	equip->GetWeapon()->GetEquipment()->Begin_OnHands();
+	equip->GetWeapon()->GetEquipment()->End_OnHands();
 }

@@ -1,13 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
-#include "CEquipment.generated.h"
+#include "Item/Equip/CEquipment.h"
+#include "CEquipment_Weapon.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FToggleHands, FName, InSocketName);
 
 UCLASS(Blueprintable)
-class CPP_PORTFOLIO_API UCEquipment : public UObject
+class CPP_PORTFOLIO_API UCEquipment_Weapon : public UCEquipment
 {
 	GENERATED_BODY()
 	
@@ -25,10 +25,10 @@ private:
 		FName UnequipSocket;
 
 public:
-	virtual void BeginPlay(class ACharacter* InOwner);
+	virtual void BeginPlay(class ACharacter* InOwner) override;
 
-	virtual void Equip();
-	virtual void Unequip();
+	virtual void Equip() override;
+	virtual void Unequip() override;
 	
 	virtual void OnHands();
 	virtual void Begin_OnHands();
@@ -37,11 +37,8 @@ public:
 	virtual void ToggleHands();
 
 	FORCEINLINE const bool* GetHands() { return &bHands; }
-public:
-	bool bHands;
 private:
-	class ACharacter* OwnerCharacter;
-	class UCStateComponent* State;
+	bool bHands;
 
 public:
 	FToggleHands OnEquipmentToggleHands;

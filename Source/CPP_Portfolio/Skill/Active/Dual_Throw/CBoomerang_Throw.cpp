@@ -6,6 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/CStateComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Item/Equip/Weapon/CWeaponAsset.h"
 #include "Item/Equip/Weapon/CEquipActor.h"
 #include "Skill/CSkill.h"
@@ -14,37 +15,55 @@ ACBoomerang_Throw::ACBoomerang_Throw()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
-	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh");
+	USceneComponent* scene;
+
+	CHelpers::CreateComponent <USceneComponent> (this, &scene, "Root");
+	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh", scene);
+	CHelpers::CreateActorComponent<UProjectileMovementComponent>(this, &Projectile, "Projectile");
+	
 	Mesh->SetCollisionProfileName("NoCollision");
+
+	Projectile->ProjectileGravityScale = 0;
+	Projectile->MaxSpeed = 3000;
 }
 
 void ACBoomerang_Throw::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//SetActorRotation(FRotator::ZeroRotator);
-	SetActorRotation(FRotator(0, 0, 90));
-	CLog::Log(Comps[0]->GetRelativeRotation());
-	AddActorLocalRotation(-1 * Comps[0]->GetRelativeRotation());
+	SetActorRotation(FRotator::ZeroRotator);
+
+	Mesh->SetRelativeRotation(FRotator(0, 0, 90));
+	Mesh->AddLocalRotation(-1 * Comps[0]->GetRelativeRotation());
+
+	SetActorRotation(GetOwner()->GetActorRotation());
+	AddActorWorldRotation(FRotator(0, Direction * 20, 0));
+
 	AddActorWorldOffset(GetOwner()->GetActorForwardVector() * 400);
-	/*sphere = NewObject<USphereComponent>(this);
 
-	sphere->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	Projectile->SetVelocityInLocalSpace(FVector(100, 0, 0));
 
-	sphere->RegisterComponent();
-
-	sphere->OnComponentBeginOverlap.AddDynamic(this, &ACBoomerang_Throw::OnComponentBeginOverlap);
-
-	sphere->SetHiddenInGame(false);
-
-	sphere->SetCollisionProfileName("Test");*/
+	for (UShapeComponent* comp : Comps)
+	{
+		comp->SetCollisionProfileName("Boomerang");
+	}
 }
 
 void ACBoomerang_Throw::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AddActorWorldRotation(FRotator(0, Direction * 1680 * DeltaTime, 0));
+	InterpSpeed += DeltaTime * InterpUpdateSpeed;
+	UKismetMathLibrary::FClamp(InterpSpeed, 0, InterpSpeedMax);
+	Mesh->AddWorldRotation(FRotator(0, Direction * RotateSpeed * DeltaTime, 0));
+
+	FRotator rotator = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), GetOwner()->GetActorLocation());
+
+	rotator = UKismetMathLibrary::RInterpTo(GetActorRotation(), rotator, DeltaTime, InterpSpeed);
+
+	SetActorRotation(rotator);
+
+	Projectile->SetVelocityInLocalSpace(FVector(ProjectileVelocity, 0, 0));
 }
 
 void ACBoomerang_Throw::SetBoomerang(class UCSkill* InSkill, class AActor* InWeapon, int32 InDirection)
@@ -81,11 +100,12 @@ void ACBoomerang_Throw::SetBoomerang(class UCSkill* InSkill, class AActor* InWea
 
 		comp->OnComponentBeginOverlap.AddDynamic(this, &ACBoomerang_Throw::OnComponentBeginOverlap);
 		comp->SetRelativeTransform(collision->GetRelativeTransform());
+		
 		Comps.Add(comp);
 	}
 
 	Weapon = InWeapon;
-
+	Skill = InSkill;
 	Direction = InDirection;
 }
 

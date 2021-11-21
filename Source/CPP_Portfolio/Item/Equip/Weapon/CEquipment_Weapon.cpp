@@ -1,34 +1,37 @@
-#include "CEquipment.h"
+#include "CEquipment_Weapon.h"
 #include "Global.h"
 #include "Components/CStateComponent.h"
 #include "GameFramework/Character.h"
 #include "Item/Equip/Weapon/CEquipActor.h"
 
 
-void UCEquipment::BeginPlay(ACharacter* InOwner)
+void UCEquipment_Weapon::BeginPlay(ACharacter* InOwner)
 {
-	OwnerCharacter = InOwner;
+	Super::BeginPlay(InOwner);
+
 	bHands = false;
-	State = CHelpers::GetComponent<UCStateComponent>(InOwner);
 }
 
-void UCEquipment::Equip()
+void UCEquipment_Weapon::Equip()
 {
+	Super::Equip();
 
 }
 
-void UCEquipment::Unequip()
+void UCEquipment_Weapon::Unequip()
 {
+	Super::Unequip();
 
 }
 
-void UCEquipment::OnHands()
+void UCEquipment_Weapon::OnHands()
 {
 	CheckFalse(State->IsStateIdle());
+	State->SetStateEquip();
 	OwnerCharacter->PlayAnimMontage(EquipMontage, EquipPlayRatio);
 }
 
-void UCEquipment::Begin_OnHands()
+void UCEquipment_Weapon::Begin_OnHands()
 {
 	bHands = true;
 	CheckFalse(EquipSocket.GetStringLength() > 0);
@@ -36,12 +39,12 @@ void UCEquipment::Begin_OnHands()
 		OnEquipmentToggleHands.Broadcast(EquipSocket);
 }
 
-void UCEquipment::End_OnHands()
+void UCEquipment_Weapon::End_OnHands()
 {
-
+	State->SetStateIdle();
 }
 
-void UCEquipment::OffHands()
+void UCEquipment_Weapon::OffHands()
 {
 	CheckFalse(State->IsStateIdle());
 	bHands = false;
@@ -50,7 +53,7 @@ void UCEquipment::OffHands()
 		OnEquipmentToggleHands.Broadcast(UnequipSocket);
 }
 
-void UCEquipment::ToggleHands()
+void UCEquipment_Weapon::ToggleHands()
 {
 	if (bHands)
 		OffHands();

@@ -2,7 +2,7 @@
 #include "Global.h"
 #include "GameFramework/Character.h"
 #include "Components/CEquipComponent.h"
-#include "Item/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CEquipment_Weapon.h"
 
 void UCAnimInstance::NativeBeginPlay()
 {
@@ -22,7 +22,7 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	
 	UCWeaponAsset* weapon = Equip->GetWeapon();
 	CheckNull(weapon);
-	weapon->GetEquipment()->bHands ? WeaponType = weapon->GetWeaponType() : WeaponType = EWeaponType::Max;
+	*(weapon->GetEquipment()->GetHands()) ? WeaponType = weapon->GetWeaponType() : WeaponType = EWeaponType::Max;
 	
 	//Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
 }

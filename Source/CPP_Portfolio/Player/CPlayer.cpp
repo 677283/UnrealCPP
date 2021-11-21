@@ -7,7 +7,7 @@
 #include "Components/CSkillComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Item/Equip/Weapon/CWeaponAsset.h"
-#include "Item/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CDoAction.h"
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
 #include "Rendering/SkeletalMeshRenderData.h"

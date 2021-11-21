@@ -1,7 +1,7 @@
 #include "CEquipComponent.h"
 #include "Global.h"
 #include "Item/Equip/Weapon/CWeaponAsset.h"
-#include "Item/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #define TESTMODE
 
 UCEquipComponent::UCEquipComponent()

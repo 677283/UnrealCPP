@@ -18,16 +18,22 @@ void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 	}
 
 	CheckFalse(State->IsStateIdle());
+
 	if (InKey == EKeys::LeftMouseButton)
 		ComboKey.Append("L");
 	else
 		ComboKey.Append("R");
+
 	FDoActionData* actionData = ComboList.Find(ComboKey);
 
-	CheckNull(actionData);
+	if (!actionData)
+	{
+		ComboKey = "";
+		return;
+	}
+
 	OwnerCharacter->PlayAnimMontage(ComboList.Find(ComboKey)->Montage);
 	State->SetStateAction();
-
 }
 
 void UCDoAction_DoubleCombo::BeginDoAction()
@@ -43,8 +49,12 @@ void UCDoAction_DoubleCombo::BeginDoAction()
 	else
 		ComboKey.Append("R");
 
+	FDoActionData* data = ComboList.Find(ComboKey);
+	
+	CheckNull(data);
+
 	OwnerCharacter->StopAnimMontage();
-	OwnerCharacter->PlayAnimMontage(ComboList.Find(ComboKey)->Montage);
+	OwnerCharacter->PlayAnimMontage(data->Montage);
 }
 
 void UCDoAction_DoubleCombo::EndDoAction()

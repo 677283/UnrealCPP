@@ -49,7 +49,7 @@ private:
 		TSubclassOf<class UCDoAction> DoActionClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "WeaponInfo")
-		TSubclassOf<class UCEquipment> EquipmentClass;
+		TSubclassOf<class UCEquipment_Weapon> EquipmentClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "WeaponInfo")
 		float MinDamage = 0.0;
@@ -63,7 +63,7 @@ private:
 public:
 	FORCEINLINE class ACEquipActor* GetEquipActor() { return EquipActor; }
 	FORCEINLINE class UCDoAction* GetDoAction() { return DoAction; }
-	FORCEINLINE class UCEquipment* GetEquipment() { return Equipment; }
+	FORCEINLINE class UCEquipment_Weapon* GetEquipment() { return Equipment; }
 	FORCEINLINE EWeaponType GetWeaponType() { return WeaponType; }
 
 	virtual void BeginPlay(class ACharacter* InOwner) override;
@@ -75,10 +75,9 @@ public:
 	UFUNCTION()
 		void OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage);
 
-
 private:
 	class ACEquipActor* EquipActor;
 	class UCDoAction* DoAction;
-	class UCEquipment* Equipment;
+	class UCEquipment_Weapon* Equipment;
 
 };

@@ -6,7 +6,7 @@
 
 FString UCAnimNotify_EndDoAction::GetNotifyName_Implementation() const
 {
-	return "Begin_OnHands";
+	return "End_DoAction";
 }
 
 void UCAnimNotify_EndDoAction::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)

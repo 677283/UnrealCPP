@@ -3,7 +3,7 @@
 #include "GameFramework/Character.h"
 #include "Item/Equip/Weapon/CEquipActor.h"
 #include "Item/Equip/Weapon/CDoAction.h"
-#include "Item/Equip/Weapon/CEquipment.h"
+#include "Item/Equip/Weapon/CEquipment_Weapon.h"
 
 UCWeaponAsset::UCWeaponAsset()
 {
@@ -11,7 +11,7 @@ UCWeaponAsset::UCWeaponAsset()
 
 	EquipActorClass = ACEquipActor::StaticClass();
 	DoActionClass = UCDoAction::StaticClass();
-	EquipmentClass = UCEquipment::StaticClass();
+	EquipmentClass = UCEquipment_Weapon::StaticClass();
 }
 
 void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
@@ -25,7 +25,7 @@ void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
 	EquipActor = OwnerCharacter->GetWorld()->SpawnActor<ACEquipActor>(EquipActorClass, params);
 
 	CheckNull(EquipmentClass);
-	Equipment = NewObject<UCEquipment>(this, EquipmentClass);
+	Equipment = NewObject<UCEquipment_Weapon>(this, EquipmentClass);
 	Equipment->BeginPlay(OwnerCharacter);
 	Equipment->OnEquipmentToggleHands.AddDynamic(EquipActor, &ACEquipActor::AttachTo);
 
