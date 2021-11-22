@@ -47,6 +47,7 @@ private:
 	void Equip_Weapon();
 	void BasicAttack(FKey InKey);
 	void Skill_1();
+	void Skill_2();
 private:
 	UPROPERTY(EditAnywhere)
 		float MouseSensitivity = 0.5;
