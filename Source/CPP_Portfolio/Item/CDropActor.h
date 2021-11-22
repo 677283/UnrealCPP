@@ -25,8 +25,8 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	void OnDropItem();
-	void OffDropItem();
+	void Drop();
+	void PickUp();
 
 private:
 	void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);

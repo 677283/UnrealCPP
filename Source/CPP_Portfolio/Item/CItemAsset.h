@@ -27,13 +27,18 @@ private:
 		EItemType ItemType;
 
 	UPROPERTY(EditDefaultsOnly, Category = "BaseInfo")
-		AActor* DropActor;
+		class ACDropActor* DropActor;
 
 	UPROPERTY(EditDefaultsOnly, Category = "BaseInfo")
 		class UTexture2D* Icon;
 
 public:
-	virtual void BeginPlay(class ACharacter* InOwner);
+	virtual void BeginPlay(class AActor* InOwner);
+	
+public:
+	virtual void DropItem();
+	virtual void PickUpItem();
+
 
 protected:
 	FORCEINLINE void SetType(EItemType InType) { ItemType = InType; }
@@ -45,5 +50,5 @@ public:
 	FORCEINLINE void BuyItem() {};
 
 protected:
-	class ACharacter* OwnerCharacter;
+	class AActor* OwnerCharacter;
 };

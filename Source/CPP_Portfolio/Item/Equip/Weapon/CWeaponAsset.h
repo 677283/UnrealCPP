@@ -66,7 +66,7 @@ public:
 	FORCEINLINE class UCEquipment_Weapon* GetEquipment() { return Equipment; }
 	FORCEINLINE EWeaponType GetWeaponType() { return WeaponType; }
 
-	virtual void BeginPlay(class ACharacter* InOwner) override;
+	virtual void BeginPlay(class AActor* InOwner) override;
 
 private:
 	void SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter, float InActionDamage);

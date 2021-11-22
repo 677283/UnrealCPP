@@ -18,6 +18,8 @@ UCDoAction::UCDoAction()
 
 void UCDoAction::BeginPlay(class ACharacter* InOwner)
 {
+	CheckNull(InOwner);
+
 	OwnerCharacter = InOwner;
 	State = CHelpers::GetComponent<UCStateComponent>(InOwner);
 }

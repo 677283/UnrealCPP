@@ -23,7 +23,7 @@ private:
 		EEquipType EquipType;
 
 public:
-	virtual void BeginPlay(class ACharacter* InOwner) override;
+	virtual void BeginPlay(class AActor* InOwner) override;
 
 protected:
 	FORCEINLINE void SetEquipType(EEquipType type) { EquipType = type; }

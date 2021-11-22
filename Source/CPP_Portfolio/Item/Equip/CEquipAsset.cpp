@@ -7,7 +7,7 @@ UCEquipAsset::UCEquipAsset()
 	SetType(EItemType::Equip);
 }
 
-void UCEquipAsset::BeginPlay(ACharacter* InOwner)
+void UCEquipAsset::BeginPlay(AActor* InOwner)
 {
 	Super::BeginPlay(InOwner);
 

@@ -25,11 +25,12 @@ void ACEquipActor::BeginPlay()
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 
-
 }
 
 void ACEquipActor::AttachTo(FName InSocketName)
 {
+	CheckNull(OwnerCharacter);
+	
 	AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), InSocketName);
 }
 

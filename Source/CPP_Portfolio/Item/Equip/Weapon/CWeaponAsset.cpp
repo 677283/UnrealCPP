@@ -14,7 +14,7 @@ UCWeaponAsset::UCWeaponAsset()
 	EquipmentClass = UCEquipment_Weapon::StaticClass();
 }
 
-void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
+void UCWeaponAsset::BeginPlay(AActor* InOwner)
 {
 	CheckNull(EquipActorClass);
 
@@ -24,14 +24,16 @@ void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
 	params.Owner = OwnerCharacter;
 	EquipActor = OwnerCharacter->GetWorld()->SpawnActor<ACEquipActor>(EquipActorClass, params);
 
+	ACharacter* Owner = Cast<ACharacter>(OwnerCharacter);
+
 	CheckNull(EquipmentClass);
 	Equipment = NewObject<UCEquipment_Weapon>(this, EquipmentClass);
-	Equipment->BeginPlay(OwnerCharacter);
+	Equipment->BeginPlay(Owner);
 	Equipment->OnEquipmentToggleHands.AddDynamic(EquipActor, &ACEquipActor::AttachTo);
 
 	CheckNull(DoActionClass);
 	DoAction = NewObject<UCDoAction>(this, DoActionClass);
-	DoAction->BeginPlay(OwnerCharacter);
+	DoAction->BeginPlay(Owner);
 	DoAction->OnDoActionBeginOverlap.AddDynamic(this, &UCWeaponAsset::OnDoActionBeginOverlap);
 	DoAction->InitHands(Equipment->GetHands());
 }

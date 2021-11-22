@@ -24,21 +24,21 @@ void ACDropActor::Tick(float DeltaTime)
 	AddActorWorldRotation(FRotator(0, RotateSpeed * DeltaTime, 0));
 }
 
-void ACDropActor::OnDropItem()
+void ACDropActor::Drop()
 {
 	Mesh->SetVisibility(true);
 	SetActorTickEnabled(true);
 	SetActorEnableCollision(true);
 }
 
-void OffDropItem()
+void ACDropActor::PickUp()
 {
 	Mesh->SetVisibility(false);
 	SetActorTickEnabled(false);
 	SetActorEnableCollision(false);
 }
 
-void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void ACDropActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 
 }
