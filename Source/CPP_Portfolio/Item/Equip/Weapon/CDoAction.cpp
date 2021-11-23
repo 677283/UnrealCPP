@@ -21,3 +21,13 @@ void UCDoAction::OnEquipActorCollision()
 {
 	HittedCharacters.Empty();
 }
+
+void UCDoAction::SetOwnerCharacter(class ACharacter* InOwner)
+{
+	OwnerCharacter = InOwner;
+
+	if (!!InOwner)
+		State = CHelpers::GetComponent<UCStateComponent>(InOwner);
+	else
+		State = NULL;
+}

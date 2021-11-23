@@ -17,6 +17,9 @@ private:
 		class USkeletalMeshComponent* Mesh;
 
 	UPROPERTY(EditDefaultsOnly)
+		FVector DropOffset;
+
+	UPROPERTY(EditDefaultsOnly)
 		float RotateSpeed = 0;
 
 protected:

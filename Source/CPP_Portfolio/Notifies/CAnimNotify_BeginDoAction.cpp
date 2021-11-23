@@ -19,5 +19,8 @@ void UCAnimNotify_BeginDoAction::Notify(USkeletalMeshComponent* MeshComp, UAnimS
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(MeshComp->GetOwner());
 
 	CheckNull(equip);
-	equip->GetWeapon()->GetDoAction()->BeginDoAction();
+	//equip->GetWeapon()->GetDoAction()->BeginDoAction();
+	ACharacter* owner = Cast<ACharacter>(MeshComp->GetOwner());
+	CheckNull(owner);
+	equip->GetWeapon()->BeginDoAction(owner);
 }

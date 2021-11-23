@@ -47,7 +47,61 @@ void UCWeaponAsset::SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, A
 	InOtherCharacter->TakeDamage(damage, damageType, InAttacker->GetController(), InAttackCauser);
 }
 
+void UCWeaponAsset::Do_Action(class ACharacter* InOwner, FKey InKey)
+{
+	CheckFalse(OwnerCharacter == InOwner);
+	DoAction->DoAction(InKey);
+}
+
+void UCWeaponAsset::BeginDoAction(class ACharacter* InOwner)
+{
+	CheckFalse(OwnerCharacter == InOwner);
+	DoAction->BeginDoAction();
+}
+
+void UCWeaponAsset::EndDoAction(class ACharacter* InOwner)
+{
+	CheckFalse(OwnerCharacter == InOwner);
+	DoAction->EndDoAction();
+}
+
+void UCWeaponAsset::OnHands(class ACharacter* InOwner)
+{
+	CheckFalse(OwnerCharacter == InOwner);
+	Equipment->OnHands();
+}
+
+void UCWeaponAsset::BeginOnHands(class ACharacter* InOwner)
+{
+	CheckFalse(OwnerCharacter == InOwner);
+	Equipment->Begin_OnHands();
+}
+
+void UCWeaponAsset::EndOnHands(class ACharacter* InOwner)
+{
+	CheckFalse(OwnerCharacter == InOwner);
+	Equipment->End_OnHands();
+}
+
 void UCWeaponAsset::OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage)
 {
 	SendDamage(InAttacker, InAttackerCauser, InOtherCharacter, InActionDamage);
+}
+
+void UCWeaponAsset::DropItem(FVector InDropPosition)
+{
+	Super::DropItem(InDropPosition);
+
+	DoAction->SetOwnerCharacter(NULL);
+	Equipment->SetOwnerCharacter(NULL);
+	EquipActor->SetOwnerCharacter(NULL);
+}
+
+void UCWeaponAsset::PickUpItem(class ACharacter* InOwner)
+{
+	Super::PickUpItem(InOwner);
+
+	DoAction->SetOwnerCharacter(InOwner);
+	Equipment->SetOwnerCharacter(InOwner);
+	EquipActor->SetOwnerCharacter(InOwner);
 }

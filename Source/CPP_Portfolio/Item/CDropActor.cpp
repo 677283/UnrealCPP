@@ -1,12 +1,16 @@
 #include "CDropActor.h"
 #include "Global.h"
 #include "Components/ShapeComponent.h"
+#include "GameFramework/Character.h"
 
 ACDropActor::ACDropActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh");
+	USceneComponent* scene;
+	
+	CHelpers::CreateComponent<USceneComponent>(this, &scene, "Root");
+	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh", scene);
 
 }
 
@@ -33,7 +37,15 @@ void ACDropActor::Drop(FVector InDropPosition)
 	SetActorTickEnabled(true);
 	SetActorEnableCollision(true);
 
-	SetActorLocation(InDropPosition);
+
+	TArray<AActor*> ignoreActors;
+
+	FHitResult hitResult;
+
+	UKismetSystemLibrary::LineTraceSingle(GetWorld(), InDropPosition, InDropPosition + (FVector::UpVector * -300), ETraceTypeQuery::TraceTypeQuery1, false, ignoreActors, EDrawDebugTrace::None, hitResult, true);
+
+
+	SetActorLocation(hitResult.ImpactPoint + DropOffset);
 }
 
 void ACDropActor::PickUp()

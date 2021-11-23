@@ -37,7 +37,7 @@ public:
 	
 public:
 	virtual void DropItem(FVector InDropPosition);
-	virtual void PickUpItem();
+	virtual void PickUpItem(class ACharacter* InOwner);
 
 protected:
 	FORCEINLINE void SetType(EItemType InType) { ItemType = InType; }

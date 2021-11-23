@@ -118,7 +118,7 @@ void ACPlayer::Equip_Weapon()
 
 void ACPlayer::BasicAttack(FKey InKey)
 {
-	Equip->GetWeapon()->GetDoAction()->DoAction(InKey);
+	Equip->GetWeapon()->Do_Action(this, InKey);
 }
 
 void ACPlayer::Skill_1()

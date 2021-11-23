@@ -71,3 +71,9 @@ void ACEquipActor::SetVisibility(bool InBool)
 {
 	Mesh->SetVisibility(InBool);
 }
+
+void ACEquipActor::SetOwnerCharacter(class ACharacter* InOwner)
+{
+	SetOwner(InOwner);
+	OwnerCharacter = InOwner;
+}

@@ -39,6 +39,7 @@ public:
 	FORCEINLINE void OnCombo() { bComboEnable = true; }
 	FORCEINLINE void OffCombo() { bComboEnable = false; }
 	FORCEINLINE void InitHands(const bool* InHands) { bHands = InHands; }
+	void SetOwnerCharacter(class ACharacter* InOwner);
 
 private:
 	virtual void OnEquipActorBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter) {}

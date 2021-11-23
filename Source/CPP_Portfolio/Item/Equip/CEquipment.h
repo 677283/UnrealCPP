@@ -14,6 +14,7 @@ public:
 
 	virtual void Equip() {}
 	virtual void Unequip() {}
+	void SetOwnerCharacter(class ACharacter* InOwner);
 
 protected:
 	class ACharacter* OwnerCharacter;

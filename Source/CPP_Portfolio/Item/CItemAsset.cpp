@@ -22,9 +22,11 @@ void UCItemAsset::BeginPlay(class ACharacter* InOwner)
 void UCItemAsset::DropItem(FVector InDropPosition)
 {
 	DropActor->Drop(InDropPosition);
+	OwnerCharacter = NULL;
 }
 
-void UCItemAsset::PickUpItem()
+void UCItemAsset::PickUpItem(class ACharacter* InOwner)
 {
 	DropActor->PickUp();
+	OwnerCharacter = InOwner;
 }

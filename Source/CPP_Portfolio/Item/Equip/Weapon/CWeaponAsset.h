@@ -74,6 +74,18 @@ private:
 public:
 	UFUNCTION()
 		void OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage);
+public:
+
+	void Do_Action(class ACharacter* InOwner, FKey InKey);
+	void BeginDoAction(class ACharacter* InOwner);
+	void EndDoAction(class ACharacter* InOwner);
+	
+	void OnHands(class ACharacter* InOwner);
+	void BeginOnHands(class ACharacter* InOwner);
+	void EndOnHands(class ACharacter* InOwner);
+
+	virtual void DropItem(FVector InDropPosition) override;
+	virtual void PickUpItem(class ACharacter* InOwner) override;
 
 private:
 	class ACEquipActor* EquipActor;

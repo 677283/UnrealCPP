@@ -18,5 +18,8 @@ void UCAnimNotify_EndDoAction::Notify(USkeletalMeshComponent* MeshComp, UAnimSeq
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(MeshComp->GetOwner());
 
 	CheckNull(equip);
-	equip->GetWeapon()->GetDoAction()->EndDoAction();
+	//equip->GetWeapon()->GetDoAction()->EndDoAction();
+	ACharacter* owner = Cast<ACharacter>(MeshComp->GetOwner());
+	CheckNull(owner);
+	equip->GetWeapon()->EndDoAction(owner);
 }

@@ -19,5 +19,8 @@ void UCAnimNotify_Begin_OnHands::Notify(USkeletalMeshComponent* MeshComp, UAnimS
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(MeshComp->GetOwner());
 
 	CheckNull(equip);
-	equip->GetWeapon()->GetEquipment()->Begin_OnHands();
+	//equip->GetWeapon()->GetEquipment()->Begin_OnHands();
+	ACharacter* owner = Cast<ACharacter>(MeshComp->GetOwner());
+	CheckNull(owner);
+	equip->GetWeapon()->BeginOnHands(owner);
 }
