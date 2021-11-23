@@ -9,7 +9,7 @@ UCItemAsset::UCItemAsset()
 	ItemType = EItemType::None;
 }
 
-void UCItemAsset::BeginPlay(class AActor* InOwner)
+void UCItemAsset::BeginPlay(class ACharacter* InOwner)
 {
 	OwnerCharacter = InOwner;
 }

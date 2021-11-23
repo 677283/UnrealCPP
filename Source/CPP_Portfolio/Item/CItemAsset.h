@@ -33,7 +33,7 @@ private:
 		class UTexture2D* Icon;
 
 public:
-	virtual void BeginPlay(class AActor* InOwner);
+	virtual void BeginPlay(class ACharacter* InOwner);
 	
 public:
 	virtual void DropItem();
@@ -48,7 +48,8 @@ public:
 	virtual void UseItem() {};
 	FORCEINLINE void SellItem() {};
 	FORCEINLINE void BuyItem() {};
+	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
 
 protected:
-	class AActor* OwnerCharacter;
+	class ACharacter* OwnerCharacter;
 };

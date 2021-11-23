@@ -22,8 +22,6 @@ private:
 protected:
 	virtual void BeginPlay() override;
 
-
-
 public:
 	UFUNCTION()
 		virtual void AttachTo(FName InSocketName);
@@ -41,6 +39,7 @@ public:
 private:
 	TArray<class UShapeComponent*> Collisions;
 	TArray<class AActor *> HittedActors;
+
 protected:
 	class ACharacter* OwnerCharacter;
 
