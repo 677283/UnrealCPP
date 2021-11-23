@@ -1,5 +1,4 @@
 #include "CDisposeItem.h"
-#include "Global.h"
 #include "Item/CItemAsset.h"
 
 ACDisposeItem::ACDisposeItem()
@@ -10,7 +9,7 @@ ACDisposeItem::ACDisposeItem()
 void ACDisposeItem::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	Item->BeginPlay(NULL);
-
+	CheckNull(Item);
+	Item->BeginPlay(this);
+	Destroy();
 }

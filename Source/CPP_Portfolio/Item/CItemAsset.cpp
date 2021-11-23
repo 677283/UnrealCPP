@@ -7,16 +7,21 @@
 UCItemAsset::UCItemAsset()
 {
 	ItemType = EItemType::None;
+	DropActorClass = ACDropActor::StaticClass();
 }
 
 void UCItemAsset::BeginPlay(class ACharacter* InOwner)
 {
 	OwnerCharacter = InOwner;
+
+	FActorSpawnParameters params;
+	params.Owner = OwnerCharacter;
+	DropActor = InOwner->GetWorld()->SpawnActor<ACDropActor>(DropActorClass, params);
 }
 
-void UCItemAsset::DropItem()
+void UCItemAsset::DropItem(FVector InDropPosition)
 {
-	DropActor->Drop();
+	DropActor->Drop(InDropPosition);
 }
 
 void UCItemAsset::PickUpItem()

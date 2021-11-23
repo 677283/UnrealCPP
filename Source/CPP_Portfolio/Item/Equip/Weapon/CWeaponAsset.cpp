@@ -28,6 +28,7 @@ void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
 	Equipment = NewObject<UCEquipment_Weapon>(this, EquipmentClass);
 	Equipment->BeginPlay(InOwner);
 	Equipment->OnEquipmentToggleHands.AddDynamic(EquipActor, &ACEquipActor::AttachTo);
+	bOnHands = Equipment->GetHands();
 
 	CheckNull(DoActionClass);
 	DoAction = NewObject<UCDoAction>(this, DoActionClass);

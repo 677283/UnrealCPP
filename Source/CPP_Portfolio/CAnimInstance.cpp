@@ -22,7 +22,7 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	
 	UCWeaponAsset* weapon = Equip->GetWeapon();
 	CheckNull(weapon);
-	*(weapon->GetEquipment()->GetHands()) ? WeaponType = weapon->GetWeaponType() : WeaponType = EWeaponType::Max;
+	weapon->IsHandsOn() ? WeaponType = weapon->GetWeaponType() : WeaponType = EWeaponType::Max;
 	
 	//Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
 }

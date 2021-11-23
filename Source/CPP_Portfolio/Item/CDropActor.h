@@ -25,7 +25,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	void Drop();
+	void Drop(FVector InDropPosition);
 	void PickUp();
 
 private:

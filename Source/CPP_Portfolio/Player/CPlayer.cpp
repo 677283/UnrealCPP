@@ -47,7 +47,7 @@ ACPlayer::ACPlayer()
 
 	GetCapsuleComponent()->SetCollisionProfileName("Player");
 
-	CHelpers::GetAsset(&Weapon_Dual, "CWeaponAsset'/Game/__ProjectFile/Items/Equip/Weapon/Dual_Silver.Dual_Silver'");
+	CHelpers::GetAsset(&Weapon_Dual, "CWeaponAsset'/Game/__ProjectFile/Items/Equip/Weapon/Dual_Silver/Dual_Silver.Dual_Silver'");
 
 	CHelpers::GetClass<UCSkill>(&SlashClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Slash/BP_CSkill_Active_Slash.BP_CSkill_Active_Slash_C'");
 	CHelpers::GetClass<UCSkill>(&ThrowClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Throw/BP_CSkill_Active_Throw.BP_CSkill_Active_Throw_C'");

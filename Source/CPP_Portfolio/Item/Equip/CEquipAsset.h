@@ -40,4 +40,5 @@ public:
 
 protected:
 	bool bEquipping = false;
+	bool Enabled;
 };

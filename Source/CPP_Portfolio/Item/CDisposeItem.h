@@ -1,19 +1,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "CDisposeItem.generated.h"
 
 UCLASS()
-class CPP_PORTFOLIO_API ACDisposeItem : public AActor
+class CPP_PORTFOLIO_API ACDisposeItem : public ACharacter
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	ACDisposeItem();
-	
+
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		class UCItemAsset* Item;
 
 protected:

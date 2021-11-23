@@ -65,7 +65,7 @@ public:
 	FORCEINLINE class UCDoAction* GetDoAction() { return DoAction; }
 	FORCEINLINE class UCEquipment_Weapon* GetEquipment() { return Equipment; }
 	FORCEINLINE EWeaponType GetWeaponType() { return WeaponType; }
-
+	FORCEINLINE bool IsHandsOn() { return *bOnHands; }
 	virtual void BeginPlay(class ACharacter* InOwner) override;
 
 private:
@@ -79,5 +79,5 @@ private:
 	class ACEquipActor* EquipActor;
 	class UCDoAction* DoAction;
 	class UCEquipment_Weapon* Equipment;
-
+	const bool* bOnHands;
 };

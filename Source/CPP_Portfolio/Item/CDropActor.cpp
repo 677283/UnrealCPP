@@ -6,7 +6,8 @@ ACDropActor::ACDropActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	
+	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh");
+
 }
 
 void ACDropActor::BeginPlay()
@@ -14,7 +15,9 @@ void ACDropActor::BeginPlay()
 	Super::BeginPlay();
 	
 	Collision = CHelpers::GetComponent<UShapeComponent>(this);
-	Collision->OnComponentBeginOverlap.AddDynamic(this, &ACDropActor::OnComponentBeginOverlap);
+	if (!!Collision)
+		Collision->OnComponentBeginOverlap.AddDynamic(this, &ACDropActor::OnComponentBeginOverlap);
+	PickUp();
 }
 
 void ACDropActor::Tick(float DeltaTime)
@@ -24,11 +27,13 @@ void ACDropActor::Tick(float DeltaTime)
 	AddActorWorldRotation(FRotator(0, RotateSpeed * DeltaTime, 0));
 }
 
-void ACDropActor::Drop()
+void ACDropActor::Drop(FVector InDropPosition)
 {
 	Mesh->SetVisibility(true);
 	SetActorTickEnabled(true);
 	SetActorEnableCollision(true);
+
+	SetActorLocation(InDropPosition);
 }
 
 void ACDropActor::PickUp()
