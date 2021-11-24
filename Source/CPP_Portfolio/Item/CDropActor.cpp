@@ -1,17 +1,19 @@
 #include "CDropActor.h"
 #include "Global.h"
 #include "Components/ShapeComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "GameFramework/Character.h"
 
 ACDropActor::ACDropActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	USceneComponent* scene;
+	USceneComponent* root;
 	
-	CHelpers::CreateComponent<USceneComponent>(this, &scene, "Root");
-	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh", scene);
-	
+	CHelpers::CreateComponent<USceneComponent>(this, &root, "Root");
+	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh", root);
+	CHelpers::CreateComponent<UTextRenderComponent>(this, &Text, "Text", root);
+
 	//TODO Create TextRender
 }
 
@@ -24,7 +26,6 @@ void ACDropActor::BeginPlay()
 		Collision->OnComponentBeginOverlap.AddDynamic(this, &ACDropActor::OnComponentBeginOverlap);
 	GetComponents<UMeshComponent>(Meshes);
 	PickUp();
-
 }
 
 void ACDropActor::Tick(float DeltaTime)

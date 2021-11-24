@@ -16,6 +16,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class USkeletalMeshComponent* Mesh;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UTextRenderComponent* Text;
+
 	UPROPERTY(EditDefaultsOnly)
 		FVector DropOffset;
 
