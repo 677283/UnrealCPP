@@ -11,7 +11,8 @@ ACDropActor::ACDropActor()
 	
 	CHelpers::CreateComponent<USceneComponent>(this, &scene, "Root");
 	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh", scene);
-
+	
+	//TODO Create TextRender
 }
 
 void ACDropActor::BeginPlay()
@@ -21,7 +22,9 @@ void ACDropActor::BeginPlay()
 	Collision = CHelpers::GetComponent<UShapeComponent>(this);
 	if (!!Collision)
 		Collision->OnComponentBeginOverlap.AddDynamic(this, &ACDropActor::OnComponentBeginOverlap);
+	GetComponents<UMeshComponent>(Meshes);
 	PickUp();
+
 }
 
 void ACDropActor::Tick(float DeltaTime)
@@ -29,11 +32,18 @@ void ACDropActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AddActorWorldRotation(FRotator(0, RotateSpeed * DeltaTime, 0));
+	//TODO TextRender Billboard
 }
 
+
+//TODO TextRender SetVisibility
 void ACDropActor::Drop(FVector InDropPosition)
 {
-	Mesh->SetVisibility(true);
+	for (UMeshComponent* mesh : Meshes)
+	{
+		mesh->SetVisibility(true);
+	}
+	//Mesh->SetVisibility(true);
 	SetActorTickEnabled(true);
 	SetActorEnableCollision(true);
 
@@ -50,7 +60,11 @@ void ACDropActor::Drop(FVector InDropPosition)
 
 void ACDropActor::PickUp()
 {
-	Mesh->SetVisibility(false);
+	for (UMeshComponent* mesh : Meshes)
+	{
+		mesh->SetVisibility(false);
+	}
+	//Mesh->SetVisibility(false);
 	SetActorTickEnabled(false);
 	SetActorEnableCollision(false);
 }

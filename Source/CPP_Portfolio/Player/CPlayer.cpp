@@ -61,6 +61,7 @@ void ACPlayer::BeginPlay()
 	
 	Weapon_Dual->BeginPlay(this);
 	Weapon_Dual->GetEquipment()->OffHands();
+	Weapon_Dual->PickUpItem(this);
 
 	Equip->EquipItem(Weapon_Dual);
 

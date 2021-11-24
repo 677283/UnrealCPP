@@ -95,6 +95,7 @@ void UCWeaponAsset::DropItem(FVector InDropPosition)
 	DoAction->SetOwnerCharacter(NULL);
 	Equipment->SetOwnerCharacter(NULL);
 	EquipActor->SetOwnerCharacter(NULL);
+	EquipActor->SetVisibility(false);
 }
 
 void UCWeaponAsset::PickUpItem(class ACharacter* InOwner)

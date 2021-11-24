@@ -20,6 +20,7 @@ protected:
 
 public:
 	virtual void AttachTo(FName InSocketName) override;
+	virtual void SetVisibility(bool InBool) override;
 	FORCEINLINE ACEquipActor* GetSubWeapon() { return SubActor; }
 
 private:
