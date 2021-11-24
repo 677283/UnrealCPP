@@ -27,6 +27,5 @@ void UCItemAsset::DropItem(FVector InDropPosition)
 
 void UCItemAsset::PickUpItem(class ACharacter* InOwner)
 {
-	DropActor->PickUp();
 	OwnerCharacter = InOwner;
 }

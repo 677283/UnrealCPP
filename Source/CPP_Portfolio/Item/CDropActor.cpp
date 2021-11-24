@@ -3,6 +3,8 @@
 #include "Components/ShapeComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/Character.h"
+#include "Player/CPlayer.h"
+#include "Blueprint/UserWidget.h"
 
 ACDropActor::ACDropActor()
 {
@@ -23,9 +25,18 @@ void ACDropActor::BeginPlay()
 	
 	Collision = CHelpers::GetComponent<UShapeComponent>(this);
 	if (!!Collision)
+	{
 		Collision->OnComponentBeginOverlap.AddDynamic(this, &ACDropActor::OnComponentBeginOverlap);
+		Collision->OnComponentEndOverlap.AddDynamic(this, &ACDropActor::OnComponentEndOverlap);
+	}
 	GetComponents<UMeshComponent>(Meshes);
-	PickUp();
+	for (UMeshComponent* mesh : Meshes)
+	{
+		mesh->SetVisibility(false);
+	}
+	SetActorTickEnabled(false);
+	SetActorEnableCollision(false);
+	Text->SetVisibility(false);
 }
 
 void ACDropActor::Tick(float DeltaTime)
@@ -33,7 +44,8 @@ void ACDropActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AddActorWorldRotation(FRotator(0, RotateSpeed * DeltaTime, 0));
-	//TODO TextRender Billboard
+	FRotator rotator = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation());
+	Text->SetWorldRotation(rotator);
 }
 
 
@@ -47,7 +59,7 @@ void ACDropActor::Drop(FVector InDropPosition)
 	//Mesh->SetVisibility(true);
 	SetActorTickEnabled(true);
 	SetActorEnableCollision(true);
-
+	Text->SetVisibility(true);
 
 	TArray<AActor*> ignoreActors;
 
@@ -59,7 +71,7 @@ void ACDropActor::Drop(FVector InDropPosition)
 	SetActorLocation(hitResult.ImpactPoint + DropOffset);
 }
 
-void ACDropActor::PickUp()
+void ACDropActor::PickUp(ACharacter* InOwner)
 {
 	for (UMeshComponent* mesh : Meshes)
 	{
@@ -68,9 +80,26 @@ void ACDropActor::PickUp()
 	//Mesh->SetVisibility(false);
 	SetActorTickEnabled(false);
 	SetActorEnableCollision(false);
+	Text->SetVisibility(false);
+	
+	if (OnPickUp.IsBound())
+		OnPickUp.Execute(InOwner);
 }
 
 void ACDropActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	ACPlayer* player = Cast<ACPlayer>(OtherActor);
 
+	CheckNull(player);
+	player->OnPickUpWidget();
+	Text->SetVisibility(false);
+}
+
+void ACDropActor::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	ACPlayer* player = Cast<ACPlayer>(OtherActor);
+
+	CheckNull(player);
+	player->OffPickUpWidget();
+	Text->SetVisibility(true);
 }

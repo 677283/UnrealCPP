@@ -11,6 +11,7 @@
 #include "Item/Equip/Weapon/CDoAction.h"
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
 #include "Rendering/SkeletalMeshRenderData.h"
+#include "Widget/CWidget_PickUp.h"
 
 #define ACPlayer_DEBUG
 
@@ -72,12 +73,20 @@ void ACPlayer::BeginPlay()
 	Throw = NewObject<UCSkill>(this, ThrowClass);
 	Throw->BeginPlay(this);
 	Skill->AddSkill(Throw);
+
+	if (!!PickUpWidgetClass)
+	{
+		PickUpWidget = CreateWidget<UCWidget_PickUp, APlayerController>(GetController<APlayerController>(), PickUpWidgetClass);
+		PickUpWidget->AddToViewport();
+		PickUpWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -133,6 +142,23 @@ void ACPlayer::Skill_2()
 	//Throw->DoSkill();
 	Slash->DoSkill();
 }
+
+void ACPlayer::OnPickUpWidget()
+{
+	PickUpWidget->SetVisibility(ESlateVisibility::Visible);
+	FVector2D position;
+	GetController<APlayerController>()->ProjectWorldLocationToScreen(GetMesh()->GetSocketLocation("head"), position);
+	position.X += 200;
+	PickUpWidget->SetPositionInViewport(position, true);
+}
+
+void ACPlayer::OffPickUpWidget()
+{
+	PickUpWidget->SetVisibility(ESlateVisibility::Hidden);
+}
+
+
+//////////////////////////////Control
 
 void ACPlayer::OnMoveForward(float AxisValue)
 {

@@ -22,6 +22,10 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCSkillComponent* Skill;
+
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCWidget_PickUp> PickUpWidgetClass;
+
 #pragma endregion
 
 public:
@@ -48,6 +52,10 @@ private:
 	void BasicAttack(FKey InKey);
 	void Skill_1();
 	void Skill_2();
+public:
+	void OnPickUpWidget();
+	void OffPickUpWidget();
+
 private:
 	UPROPERTY(EditAnywhere)
 		float MouseSensitivity = 0.5;
@@ -57,4 +65,8 @@ public:
 	TSubclassOf<UCSkill> SlashClass;
 	class UCSkill* Throw;
 	TSubclassOf<UCSkill> ThrowClass;
+
+private:
+	class UCWidget_PickUp* PickUpWidget;
+	bool bPickUp = false;
 };
