@@ -91,7 +91,10 @@ void ACDropActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCompone
 	ACPlayer* player = Cast<ACPlayer>(OtherActor);
 
 	CheckNull(player);
-	player->OnPickUpWidget();
+
+	if (OnDropActorBeginOverlap.IsBound())
+		OnDropActorBeginOverlap.Broadcast(player);
+	//player->OnPickUpWidget();
 	Text->SetVisibility(false);
 }
 

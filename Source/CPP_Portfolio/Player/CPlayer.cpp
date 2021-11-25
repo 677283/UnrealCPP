@@ -60,11 +60,11 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Weapon_Dual->BeginPlay(this);
-	Weapon_Dual->GetEquipment()->OffHands();
-	Weapon_Dual->PickUpItem(this);
+	//Weapon_Dual->BeginPlay(this);
+	//Weapon_Dual->GetEquipment()->OffHands();
+	//Weapon_Dual->PickUpItem(this);
 
-	Equip->EquipItem(Weapon_Dual);
+	//Equip->EquipItem(Weapon_Dual);
 
 	Slash = NewObject<UCSkill>(this, SlashClass);
 	Slash->BeginPlay(this);
@@ -104,6 +104,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("BasicAttack", EInputEvent::IE_Pressed, this, &ACPlayer::BasicAttack);
 	PlayerInputComponent->BindAction("Skill_1", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_1);
 	PlayerInputComponent->BindAction("Skill_2", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_2);
+	PlayerInputComponent->BindAction("PickUp", EInputEvent::IE_Pressed, this, &ACPlayer::PickUp);
 
 	//델리게이트를 이용해서 키 바인딩에 데이터 보내는 방법. 델리게이트 만들어준뒤 Template 이용
 	/*PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Pressed, this, &ACPlayer::Sprint_Pressed, 1);
@@ -128,6 +129,7 @@ void ACPlayer::Equip_Weapon()
 
 void ACPlayer::BasicAttack(FKey InKey)
 {
+	CheckNull(Equip->GetWeapon());
 	Equip->GetWeapon()->Do_Action(this, InKey);
 }
 
@@ -143,18 +145,30 @@ void ACPlayer::Skill_2()
 	Slash->DoSkill();
 }
 
-void ACPlayer::OnPickUpWidget()
+void ACPlayer::PickUp()
 {
+	CheckNull(CheckItem);
+
+	CheckItem->PickUpItem(this);
+}
+
+void ACPlayer::OnPickUpWidget(UCItemAsset* InItem)
+{
+	if (!!CheckItem)
+		return;
+
+	CheckItem = InItem;
 	PickUpWidget->SetVisibility(ESlateVisibility::Visible);
 	FVector2D position;
 	GetController<APlayerController>()->ProjectWorldLocationToScreen(GetMesh()->GetSocketLocation("head"), position);
-	position.X += 200;
+	position.X += 100;
 	PickUpWidget->SetPositionInViewport(position, true);
 }
 
 void ACPlayer::OffPickUpWidget()
 {
 	PickUpWidget->SetVisibility(ESlateVisibility::Hidden);
+	CheckItem = NULL;
 }
 
 

@@ -52,8 +52,9 @@ private:
 	void BasicAttack(FKey InKey);
 	void Skill_1();
 	void Skill_2();
+	void PickUp();
 public:
-	void OnPickUpWidget();
+	void OnPickUpWidget(class UCItemAsset* InItem);
 	void OffPickUpWidget();
 
 private:
@@ -69,4 +70,5 @@ public:
 private:
 	class UCWidget_PickUp* PickUpWidget;
 	bool bPickUp = false;
+	class UCItemAsset* CheckItem;
 };

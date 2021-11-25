@@ -34,9 +34,22 @@ void ACEquipActor_Dual::AttachTo(FName InSocketName)
 	InSocketName = FName(str);
 	SubActor->AttachTo(InSocketName);
 }
+
 void ACEquipActor_Dual::SetVisibility(bool InBool)
 {
 	Super::SetVisibility(InBool);
 
 	SubActor->SetVisibility(InBool);
+}
+
+void ACEquipActor_Dual::Equip()
+{
+	Super::Equip();
+	SubActor->SetVisibility(true);
+}
+
+void ACEquipActor_Dual::Unequip()
+{
+	Super::Unequip();
+	SubActor->SetVisibility(false);
 }

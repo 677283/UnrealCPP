@@ -1,6 +1,7 @@
 #include "CWeaponAsset.h"
 #include "Global.h"
 #include "GameFramework/Character.h"
+#include "Components/CEquipComponent.h"
 #include "Item/Equip/Weapon/CEquipActor.h"
 #include "Item/Equip/Weapon/CDoAction.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
@@ -28,6 +29,8 @@ void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
 	Equipment = NewObject<UCEquipment_Weapon>(this, EquipmentClass);
 	Equipment->BeginPlay(InOwner);
 	Equipment->OnEquipmentToggleHands.AddDynamic(EquipActor, &ACEquipActor::AttachTo);
+	Equipment->OnEquip.AddDynamic(EquipActor, &ACEquipActor::Equip);
+	Equipment->OnUnequip.AddDynamic(EquipActor, &ACEquipActor::Unequip);
 	bOnHands = Equipment->GetHands();
 
 	CheckNull(DoActionClass);
@@ -105,4 +108,13 @@ void UCWeaponAsset::PickUpItem(class ACharacter* InOwner)
 	DoAction->SetOwnerCharacter(InOwner);
 	Equipment->SetOwnerCharacter(InOwner);
 	EquipActor->SetOwnerCharacter(InOwner);
+
+	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(InOwner);
+
+	CheckNull(equip);
+
+	if (!(equip->GetWeapon()))
+	{
+		equip->EquipItem(this);
+	}
 }

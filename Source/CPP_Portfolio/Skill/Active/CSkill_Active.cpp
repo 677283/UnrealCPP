@@ -24,6 +24,7 @@ bool UCSkill_Active::WeaponCheck()
 {
 	if (bNeedWeapon) //무기를 들고 있어야 하는가?
 	{
+		CheckNullResult(Equip->GetWeapon(), false);
 		if (!Equip->IsHandsOn()) //무기를 들고 있는가?
 			return false;
 		if (NeedWeaponTypes.Num() > 0)

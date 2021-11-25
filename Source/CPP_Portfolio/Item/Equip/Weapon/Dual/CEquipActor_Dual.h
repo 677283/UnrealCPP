@@ -21,6 +21,9 @@ protected:
 public:
 	virtual void AttachTo(FName InSocketName) override;
 	virtual void SetVisibility(bool InBool) override;
+	virtual void Equip();
+	virtual void Unequip();
+	
 	FORCEINLINE ACEquipActor* GetSubWeapon() { return SubActor; }
 
 private:

@@ -9,6 +9,7 @@ ACEquipActor::ACEquipActor()
 	CHelpers::CreateComponent<USceneComponent>(this, &scene, "Root");
 	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "SkeletalMesh", scene);
 	Mesh->SetCollisionProfileName("NoCollision");
+	Mesh->SetVisibility(false);
 }
 
 void ACEquipActor::BeginPlay()
@@ -76,4 +77,14 @@ void ACEquipActor::SetOwnerCharacter(class ACharacter* InOwner)
 {
 	SetOwner(InOwner);
 	OwnerCharacter = InOwner;
+}
+
+void ACEquipActor::Equip()
+{
+	Mesh->SetVisibility(true);
+}
+
+void ACEquipActor::Unequip()
+{
+	Mesh->SetVisibility(false);
 }

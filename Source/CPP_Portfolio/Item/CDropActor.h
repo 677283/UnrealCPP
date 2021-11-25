@@ -5,6 +5,7 @@
 #include "CDropActor.generated.h"
 
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnPickUp, class ACharacter*, InOwner);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDropActorBeginOverlap, class ACPlayer*, InPlayer);
 
 UCLASS()
 class CPP_PORTFOLIO_API ACDropActor : public AActor
@@ -47,4 +48,5 @@ private:
 
 public:
 	FOnPickUp OnPickUp;
+	FOnDropActorBeginOverlap OnDropActorBeginOverlap;
 };

@@ -37,6 +37,12 @@ public:
 	virtual void SetVisibility(bool InBool);
 	void SetOwnerCharacter(class ACharacter* InOwner);
 
+	UFUNCTION()
+		virtual void Equip();
+	UFUNCTION()
+		virtual void Unequip();
+
+
 private:
 	TArray<class UShapeComponent*> Collisions;
 	TArray<class AActor *> HittedActors;

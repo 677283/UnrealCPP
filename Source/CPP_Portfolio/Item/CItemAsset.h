@@ -32,6 +32,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "BaseInfo")
 		class UTexture2D* Icon;
 
+	UPROPERTY(EditDefaultsOnly)
+		bool bOverlap = false;
+
 public:
 	virtual void BeginPlay(class ACharacter* InOwner);
 	
@@ -48,7 +51,9 @@ public:
 	FORCEINLINE void SellItem() {};
 	FORCEINLINE void BuyItem() {};
 	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
-
+private:
+	UFUNCTION()
+		void OnDropActorBeginOverlap(class ACPlayer* InPlayer);
 protected:
 	class ACharacter* OwnerCharacter;
 	class ACDropActor* DropActor;

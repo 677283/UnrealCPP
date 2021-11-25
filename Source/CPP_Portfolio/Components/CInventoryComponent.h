@@ -22,6 +22,9 @@ protected:
 	virtual void BeginPlay() override;
 
 
+public:
+	void AddItem(class UCItemAsset* InItem);
+	void UseItem(int32 InIndex);
 private:
-	TArray<class CItemAsset*> Inventory;
+	TArray<class UCItemAsset*> Inventory;
 };

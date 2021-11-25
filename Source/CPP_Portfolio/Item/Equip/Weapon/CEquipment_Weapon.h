@@ -5,6 +5,7 @@
 #include "CEquipment_Weapon.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FToggleHands, FName, InSocketName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEquipAndUnequip);
 
 UCLASS(Blueprintable)
 class CPP_PORTFOLIO_API UCEquipment_Weapon : public UCEquipment
@@ -42,4 +43,6 @@ private:
 
 public:
 	FToggleHands OnEquipmentToggleHands;
+	FOnEquipAndUnequip OnEquip;
+	FOnEquipAndUnequip OnUnequip;
 };

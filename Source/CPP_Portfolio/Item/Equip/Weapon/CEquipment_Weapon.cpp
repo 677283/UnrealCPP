@@ -16,12 +16,16 @@ void UCEquipment_Weapon::Equip()
 {
 	Super::Equip();
 
+	if (OnEquip.IsBound())
+		OnEquip.Broadcast();
 }
 
 void UCEquipment_Weapon::Unequip()
 {
 	Super::Unequip();
 
+	if (OnUnequip.IsBound())
+		OnUnequip.Broadcast();
 }
 
 void UCEquipment_Weapon::OnHands()
