@@ -30,6 +30,7 @@ void UCItemAsset::DropItem(FVector InDropPosition)
 void UCItemAsset::PickUpItem(class ACharacter* InOwner)
 {
 	OwnerCharacter = InOwner;
+	DropActor->PickUp();
 }
 
 void UCItemAsset::OnDropActorBeginOverlap(class ACPlayer* InPlayer)

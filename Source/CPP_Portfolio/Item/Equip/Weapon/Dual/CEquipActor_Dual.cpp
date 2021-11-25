@@ -53,3 +53,10 @@ void ACEquipActor_Dual::Unequip()
 	Super::Unequip();
 	SubActor->SetVisibility(false);
 }
+
+void ACEquipActor_Dual::SetOwnerCharacter(ACharacter* InOwner)
+{
+	Super::SetOwnerCharacter(InOwner);
+
+	SubActor->SetOwnerCharacter(InOwner);
+}

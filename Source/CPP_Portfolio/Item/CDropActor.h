@@ -35,7 +35,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Drop(FVector InDropPosition);
-	void PickUp(class ACharacter* InOwner);
+	void PickUp();
 
 private:
 	UFUNCTION()

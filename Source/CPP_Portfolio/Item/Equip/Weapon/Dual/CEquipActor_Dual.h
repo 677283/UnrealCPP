@@ -23,6 +23,7 @@ public:
 	virtual void SetVisibility(bool InBool) override;
 	virtual void Equip();
 	virtual void Unequip();
+	virtual void SetOwnerCharacter(class ACharacter* InOwner) override;
 	
 	FORCEINLINE ACEquipActor* GetSubWeapon() { return SubActor; }
 

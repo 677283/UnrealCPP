@@ -124,6 +124,7 @@ void ACPlayer::Sprint_Released()
 void ACPlayer::Equip_Weapon()
 {
 	//Equip->EquipItem(Weapon_Dual);
+	CheckNull(Equip->GetWeapon());
 	Equip->GetWeapon()->GetEquipment()->ToggleHands();
 }
 

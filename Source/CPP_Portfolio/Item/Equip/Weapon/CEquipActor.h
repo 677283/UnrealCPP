@@ -35,7 +35,7 @@ public:
 	void OnCollision();
 	void OffCollision();
 	virtual void SetVisibility(bool InBool);
-	void SetOwnerCharacter(class ACharacter* InOwner);
+	virtual void SetOwnerCharacter(class ACharacter* InOwner);
 
 	UFUNCTION()
 		virtual void Equip();
