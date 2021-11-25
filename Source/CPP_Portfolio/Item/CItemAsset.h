@@ -33,7 +33,7 @@ private:
 		class UTexture2D* Icon;
 
 	UPROPERTY(EditDefaultsOnly)
-		bool bOverlap = false;
+		int32 MaxAmount;
 
 public:
 	virtual void BeginPlay(class ACharacter* InOwner);
@@ -43,18 +43,27 @@ public:
 	virtual void PickUpItem(class ACharacter* InOwner);
 
 protected:
-	FORCEINLINE void SetType(EItemType InType) { ItemType = InType; }
-	FORCEINLINE EItemType GetType() { return ItemType; }
 
 public:
-	virtual void UseItem() {};
+	virtual void UseItem() {}
+	virtual void DestroyItem();
+
+public:
+	FORCEINLINE EItemType GetType() { return ItemType; }
+	FORCEINLINE void SetType(EItemType InType) { ItemType = InType; }
 	FORCEINLINE void SellItem() {};
 	FORCEINLINE void BuyItem() {};
 	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
+	FORCEINLINE void AddAmount(int32 InAmount) { Amount += InAmount; }
+	FORCEINLINE void SetAmount(int32 InAmount) { Amount = InAmount; }
+	FORCEINLINE int32 GetAmount() { return Amount; }
 private:
 	UFUNCTION()
 		void OnDropActorBeginOverlap(class ACPlayer* InPlayer);
 protected:
 	class ACharacter* OwnerCharacter;
 	class ACDropActor* DropActor;
+	
+private:
+	int32 Amount=1;
 };

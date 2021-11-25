@@ -33,6 +33,12 @@ void UCItemAsset::PickUpItem(class ACharacter* InOwner)
 	DropActor->PickUp();
 }
 
+void UCItemAsset::DestroyItem()
+{
+	DropActor->Destroy();
+	ConditionalBeginDestroy();
+}
+
 void UCItemAsset::OnDropActorBeginOverlap(class ACPlayer* InPlayer)
 {
 	InPlayer->OnPickUpWidget(this);
