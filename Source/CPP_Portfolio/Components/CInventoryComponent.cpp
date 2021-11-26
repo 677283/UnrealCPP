@@ -4,7 +4,7 @@
 
 UCInventoryComponent::UCInventoryComponent()
 {
-	//Inventory.SetNum(InventorySize);
+	Inventory.SetNum(InventorySize);
 }
 
 void UCInventoryComponent::BeginPlay()
@@ -15,13 +15,24 @@ void UCInventoryComponent::BeginPlay()
 
 void UCInventoryComponent::AddItem(class UCItemAsset* InItem)
 {
-	CheckTrue(Inventory.Num() >= InventorySize);
+	int32 index = SlotCheck();
+	CheckTrue(index == -1);
 
-	Inventory.Add(InItem);
-
+	Inventory[index] = InItem;
 }
 
 void UCInventoryComponent::UseItem(int32 InIndex)
 {
 	Inventory[InIndex]->UseItem();
+}
+
+int32 UCInventoryComponent::SlotCheck()
+{
+	for (int32 i = 0; i<Inventory.Num(); i++)
+	{
+		if (!Inventory[i])
+			return i;
+	}
+
+	return -1;
 }

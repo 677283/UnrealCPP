@@ -26,6 +26,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCWidget_PickUp> PickUpWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCWidget_Inventory> InventoryWidgetClass;
+
 #pragma endregion
 
 public:
@@ -53,9 +56,11 @@ private:
 	void Skill_1();
 	void Skill_2();
 	void PickUp();
+	void InventoryToggle();
 public:
 	void OnPickUpWidget(class UCItemAsset* InItem);
 	void OffPickUpWidget();
+	
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -69,6 +74,8 @@ public:
 
 private:
 	class UCWidget_PickUp* PickUpWidget;
+	class UCWidget_Inventory* InventoryWidget;
 	bool bPickUp = false;
 	class UCItemAsset* CheckItem;
 };
+

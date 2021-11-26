@@ -12,6 +12,7 @@
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
 #include "Rendering/SkeletalMeshRenderData.h"
 #include "Widget/CWidget_PickUp.h"
+#include "Widget/CWidget_Inventory.h"
 
 #define ACPlayer_DEBUG
 
@@ -80,6 +81,13 @@ void ACPlayer::BeginPlay()
 		PickUpWidget->AddToViewport();
 		PickUpWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
+
+	if (!!InventoryWidgetClass)
+	{
+		InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(GetController<APlayerController>(), InventoryWidgetClass);
+		InventoryWidget->AddToViewport();
+		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -105,7 +113,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Skill_1", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_1);
 	PlayerInputComponent->BindAction("Skill_2", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_2);
 	PlayerInputComponent->BindAction("PickUp", EInputEvent::IE_Pressed, this, &ACPlayer::PickUp);
-
+	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACPlayer::InventoryToggle);
 	//델리게이트를 이용해서 키 바인딩에 데이터 보내는 방법. 델리게이트 만들어준뒤 Template 이용
 	/*PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Pressed, this, &ACPlayer::Sprint_Pressed, 1);
 	PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released, 2);*/
@@ -151,6 +159,14 @@ void ACPlayer::PickUp()
 	CheckNull(CheckItem);
 
 	CheckItem->PickUpItem(this);
+}
+
+void ACPlayer::InventoryToggle()
+{
+	if (InventoryWidget->IsVisible())
+		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+	else
+		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void ACPlayer::OnPickUpWidget(UCItemAsset* InItem)

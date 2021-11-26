@@ -25,6 +25,9 @@ protected:
 public:
 	void AddItem(class UCItemAsset* InItem);
 	void UseItem(int32 InIndex);
+
+private:
+	int32 SlotCheck();
 private:
 	TArray<class UCItemAsset*> Inventory;
 };
