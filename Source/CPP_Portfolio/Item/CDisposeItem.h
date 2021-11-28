@@ -14,7 +14,7 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		class UCItemAsset* Item;
+		TSubclassOf<class UCItemAsset> ItemClass;
 
 protected:
 	virtual void BeginPlay() override;

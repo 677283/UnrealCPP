@@ -1,10 +1,12 @@
 #include "Player/CPlayer.h"
 #include "Global.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/PlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/CEquipComponent.h"
 #include "Components/CSkillComponent.h"
+#include "Components/CInventoryComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Item/Equip/Weapon/CWeaponAsset.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
@@ -21,6 +23,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetMesh());
 	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
 	CHelpers::CreateActorComponent<UCSkillComponent>(this, &Skill, "Skill");
+	CHelpers::CreateActorComponent<UCInventoryComponent>(this, &Inventory, "Inventory");
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -48,9 +51,6 @@ ACPlayer::ACPlayer()
 	
 
 	GetCapsuleComponent()->SetCollisionProfileName("Player");
-
-	CHelpers::GetAsset(&Weapon_Dual, "CWeaponAsset'/Game/__ProjectFile/Items/Equip/Weapon/Dual_Silver/Dual_Silver.Dual_Silver'");
-
 	CHelpers::GetClass<UCSkill>(&SlashClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Slash/BP_CSkill_Active_Slash.BP_CSkill_Active_Slash_C'");
 	CHelpers::GetClass<UCSkill>(&ThrowClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Throw/BP_CSkill_Active_Throw.BP_CSkill_Active_Throw_C'");
 	
@@ -60,12 +60,6 @@ ACPlayer::ACPlayer()
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	//Weapon_Dual->BeginPlay(this);
-	//Weapon_Dual->GetEquipment()->OffHands();
-	//Weapon_Dual->PickUpItem(this);
-
-	//Equip->EquipItem(Weapon_Dual);
 
 	Slash = NewObject<UCSkill>(this, SlashClass);
 	Slash->BeginPlay(this);
@@ -87,6 +81,7 @@ void ACPlayer::BeginPlay()
 		InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(GetController<APlayerController>(), InventoryWidgetClass);
 		InventoryWidget->AddToViewport();
 		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		InventoryWidget->bIsFocusable = true;
 	}
 }
 
@@ -100,7 +95,7 @@ void ACPlayer::Tick(float DeltaTime)
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	Input = PlayerInputComponent;
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACPlayer::OnMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalMouse", this, &ACPlayer::OnHorizontalLook);
@@ -110,6 +105,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released);
 	PlayerInputComponent->BindAction("EquipWeapon_1", EInputEvent::IE_Pressed, this, &ACPlayer::Equip_Weapon);
 	PlayerInputComponent->BindAction("BasicAttack", EInputEvent::IE_Pressed, this, &ACPlayer::BasicAttack);
+	PlayerInputComponent->BindAction("BasicAttack", EInputEvent::IE_Released, this, &ACPlayer::BasicAttack);
 	PlayerInputComponent->BindAction("Skill_1", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_1);
 	PlayerInputComponent->BindAction("Skill_2", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_2);
 	PlayerInputComponent->BindAction("PickUp", EInputEvent::IE_Pressed, this, &ACPlayer::PickUp);
@@ -138,6 +134,7 @@ void ACPlayer::Equip_Weapon()
 
 void ACPlayer::BasicAttack(FKey InKey)
 {
+	CLog::Log("BasicAttack");
 	CheckNull(Equip->GetWeapon());
 	Equip->GetWeapon()->Do_Action(this, InKey);
 }
@@ -157,23 +154,40 @@ void ACPlayer::Skill_2()
 void ACPlayer::PickUp()
 {
 	CheckNull(CheckItem);
-
-	CheckItem->PickUpItem(this);
+	CheckFalse(Inventory->AddItem(CheckItem));
+	//Inventory->AddItem(CheckItem);
+	CheckItem = NULL;
+	//CheckItem->PickUpItem(this);
 }
 
 void ACPlayer::InventoryToggle()
 {
-	if (InventoryWidget->IsVisible())
-		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+	bInvenToggle = false;
+	GetController<APlayerController>()->SetShowMouseCursor(true);
+	FInputModeGameAndUI mode;
+	mode.SetHideCursorDuringCapture(false);
+	mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	GetController<APlayerController>()->SetInputMode(mode);
+	GetController<APlayerController>()->SetIgnoreLookInput(true);
+	GetController<APlayerController>()->bEnableClickEvents = false;
+	InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+	InventoryWidget->SetFocus();
+	
+	
+	if (bInvenToggle)
+	{
+		
+	}
 	else
-		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+	{
+		bInvenToggle = true;
+	}
 }
 
 void ACPlayer::OnPickUpWidget(UCItemAsset* InItem)
 {
 	if (!!CheckItem)
 		return;
-
 	CheckItem = InItem;
 	PickUpWidget->SetVisibility(ESlateVisibility::Visible);
 	FVector2D position;

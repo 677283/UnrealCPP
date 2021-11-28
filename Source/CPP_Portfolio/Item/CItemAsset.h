@@ -2,8 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+//#include "Item/CItemStruct.h"
 #include "CItemAsset.generated.h"
-
 
 UENUM(BlueprintType)
 enum class EItemType : uint8
@@ -11,8 +11,9 @@ enum class EItemType : uint8
 	None, Equip, Consumable, ETC, Max,
 };
 
-UCLASS()
-class CPP_PORTFOLIO_API UCItemAsset : public UDataAsset
+
+UCLASS(Blueprintable)
+class CPP_PORTFOLIO_API UCItemAsset : public UObject
 {
 	GENERATED_BODY()
 	
@@ -42,7 +43,6 @@ public:
 	virtual void DropItem(FVector InDropPosition);
 	virtual void PickUpItem(class ACharacter* InOwner);
 
-protected:
 
 public:
 	virtual void UseItem() {}
@@ -57,6 +57,7 @@ public:
 	FORCEINLINE void AddAmount(int32 InAmount) { Amount += InAmount; }
 	FORCEINLINE void SetAmount(int32 InAmount) { Amount = InAmount; }
 	FORCEINLINE int32 GetAmount() { return Amount; }
+	FORCEINLINE class UTexture2D* GetIcon() { return Icon; };
 private:
 	UFUNCTION()
 		void OnDropActorBeginOverlap(class ACPlayer* InPlayer);

@@ -21,7 +21,6 @@ void ACEquipActor::BeginPlay()
 	for (UShapeComponent* collision : Collisions)
 	{
 		collision->OnComponentBeginOverlap.AddDynamic(this, &ACEquipActor::OnComponentBeginOverlap);
-		CLog::Log("Up : " + collision->GetUpVector().ToString());
 	}
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());

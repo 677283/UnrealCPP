@@ -13,7 +13,9 @@ public class CPP_Portfolio : ModuleRules
             "Core",
             "CoreUObject",
             "Engine",
-            "InputCore"
+            "InputCore",
+            "UMG",
+            "SlateCore"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });

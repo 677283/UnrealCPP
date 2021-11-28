@@ -23,6 +23,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCSkillComponent* Skill;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCInventoryComponent* Inventory;
+
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCWidget_PickUp> PickUpWidgetClass;
 
@@ -66,7 +69,6 @@ private:
 	UPROPERTY(EditAnywhere)
 		float MouseSensitivity = 0.5;
 public:
-	class UCWeaponAsset* Weapon_Dual;
 	class UCSkill* Slash;
 	TSubclassOf<UCSkill> SlashClass;
 	class UCSkill* Throw;
@@ -77,5 +79,8 @@ private:
 	class UCWidget_Inventory* InventoryWidget;
 	bool bPickUp = false;
 	class UCItemAsset* CheckItem;
+	bool bInvenToggle = true;
+
+	class UInputComponent* Input;
 };
 
