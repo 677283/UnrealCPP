@@ -68,7 +68,7 @@ public:
 	FORCEINLINE bool IsHandsOn() { return *bOnHands; }
 	virtual void BeginPlay(class ACharacter* InOwner) override;
 	virtual void UseItem() override;
-
+	virtual void DestroyItem() override;
 private:
 	void SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter, float InActionDamage);
 public:

@@ -22,7 +22,7 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "BaseInfo")
-		FName Name;
+		FString Name;
 
 	UPROPERTY(VisibleAnywhere, Category = "BaseInfo")
 		EItemType ItemType;
@@ -47,6 +47,7 @@ public:
 public:
 	virtual void UseItem() {}
 	virtual void DestroyItem();
+	int32 AddAmount(int32 InAmount);
 
 public:
 	FORCEINLINE EItemType GetType() { return ItemType; }
@@ -54,10 +55,11 @@ public:
 	FORCEINLINE void SellItem() {};
 	FORCEINLINE void BuyItem() {};
 	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
-	FORCEINLINE void AddAmount(int32 InAmount) { Amount += InAmount; }
 	FORCEINLINE void SetAmount(int32 InAmount) { Amount = InAmount; }
 	FORCEINLINE int32 GetAmount() { return Amount; }
 	FORCEINLINE class UTexture2D* GetIcon() { return Icon; };
+	FORCEINLINE FString GetItemName() { return Name; }
+
 private:
 	UFUNCTION()
 		void OnDropActorBeginOverlap(class ACPlayer* InPlayer);
@@ -66,5 +68,5 @@ protected:
 	class ACDropActor* DropActor;
 	
 private:
-	int32 Amount=1;
+	int32 Amount = 1;
 };

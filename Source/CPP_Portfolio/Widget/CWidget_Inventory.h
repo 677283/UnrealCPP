@@ -34,7 +34,7 @@ private:
 	UFUNCTION()
 		void OnSlotDoubleClick(int32 InIndex);
 	UFUNCTION()
-		void OnAddItem();
+		void OnInventoryUpdate();
 
 private:
 	TArray<class UCWidget_InventorySlot*> Slots;

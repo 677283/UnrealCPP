@@ -39,6 +39,13 @@ void UCItemAsset::DestroyItem()
 	ConditionalBeginDestroy();
 }
 
+int32 UCItemAsset::AddAmount(int32 InAmount)
+{
+	Amount += InAmount;
+
+	return Amount > MaxAmount ? Amount -= MaxAmount : 0;
+}
+
 void UCItemAsset::OnDropActorBeginOverlap(class ACPlayer* InPlayer)
 {
 	InPlayer->OnPickUpWidget(this);

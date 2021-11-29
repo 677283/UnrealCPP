@@ -25,6 +25,8 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent<UCSkillComponent>(this, &Skill, "Skill");
 	CHelpers::CreateActorComponent<UCInventoryComponent>(this, &Inventory, "Inventory");
 
+	Equip->OnEquip.AddDynamic(Inventory, &UCInventoryComponent::OnEquip);
+
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
@@ -154,9 +156,8 @@ void ACPlayer::PickUp()
 {
 	CheckNull(CheckItem);
 	CheckFalse(Inventory->AddItem(CheckItem));
-	//Inventory->AddItem(CheckItem);
+
 	CheckItem = NULL;
-	//CheckItem->PickUpItem(this);
 }
 
 void ACPlayer::InventoryToggle()

@@ -35,7 +35,7 @@ void UCWidget_Inventory::NativeConstruct()
 
 	ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	Inventory = CHelpers::GetComponent<UCInventoryComponent>(player);
-	Inventory->OnAddItem.AddDynamic(this, &UCWidget_Inventory::OnAddItem);
+	Inventory->OnInventoryUpdate.AddDynamic(this, &UCWidget_Inventory::OnInventoryUpdate);
 }
 
 void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -52,7 +52,6 @@ void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 
 FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	CLog::Log("Inven Release");
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 
 	CheckFalseResult(bPressed, reply);
@@ -93,7 +92,7 @@ void UCWidget_Inventory::OnSlotHoverd(int32 InIndex)
 
 void UCWidget_Inventory::OnSlotPressed(int32 InIndex)
 {
-	CheckFalse(Inventory->CheckSlot(InIndex));
+	CheckNull(Inventory->GetIcon(InIndex));
 
 	bPressed = true;
 	PressedIndex = InIndex;
@@ -119,7 +118,7 @@ void UCWidget_Inventory::OnSlotDoubleClick(int32 InIndex)
 	Inventory->UseItem(InIndex);
 }
 
-void UCWidget_Inventory::OnAddItem()
+void UCWidget_Inventory::OnInventoryUpdate()
 {
 	UpdateSlot();
 }

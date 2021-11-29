@@ -48,7 +48,6 @@ void ACDropActor::Tick(float DeltaTime)
 	Text->SetWorldRotation(rotator);
 }
 
-
 //TODO TextRender SetVisibility
 void ACDropActor::Drop(FVector InDropPosition)
 {

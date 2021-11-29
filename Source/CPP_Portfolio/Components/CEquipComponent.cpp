@@ -16,48 +16,30 @@ void UCEquipComponent::BeginPlay()
 
 }
 
-UCEquipAsset* UCEquipComponent::EquipItem(UCEquipAsset* InItem)
+void UCEquipComponent::EquipItem(UCEquipAsset* InItem)
 {
-	CheckNullResult(InItem,NULL);
-	UCEquipAsset* outEquip = NULL;
+	CheckNull(InItem);
 
 	switch (InItem->GetEquipType())
 	{
 	case EEquipType::Weapon:
 		if (!!Weapon)
 		{
-			//TODO
-			/*if (Weapon->IsHands())
-			{
-				Weapon->OffHands();
-				Weapon->Unequip();
-				outEquip = Weapon;
-				
-				Weapon = Cast<UCWeaponAsset>(InItem);
-				Weapon->Equip();
-				Weapon->Begin_OnHands();
-			}
-			else
-			{
-				Weapon->Unequip();
-				outEquip = Weapon;
-
-				Weapon = Cast<UCWeaponAsset>(InItem);
-				Weapon->Equip();
-			}*/
+			//TODO ÀåÂøÁß ¹«±â ÀÖÀ»¶§
 		}
 		else
 		{
+			if (OnEquip.IsBound())
+				OnEquip.Broadcast(InItem);
 			Weapon = Cast<UCWeaponAsset>(InItem);
-			Weapon->GetEquipment()->Equip();
+			//Weapon->GetEquipment()->Equip();
 		}
 		break;
 	case EEquipType::Armor:
-		//TODO
+		//TODO °©¿Ê ÀåÂø
 		break;
 	}
 
-	return outEquip;
 }
 
 bool UCEquipComponent::IsHandsOn()
