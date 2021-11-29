@@ -16,20 +16,26 @@ void UCWidget_InventorySlot::NativeConstruct()
 
 FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	CLog::Log("Press");
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
+	UGameViewportClient* Viewport = GEngine->GameViewport;
+	Viewport->SetCaptureMouseOnClick(EMouseCaptureMode::NoCapture);
+
 	if (OnSlotPressed.IsBound())
 		OnSlotPressed.Broadcast(Index);
+
 	return reply;
 }
 
 FReply UCWidget_InventorySlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	CLog::Log("Release");
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 	   
 	if (OnSlotReleased.IsBound())
 		OnSlotReleased.Broadcast(Index);
+
+	UGameViewportClient* Viewport = GEngine->GameViewport;
+	Viewport->SetCaptureMouseOnClick(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
 
 	return reply;
 }
@@ -38,12 +44,17 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& I
 {
 	FReply reply = Super::NativeOnMouseButtonDoubleClick(InGeometry, InMouseEvent);
 
+	if (OnSlotDoubleClick.IsBound())
+		OnSlotDoubleClick.Broadcast(Index);
+
+	UGameViewportClient* Viewport = GEngine->GameViewport;
+	Viewport->SetCaptureMouseOnClick(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
+
 	return reply;
 }
 
 void UCWidget_InventorySlot::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	CLog::Log("Overlap");
 	if (OnSlotHoverd.IsBound())
 		OnSlotHoverd.Broadcast(Index);
 
@@ -52,32 +63,3 @@ void UCWidget_InventorySlot::SetIcon(class UTexture2D* InIcon)
 {
 	Icon->SetBrushFromTexture(InIcon);
 }
-
-//void UCWidget_InventorySlot::OnClicked()
-//{
-//	if (OnSlotClicked.IsBound())
-//		OnSlotClicked.Broadcast(Index);
-//}
-//
-//void UCWidget_InventorySlot::OnHoverd()
-//{
-//	if (OnSlotHoverd.IsBound())
-//		OnSlotHoverd.Broadcast(Index);
-//}
-//
-//void UCWidget_InventorySlot::OnPressed()
-//{
-//	
-//}
-//
-//void UCWidget_InventorySlot::OnReleased()
-//{
-//	if (OnSlotReleased.IsBound())
-//		OnSlotReleased.Broadcast(Index);
-//}
-//
-//void UCWidget_InventorySlot::OnUnhovered()
-//{
-//	if (OnSlotUnhovered.IsBound())
-//		OnSlotUnhovered.Broadcast(Index);
-//}

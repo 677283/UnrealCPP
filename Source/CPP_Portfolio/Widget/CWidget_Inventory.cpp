@@ -31,7 +31,7 @@ void UCWidget_Inventory::NativeConstruct()
 
 	APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	DragAndDrop = CreateWidget<UCWidget_DragAndDrop, APlayerController>(controller, DragAndDropClass, "DragAndDrop");
-	DragAndDrop->AddToViewport(1);
+	//DragAndDrop->AddToViewport(1);
 
 	ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	Inventory = CHelpers::GetComponent<UCInventoryComponent>(player);
@@ -64,17 +64,16 @@ FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, co
 
 FReply UCWidget_Inventory::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
 {
-	CLog::Log("input");
 	FReply reply = Super::NativeOnKeyDown(InGeometry, InKeyEvent);
 
-	if (InKeyEvent.GetKey() == FKey("I"))
+	/*if (InKeyEvent.GetKey() == FKey("I"))
 	{
 		APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 		controller->SetShowMouseCursor(false);
 		controller->SetInputMode(FInputModeGameOnly());
 
 		this->SetVisibility(ESlateVisibility::Hidden);
-	}
+	}*/
 
 	return reply;
 }
@@ -103,6 +102,7 @@ void UCWidget_Inventory::OnSlotPressed(int32 InIndex)
 void UCWidget_Inventory::OnSlotReleased(int32 InIndex)
 {
 	CheckFalse(bPressed);
+	CheckTrue(InIndex == PressedIndex);
 
 	bPressed = false;
 	Inventory->SwapItem(PressedIndex, InIndex);
@@ -116,7 +116,7 @@ void UCWidget_Inventory::OnSlotUnhoverd(int32 InIndex)
 
 void UCWidget_Inventory::OnSlotDoubleClick(int32 InIndex)
 {
-
+	Inventory->UseItem(InIndex);
 }
 
 void UCWidget_Inventory::OnAddItem()

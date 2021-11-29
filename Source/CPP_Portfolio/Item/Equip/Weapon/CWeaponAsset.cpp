@@ -38,6 +38,16 @@ void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
 	DoAction->BeginPlay(InOwner);
 	DoAction->OnDoActionBeginOverlap.AddDynamic(this, &UCWeaponAsset::OnDoActionBeginOverlap);
 	DoAction->InitHands(Equipment->GetHands());
+
+	EquipComponent = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
+}
+
+void UCWeaponAsset::UseItem()
+{
+	EquipComponent = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
+	CheckNull(EquipComponent);
+	Equipment->Equip();
+	EquipComponent->EquipItem(this);
 }
 
 void UCWeaponAsset::SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter,float InActionDamage)

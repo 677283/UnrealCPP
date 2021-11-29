@@ -79,8 +79,5 @@ private:
 	class UCWidget_Inventory* InventoryWidget;
 	bool bPickUp = false;
 	class UCItemAsset* CheckItem;
-	bool bInvenToggle = true;
-
-	class UInputComponent* Input;
 };
 

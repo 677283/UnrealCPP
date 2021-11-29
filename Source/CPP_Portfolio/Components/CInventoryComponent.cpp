@@ -32,6 +32,15 @@ bool UCInventoryComponent::AddItem(class UCItemAsset* InItem)
 void UCInventoryComponent::UseItem(int32 InIndex)
 {
 	Inventory[InIndex]->UseItem();
+	switch (Inventory[InIndex]->GetType())
+	{
+	case EItemType::Equip:
+		CLog::Log("Equip");
+		break;
+	case EItemType::Consumable:
+		CLog::Log("Consumable");
+		break;
+	}
 }
 
 void UCInventoryComponent::SwapItem(int32 InIndex_1, int32 InIndex_2)

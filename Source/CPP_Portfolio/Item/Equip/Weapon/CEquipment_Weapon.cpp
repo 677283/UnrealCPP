@@ -18,7 +18,6 @@ void UCEquipment_Weapon::Equip()
 
 	if (OnEquip.IsBound())
 		OnEquip.Broadcast();
-
 	OffHands();
 }
 

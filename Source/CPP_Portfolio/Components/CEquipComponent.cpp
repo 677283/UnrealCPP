@@ -61,7 +61,6 @@ UCEquipAsset* UCEquipComponent::EquipItem(UCEquipAsset* InItem)
 }
 
 bool UCEquipComponent::IsHandsOn()
-
 {
 	return *(Weapon->GetEquipment()->GetHands());
 }

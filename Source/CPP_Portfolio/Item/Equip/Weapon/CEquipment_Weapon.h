@@ -40,7 +40,6 @@ public:
 	FORCEINLINE const bool* GetHands() { return &bHands; }
 private:
 	bool bHands;
-
 public:
 	FToggleHands OnEquipmentToggleHands;
 	FOnEquipAndUnequip OnEquip;

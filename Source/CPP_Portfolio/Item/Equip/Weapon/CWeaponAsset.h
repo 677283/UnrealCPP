@@ -67,10 +67,10 @@ public:
 	FORCEINLINE EWeaponType GetWeaponType() { return WeaponType; }
 	FORCEINLINE bool IsHandsOn() { return *bOnHands; }
 	virtual void BeginPlay(class ACharacter* InOwner) override;
+	virtual void UseItem() override;
 
 private:
 	void SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter, float InActionDamage);
-
 public:
 	UFUNCTION()
 		void OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage);
@@ -92,4 +92,6 @@ private:
 	class UCDoAction* DoAction;
 	class UCEquipment_Weapon* Equipment;
 	const bool* bOnHands;
+
+	class UCEquipComponent* EquipComponent;
 };

@@ -95,7 +95,7 @@ void ACPlayer::Tick(float DeltaTime)
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	Input = PlayerInputComponent;
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACPlayer::OnMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalMouse", this, &ACPlayer::OnHorizontalLook);
@@ -105,7 +105,6 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released);
 	PlayerInputComponent->BindAction("EquipWeapon_1", EInputEvent::IE_Pressed, this, &ACPlayer::Equip_Weapon);
 	PlayerInputComponent->BindAction("BasicAttack", EInputEvent::IE_Pressed, this, &ACPlayer::BasicAttack);
-	PlayerInputComponent->BindAction("BasicAttack", EInputEvent::IE_Released, this, &ACPlayer::BasicAttack);
 	PlayerInputComponent->BindAction("Skill_1", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_1);
 	PlayerInputComponent->BindAction("Skill_2", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_2);
 	PlayerInputComponent->BindAction("PickUp", EInputEvent::IE_Pressed, this, &ACPlayer::PickUp);
@@ -162,25 +161,25 @@ void ACPlayer::PickUp()
 
 void ACPlayer::InventoryToggle()
 {
-	bInvenToggle = false;
-	GetController<APlayerController>()->SetShowMouseCursor(true);
-	FInputModeGameAndUI mode;
-	mode.SetHideCursorDuringCapture(false);
-	mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	GetController<APlayerController>()->SetInputMode(mode);
-	GetController<APlayerController>()->SetIgnoreLookInput(true);
-	GetController<APlayerController>()->bEnableClickEvents = false;
-	InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-	InventoryWidget->SetFocus();
-	
-	
-	if (bInvenToggle)
+	if (InventoryWidget->IsVisible())
 	{
-		
+		GetController<APlayerController>()->SetShowMouseCursor(false);
+
+		GetController<APlayerController>()->SetInputMode(FInputModeGameOnly());
+
+		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 	else
 	{
-		bInvenToggle = true;
+		GetController<APlayerController>()->SetShowMouseCursor(true);
+
+		FInputModeGameAndUI mode;
+		mode.SetHideCursorDuringCapture(false);
+		mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		GetController<APlayerController>()->SetInputMode(mode);
+
+		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		InventoryWidget->SetFocus();
 	}
 }
 
