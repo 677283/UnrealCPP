@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-//#include "Item/CItemStruct.h"
 #include "CItemAsset.generated.h"
 
 UENUM(BlueprintType)

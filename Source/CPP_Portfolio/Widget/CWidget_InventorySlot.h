@@ -5,11 +5,7 @@
 #include "Components/SlateWrapperTypes.h"
 #include "CWidget_InventorySlot.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSlotHoverd, int32, InIndex);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSlotPressed, int32, InIndex);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSlotReleased, int32, InIndex);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSlotUnhovered, int32, InIndex);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSlotDoubleClick, int32, InIndex);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMouseDelegate, int32, InIndex);
 
 UCLASS()
 class CPP_PORTFOLIO_API UCWidget_InventorySlot : public UUserWidget
@@ -26,11 +22,11 @@ public:
 	void SetIcon(class UTexture2D* InIcon);
 
 public:
-	FOnSlotHoverd OnSlotHoverd;
-	FOnSlotPressed OnSlotPressed;
-	FOnSlotReleased OnSlotReleased;
-	FOnSlotUnhovered OnSlotUnhovered;
-	FOnSlotDoubleClick OnSlotDoubleClick;
+	FOnMouseDelegate OnSlotHoverd;
+	FOnMouseDelegate OnSlotPressed;
+	FOnMouseDelegate OnSlotReleased;
+	FOnMouseDelegate OnSlotUnhovered;
+	FOnMouseDelegate OnSlotDoubleClick;
 	int32 Index;
 
 private:
