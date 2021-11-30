@@ -1,8 +1,8 @@
 #include "CConsumableAsset.h"
 #include "Global.h"
 #include "CConditionEffect.h"
-
-TArray<UCConditionEffect*> UCConsumableAsset::Conditions;
+#include "GameFramework/Character.h"
+#include "Components/CStatusComponent.h"
 
 UCConsumableAsset::UCConsumableAsset()
 {
@@ -13,18 +13,45 @@ void UCConsumableAsset::BeginPlay(class ACharacter* InOwner)
 {
 	Super::BeginPlay(InOwner);
 
-	for (TSubclassOf<UCConditionEffect> condition : ConditionClasses)
+	for (FSpecialCondition conditionClass : SpecialConditionClasses)
 	{
-		Conditions.Add(NewObject<UCConditionEffect>(this, condition));
+		UCConditionEffect* condition = NewObject<UCConditionEffect>(this, conditionClass.Condition);
+		SpecialConditions.Add(condition);
 	}
+
+	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
 }
 
 void UCConsumableAsset::UseItem()
 {
 	Super::UseItem();
 	
-	for (int32 i = 0; i<Conditions.Num(); i++)
+	for (FCondition condition : Conditions)
 	{
-		Conditions[i]->AddCondition(OwnerCharacter, ConditionValues[i]);
+		switch (condition.Type)
+		{
+		case EConditionType::Healing:
+			Healing(condition.Value);
+			break;
+		case EConditionType::ChargeEnergy:
+			ChargeEnergy(condition.Value);
+			break;
+		}
 	}
+
+	for (int32 i=0; i<SpecialConditions.Num(); i++)
+	{
+		SpecialConditions[i]->AddCondition(OwnerCharacter, SpecialConditionClasses[i].Value);
+	}
+	
+}
+
+void UCConsumableAsset::Healing(float InValue)
+{
+
+}
+
+void UCConsumableAsset::ChargeEnergy(float InValue)
+{
+
 }

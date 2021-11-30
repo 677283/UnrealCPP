@@ -13,6 +13,7 @@ void UCStatusComponent::BeginPlay()
 	Super::BeginPlay();
 
 	CurrentLife = Life += Vitality * 10;
+	CurrentMana = Mana += Energy * 10;
 }
 
 bool UCStatusComponent::GetCriticalChance()
@@ -25,12 +26,16 @@ bool UCStatusComponent::GetCriticalChance()
 		return false;
 }
 
-void UCStatusComponent::AddSkillBuff(CSkill* InSkill)
+void UCStatusComponent::SetLife(float InValue)
 {
+	CurrentLife += InValue;
+
+	if (CurrentLife > Life)
+		CurrentLife = Life;
+	else if (CurrentLife <= 0)
+	{
+		if (OnDeath.IsBound())
+			OnDeath.Broadcast();
+	}
 	
-}
-
-void UCStatusComponent::AddItemBuff(CItem* InItem)
-{
-
 }

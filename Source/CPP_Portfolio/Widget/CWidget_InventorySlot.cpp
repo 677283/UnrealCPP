@@ -19,8 +19,7 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeomet
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
-	Viewport->SetCaptureMouseOnClick(EMouseCaptureMode::NoCapture);
-
+	Viewport->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
 	if (OnSlotPressed.IsBound())
 		OnSlotPressed.Broadcast(Index);
 
@@ -35,7 +34,7 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonUp(const FGeometry& InGeometry
 		OnSlotReleased.Broadcast(Index);
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
-	Viewport->SetCaptureMouseOnClick(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
+	Viewport->SetMouseCaptureMode(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
 
 	return reply;
 }
@@ -48,7 +47,7 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& I
 		OnSlotDoubleClick.Broadcast(Index);
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
-	Viewport->SetCaptureMouseOnClick(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
+	Viewport->SetMouseCaptureMode(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
 
 	return reply;
 }

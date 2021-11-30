@@ -77,7 +77,7 @@ void UCDoAction_DoubleCombo::OnEquipActorBeginOverlap(ACharacter* InAttacker, AA
 	}
 
 	HittedCharacters.AddUnique(InOtherCharacter);
-
+	FDoActionData* data = ComboList.Find(ComboKey);
 	if (OnDoActionBeginOverlap.IsBound())
-		OnDoActionBeginOverlap.Broadcast(InAttacker, InAttackCauser, InOtherCharacter, ComboList.Find(ComboKey)->AddDamage);
+		OnDoActionBeginOverlap.Broadcast(InAttacker, InAttackCauser, InOtherCharacter, data->AddDamage, data->DamageEvent);
 }

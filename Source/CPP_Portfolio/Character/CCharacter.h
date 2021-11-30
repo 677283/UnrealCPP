@@ -25,6 +25,16 @@ protected:
 		class UCStateComponent* State;
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStatusComponent* Status;
+	
+protected:
+	UPROPERTY(VisibleInstanceOnly)
+		bool CanMove = true;
+	
+	UPROPERTY(EditDefaultsOnly)
+		float RunSpeed = 800;
+
+	UPROPERTY(EditDefaultsOnly)
+		float WalkSpeed = 200;
 
 public:
 	ACCharacter();
@@ -37,20 +47,7 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
-	UPROPERTY(EditDefaultsOnly)
-		float MaxHealth = 100;
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	UPROPERTY(VisibleAnywhere)
-		float Health = MaxHealth;
 	
-	UPROPERTY(VisibleInstanceOnly)
-		bool CanMove = true;
-protected:
-	UPROPERTY(EditDefaultsOnly)
-		float RunSpeed = 800;
-
-	UPROPERTY(EditDefaultsOnly)
-		float WalkSpeed = 200;
-
 };

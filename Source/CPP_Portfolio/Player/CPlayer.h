@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CCharacter.h"
+#include "Character/CCharacter.h"
 #include "CPlayer.generated.h"
 
 //BindAction 데이터 보내기용 델리게이트

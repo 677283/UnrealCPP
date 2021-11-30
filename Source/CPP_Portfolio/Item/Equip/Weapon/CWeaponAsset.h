@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Item/Equip/CEquipAsset.h"
+#include "Item/Equip/Weapon/CDoAction.h"
 #include "GameFramework/Character.h"
 #include "CWeaponAsset.generated.h"
 
@@ -10,28 +11,6 @@ enum class EWeaponType : uint8
 {
 	Dual, Max,
 };
-
-USTRUCT(BlueprintType)
-struct FCustomDamageEvent : public FDamageEvent
-{
-	GENERATED_BODY()
-
-public:
-	FVector LuanchDirect;
-	float LuanchPower;
-	class UAnimMontage* HitMontage;
-
-	void PlayHitMontage(class ACharacter* InCharacter)
-	{
-		if (!HitMontage)
-		{
-			//TODO ±âº» ¸ùÅ¸Áê ¼³Á¤
-			return;
-		}
-		InCharacter->PlayAnimMontage(HitMontage);
-	}
-};
-
 
 UCLASS()
 class CPP_PORTFOLIO_API UCWeaponAsset : public UCEquipAsset
@@ -70,10 +49,10 @@ public:
 	virtual void UseItem() override;
 	virtual void DestroyItem() override;
 private:
-	void SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter, float InActionDamage);
+	void SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent);
 public:
 	UFUNCTION()
-		void OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage);
+		void OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent);
 public:
 
 	void Do_Action(class ACharacter* InOwner, FKey InKey);

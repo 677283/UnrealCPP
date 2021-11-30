@@ -39,6 +39,12 @@ void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
 	DoAction->OnDoActionBeginOverlap.AddDynamic(this, &UCWeaponAsset::OnDoActionBeginOverlap);
 	DoAction->InitHands(Equipment->GetHands());
 
+	if (MinDamage < MaxDamage)
+	{
+		float temp = MinDamage;
+		MinDamage = MaxDamage;
+		MaxDamage = temp;
+	}
 }
 
 void UCWeaponAsset::UseItem()
@@ -59,14 +65,11 @@ void UCWeaponAsset::DestroyItem()
 	Super::DestroyItem();
 }
 
-void UCWeaponAsset::SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter,float InActionDamage)
+void UCWeaponAsset::SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter,float InActionDamage, FCustomDamageEvent InDamageEvent)
 {
-	float damage = 0;
-	//TODO 데미지 계산
-	FCustomDamageEvent damageType;
-	//TODO 데미지타입 입력;
-
-	InOtherCharacter->TakeDamage(damage, damageType, InAttacker->GetController(), InAttackCauser);
+	InActionDamage += UKismetMathLibrary::RandomFloatInRange(MinDamage, MaxDamage);
+	
+	InOtherCharacter->TakeDamage(InActionDamage, InDamageEvent, InAttacker->GetController(), InAttackCauser);
 }
 
 void UCWeaponAsset::Do_Action(class ACharacter* InOwner, FKey InKey)
@@ -105,9 +108,9 @@ void UCWeaponAsset::EndOnHands(class ACharacter* InOwner)
 	Equipment->End_OnHands();
 }
 
-void UCWeaponAsset::OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage)
+void UCWeaponAsset::OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent)
 {
-	SendDamage(InAttacker, InAttackerCauser, InOtherCharacter, InActionDamage);
+	SendDamage(InAttacker, InAttackerCauser, InOtherCharacter, InActionDamage, InDamageEvent);
 }
 
 void UCWeaponAsset::DropItem(FVector InDropPosition)

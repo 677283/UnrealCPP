@@ -11,4 +11,6 @@ class CPP_PORTFOLIO_API UCConditionEffect : public UObject
 	
 public:
 	void AddCondition(class ACharacter* InOwner, float InValue) {};
+
+	static void print() {};
 };

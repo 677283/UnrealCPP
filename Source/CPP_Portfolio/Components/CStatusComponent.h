@@ -4,6 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "CStatusComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CPP_PORTFOLIO_API UCStatusComponent : public UActorComponent
@@ -17,6 +18,7 @@ private:
 	//데미지
 	UPROPERTY(EditDefaultsOnly)
 		float Strength = 0;
+	
 	//명중률, 크리
 	UPROPERTY(EditDefaultsOnly)
 		float Dexterity = 0;
@@ -39,6 +41,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		float Critical = 0;
 
+protected:
+	virtual void BeginPlay() override;
 
 public:
 	FORCEINLINE float GetStrength() { return Strength; }
@@ -47,13 +51,12 @@ public:
 	FORCEINLINE float GetEnergy() { return Energy; }
 
 	bool GetCriticalChance();
-
-	void AddSkillBuff(class CSkill* InSkill);
-	void AddItemBuff(class CItem* InItem);
-
-protected:
-	virtual void BeginPlay() override;
-
+	void SetLife(float InValue);
+	
+private:
 	TArray<class CSkill*> AddSkills;
 	TArray<class CItemAsset*> AddItems;
+
+public:
+	FOnDeath OnDeath;
 };

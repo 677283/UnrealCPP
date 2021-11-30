@@ -4,7 +4,22 @@
 #include "UObject/NoExportTypes.h"
 #include "CDoAction.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnDoActionBeginOverlap, class ACharacter*, InAttacker, class AActor*, InAttackerCauser, class ACharacter*, InOtherCharacter, float, InActionDamage);
+
+USTRUCT(BlueprintType)
+struct FCustomDamageEvent : public FDamageEvent
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly)
+		FVector LuanchDirect;
+	UPROPERTY(EditDefaultsOnly)
+		float LuanchPower;
+	UPROPERTY(EditDefaultsOnly)
+		class UAnimMontage* HitMontage;
+	UPROPERTY(EditDefaultsOnly)
+		float PlayRatio;
+};
 
 USTRUCT(BlueprintType)
 struct FDoActionData
@@ -19,8 +34,10 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		float AddDamage;
 	UPROPERTY(EditDefaultsOnly)
-		FVector LuanchDirection;
+		FCustomDamageEvent DamageEvent;
 };
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnDoActionBeginOverlap, class ACharacter*, InAttacker, class AActor*, InAttackerCauser, class ACharacter*, InOtherCharacter, float, InActionDamage, FCustomDamageEvent, InDamageEvent);
 
 UCLASS(Blueprintable)
 class CPP_PORTFOLIO_API UCDoAction : public UObject

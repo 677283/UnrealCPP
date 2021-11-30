@@ -22,7 +22,6 @@ void ACCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Health = MaxHealth;
 }
 
 void ACCharacter::Tick(float DeltaTime)
@@ -36,3 +35,9 @@ void ACCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Damage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
+	return Damage;
+}

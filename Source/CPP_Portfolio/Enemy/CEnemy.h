@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CCharacter.h"
+#include "Character/CCharacter.h"
 #include "CEnemy.generated.h"
 
 UCLASS()
