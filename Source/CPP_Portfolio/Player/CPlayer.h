@@ -12,7 +12,6 @@ class CPP_PORTFOLIO_API ACPlayer : public ACCharacter
 {
 	GENERATED_BODY()
 
-#pragma region Components
 private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class USpringArmComponent* SpringArm;
@@ -32,7 +31,11 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCWidget_Inventory> InventoryWidgetClass;
 
-#pragma endregion
+	UPROPERTY(EditAnywhere)
+		float MouseSensitivity = 0.5;
+
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCWeaponAsset> BasicWeaponClass;
 
 public:
 	ACPlayer();
@@ -60,14 +63,12 @@ private:
 	void Skill_2();
 	void PickUp();
 	void InventoryToggle();
+	void OnDebug();
+
 public:
 	void OnPickUpWidget(class UCItemAsset* InItem);
 	void OffPickUpWidget();
 	
-
-private:
-	UPROPERTY(EditAnywhere)
-		float MouseSensitivity = 0.5;
 public:
 	class UCSkill* Slash;
 	TSubclassOf<UCSkill> SlashClass;
@@ -79,5 +80,7 @@ private:
 	class UCWidget_Inventory* InventoryWidget;
 	bool bPickUp = false;
 	class UCItemAsset* CheckItem;
+	class UCWeaponAsset* BasicWeapon;
+	bool bTest = true;
 };
 

@@ -22,10 +22,11 @@ bool UCInventoryComponent::AddItem(class UCItemAsset* InItem)
 
 	Inventory[index] = InItem;
 
+	InItem->PickUpItem(OwnerCharacter);
+
 	if (OnInventoryUpdate.IsBound())
 		OnInventoryUpdate.Broadcast();
 
-	InItem->PickUpItem(OwnerCharacter);
 	return true;
 }
 

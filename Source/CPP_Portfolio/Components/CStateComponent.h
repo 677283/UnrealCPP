@@ -20,7 +20,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
 public:
 	FORCEINLINE void SetStateIdle() { State = EStateType::Idle; }
 	FORCEINLINE void SetStateEquip() { State = EStateType::Equip;  }
@@ -35,8 +35,9 @@ public:
 	FORCEINLINE bool IsStateSkill() { return State == EStateType::Skill; }
 	FORCEINLINE bool IsStateHitted() { return State == EStateType::Hitted; }
 	FORCEINLINE bool IsStateDead() { return State == EStateType::Dead; }
-
+	FORCEINLINE EStateType GetState() { return State; }
 private:
 	EStateType State;
-
+public:
+	int32 count = 0;
 };

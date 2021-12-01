@@ -8,6 +8,7 @@
 #include "Components/CEquipComponent.h"
 #include "Components/CSkillComponent.h"
 #include "Components/CInventoryComponent.h"
+#include "Components/CStateComponent.h"
 #include "Item/Equip/Weapon/CWeaponAsset.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CDoAction.h"
@@ -69,6 +70,9 @@ void ACPlayer::BeginPlay()
 	Throw->BeginPlay(this);
 	Skill->AddSkill(Throw);
 
+	BasicWeapon = NewObject<UCWeaponAsset>(this, BasicWeaponClass);
+	BasicWeapon->BeginPlay(this);
+
 	if (!!PickUpWidgetClass)
 	{
 		PickUpWidget = CreateWidget<UCWidget_PickUp, APlayerController>(GetController<APlayerController>(), PickUpWidgetClass);
@@ -83,12 +87,18 @@ void ACPlayer::BeginPlay()
 		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 		InventoryWidget->bIsFocusable = true;
 	}
+	
+	Inventory->AddItem(BasicWeapon);
+	Inventory->UseItem(0);
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, L"EStateType", true);
+	if (!!enumPtr)
+		CLog::Print(enumPtr->GetNameStringByIndex((int32)State->GetState()), 4, 0);
 	
 }
 
@@ -109,6 +119,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Skill_2", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_2);
 	PlayerInputComponent->BindAction("PickUp", EInputEvent::IE_Pressed, this, &ACPlayer::PickUp);
 	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACPlayer::InventoryToggle);
+	PlayerInputComponent->BindAction("OnDebug", EInputEvent::IE_Pressed, this, &ACPlayer::OnDebug);
+
 	//델리게이트를 이용해서 키 바인딩에 데이터 보내는 방법. 델리게이트 만들어준뒤 Template 이용
 	/*PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Pressed, this, &ACPlayer::Sprint_Pressed, 1);
 	PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released, 2);*/
@@ -138,11 +150,13 @@ void ACPlayer::BasicAttack(FKey InKey)
 
 void ACPlayer::Skill_1()
 {
+	CheckNull(Throw);
 	Throw->DoSkill();
 }
 
 void ACPlayer::Skill_2()
 {
+	CheckNull(Slash);
 	Slash->DoSkill();
 }
 
@@ -176,6 +190,11 @@ void ACPlayer::InventoryToggle()
 		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
 		InventoryWidget->SetFocus();
 	}
+}
+
+void ACPlayer::OnDebug()
+{
+	SetActorTickEnabled(!IsActorTickEnabled());
 }
 
 void ACPlayer::OnPickUpWidget(UCItemAsset* InItem)
