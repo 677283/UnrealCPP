@@ -49,7 +49,6 @@ ACPlayer::ACPlayer()
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
 	GetMesh()->SetRelativeRotation(FQuat(FRotator(0, -90, 0)));
 	GetMesh()->SetAnimInstanceClass(animInstance);
-	
 
 	GetCapsuleComponent()->SetCollisionProfileName("Player");
 	CHelpers::GetClass<UCSkill>(&SlashClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Slash/BP_CSkill_Active_Slash.BP_CSkill_Active_Slash_C'");
@@ -127,14 +126,12 @@ void ACPlayer::Sprint_Released()
 
 void ACPlayer::Equip_Weapon()
 {
-	//Equip->EquipItem(Weapon_Dual);
 	CheckNull(Equip->GetWeapon());
 	Equip->GetWeapon()->GetEquipment()->ToggleHands();
 }
 
 void ACPlayer::BasicAttack(FKey InKey)
 {
-	CLog::Log("BasicAttack");
 	CheckNull(Equip->GetWeapon());
 	Equip->GetWeapon()->Do_Action(this, InKey);
 }
@@ -142,12 +139,10 @@ void ACPlayer::BasicAttack(FKey InKey)
 void ACPlayer::Skill_1()
 {
 	Throw->DoSkill();
-	//Slash->DoSkill();
 }
 
 void ACPlayer::Skill_2()
 {
-	//Throw->DoSkill();
 	Slash->DoSkill();
 }
 

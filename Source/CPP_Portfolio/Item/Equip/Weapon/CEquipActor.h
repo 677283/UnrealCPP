@@ -4,7 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "CEquipActor.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEquipActorBeginOverlap);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnEquipActorBeginOverlap, class ACharacter*, InAttacker, class AActor*, InAttackCauser, class ACharacter*, InOtherCharacter);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEquipActorCollision);
 	
 UCLASS()
@@ -32,8 +32,8 @@ public:
 	UFUNCTION()
 		void OnEquipmentToggleHands(FName InSocketName);
 
-	void OnCollision();
-	void OffCollision();
+	virtual void OnCollision();
+	virtual void OffCollision();
 	virtual void SetVisibility(bool InBool);
 	virtual void SetOwnerCharacter(class ACharacter* InOwner);
 

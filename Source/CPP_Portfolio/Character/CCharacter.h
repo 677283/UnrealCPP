@@ -18,14 +18,23 @@ class CPP_PORTFOLIO_API ACCharacter : public ACharacter
 private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCPushingComponent* Pushing;
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCEquipComponent* Equip;
+
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStateComponent* State;
+
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStatusComponent* Status;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+		class UAnimMontage* DefaultHitMontage;
+
+	UPROPERTY(EditDefaultsOnly)
+		float DefaultHitMontagePlayRitio = 1;
+
 protected:
 	UPROPERTY(VisibleInstanceOnly)
 		bool CanMove = true;

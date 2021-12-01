@@ -3,7 +3,7 @@
 #include "GameFramework/Character.h"
 #include "Components/CEquipComponent.h"
 #include "Item/Equip/Weapon/CEquipActor.h"
-#include "Item/Equip/Weapon/CDoAction.h"
+#include "Item/Equip/Weapon/CDoAction_DoubleCombo.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 
 UCWeaponAsset::UCWeaponAsset()
@@ -38,6 +38,7 @@ void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
 	DoAction->BeginPlay(InOwner);
 	DoAction->OnDoActionBeginOverlap.AddDynamic(this, &UCWeaponAsset::OnDoActionBeginOverlap);
 	DoAction->InitHands(Equipment->GetHands());
+	EquipActor->OnEquipActorBeginOverlap.AddDynamic(DoAction, &UCDoAction::OnEquipActorBeginOverlap);
 
 	if (MinDamage < MaxDamage)
 	{

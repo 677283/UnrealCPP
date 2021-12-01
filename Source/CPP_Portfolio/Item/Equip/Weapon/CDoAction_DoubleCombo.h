@@ -17,7 +17,7 @@ public:
 	virtual void BeginDoAction() override;
 	virtual void EndDoAction() override;
 
-private:
+public:
 	virtual void OnEquipActorBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter) override;
 
 private:

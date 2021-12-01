@@ -15,8 +15,6 @@ ACDropActor::ACDropActor()
 	CHelpers::CreateComponent<USceneComponent>(this, &root, "Root");
 	CHelpers::CreateComponent<USkeletalMeshComponent>(this, &Mesh, "Mesh", root);
 	CHelpers::CreateComponent<UTextRenderComponent>(this, &Text, "Text", root);
-
-	//TODO Create TextRender
 }
 
 void ACDropActor::BeginPlay()
@@ -24,16 +22,20 @@ void ACDropActor::BeginPlay()
 	Super::BeginPlay();
 	
 	Collision = CHelpers::GetComponent<UShapeComponent>(this);
+
 	if (!!Collision)
 	{
 		Collision->OnComponentBeginOverlap.AddDynamic(this, &ACDropActor::OnComponentBeginOverlap);
 		Collision->OnComponentEndOverlap.AddDynamic(this, &ACDropActor::OnComponentEndOverlap);
 	}
+	
 	GetComponents<UMeshComponent>(Meshes);
+	
 	for (UMeshComponent* mesh : Meshes)
 	{
 		mesh->SetVisibility(false);
 	}
+
 	SetActorTickEnabled(false);
 	SetActorEnableCollision(false);
 	Text->SetVisibility(false);
@@ -48,14 +50,12 @@ void ACDropActor::Tick(float DeltaTime)
 	Text->SetWorldRotation(rotator);
 }
 
-//TODO TextRender SetVisibility
 void ACDropActor::Drop(FVector InDropPosition)
 {
 	for (UMeshComponent* mesh : Meshes)
 	{
 		mesh->SetVisibility(true);
 	}
-	//Mesh->SetVisibility(true);
 	SetActorTickEnabled(true);
 	SetActorEnableCollision(true);
 	Text->SetVisibility(true);
@@ -76,13 +76,10 @@ void ACDropActor::PickUp()
 	{
 		mesh->SetVisibility(false);
 	}
-	//Mesh->SetVisibility(false);
 	SetActorTickEnabled(false);
 	SetActorEnableCollision(false);
 	Text->SetVisibility(false);
 	
-	//if (OnPickUp.IsBound())
-	//	OnPickUp.Execute(InOwner);
 }
 
 void ACDropActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
@@ -93,7 +90,6 @@ void ACDropActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCompone
 
 	if (OnDropActorBeginOverlap.IsBound())
 		OnDropActorBeginOverlap.Broadcast(player);
-	//player->OnPickUpWidget();
 	Text->SetVisibility(false);
 }
 

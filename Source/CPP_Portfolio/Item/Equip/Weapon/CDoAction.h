@@ -58,10 +58,12 @@ public:
 	FORCEINLINE void InitHands(const bool* InHands) { bHands = InHands; }
 	void SetOwnerCharacter(class ACharacter* InOwner);
 
-private:
-	virtual void OnEquipActorBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter) {}
-
-	void OnEquipActorCollision();
+public:
+	UFUNCTION()
+		virtual void OnEquipActorBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter) {}
+public:
+	UFUNCTION()
+		void OnEquipActorCollision();
 
 protected:
 	class ACharacter* OwnerCharacter;

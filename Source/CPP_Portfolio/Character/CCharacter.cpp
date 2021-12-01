@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
+#include "Item/Equip/Weapon/CDoAction.h"
 
 #define ACCharacter_DEBUG
 
@@ -38,6 +39,20 @@ void ACCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Damage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	const FCustomDamageEvent* damageEvent = (FCustomDamageEvent *)&DamageEvent;
+	
+	float life = Status->SetLife(-Damage);
+	if (life > 0)
+	{
+		if (!!damageEvent->HitMontage)
+			PlayAnimMontage(damageEvent->HitMontage, damageEvent->PlayRatio);
+		else
+			PlayAnimMontage(DefaultHitMontage, DefaultHitMontagePlayRitio);
+	}
+	else 
+	{
+		//TODO Death
+	}
 
 	return Damage;
 }

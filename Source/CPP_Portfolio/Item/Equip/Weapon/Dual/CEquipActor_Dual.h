@@ -25,6 +25,9 @@ public:
 	virtual void Unequip();
 	virtual void SetOwnerCharacter(class ACharacter* InOwner) override;
 	
+	virtual void OnCollision() override;
+	virtual void OffCollision() override;
+
 	FORCEINLINE ACEquipActor* GetSubWeapon() { return SubActor; }
 
 private:

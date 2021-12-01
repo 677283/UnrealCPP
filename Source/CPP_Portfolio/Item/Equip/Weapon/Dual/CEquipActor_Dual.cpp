@@ -60,3 +60,17 @@ void ACEquipActor_Dual::SetOwnerCharacter(ACharacter* InOwner)
 
 	SubActor->SetOwnerCharacter(InOwner);
 }
+
+void ACEquipActor_Dual::OnCollision()
+{
+	Super::OnCollision();
+	CheckNull(SubActor);
+	SubActor->OnCollision();
+}
+
+void ACEquipActor_Dual::OffCollision()
+{
+	Super::OffCollision();
+	CheckNull(SubActor);
+	SubActor->OffCollision();
+}

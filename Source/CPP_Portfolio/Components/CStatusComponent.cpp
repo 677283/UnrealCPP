@@ -26,16 +26,13 @@ bool UCStatusComponent::GetCriticalChance()
 		return false;
 }
 
-void UCStatusComponent::SetLife(float InValue)
+float UCStatusComponent::SetLife(float InValue)
 {
 	CurrentLife += InValue;
 
 	if (CurrentLife > Life)
 		CurrentLife = Life;
-	else if (CurrentLife <= 0)
-	{
-		if (OnDeath.IsBound())
-			OnDeath.Broadcast();
-	}
+
+	return CurrentLife;
 	
 }

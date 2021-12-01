@@ -51,7 +51,7 @@ public:
 	FORCEINLINE float GetEnergy() { return Energy; }
 
 	bool GetCriticalChance();
-	void SetLife(float InValue);
+	float SetLife(float InValue);
 	
 private:
 	TArray<class CSkill*> AddSkills;

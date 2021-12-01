@@ -51,7 +51,7 @@ void UCDoAction_DoubleCombo::BeginDoAction()
 	FDoActionData* data = ComboList.Find(ComboKey);
 	
 	CheckNull(data);
-
+	HittedCharacters.Empty();
 	OwnerCharacter->StopAnimMontage();
 	OwnerCharacter->PlayAnimMontage(data->Montage);
 }
@@ -62,14 +62,15 @@ void UCDoAction_DoubleCombo::EndDoAction()
 
 	ComboKey = "";
 	bOnCombo = false;
+	HittedCharacters.Empty();
 
 	State->SetStateIdle();
 }
 
 void UCDoAction_DoubleCombo::OnEquipActorBeginOverlap(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter)
 {
+	Super::OnEquipActorBeginOverlap(InAttacker, InAttackCauser, InOtherCharacter);
 	//InOtherCharacter->TakeDamage()
-
 	for (ACharacter* character : HittedCharacters)
 	{
 		if (character == InOtherCharacter)

@@ -17,8 +17,8 @@ struct FCondition
 public:
 	UPROPERTY(EditDefaultsOnly)
 		EConditionType Type;
-	UPROPERTY(EditDefaultsOnly)
-		float Value;
+	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = 1.00))
+		float Value = 1;
 };
 
 USTRUCT(BlueprintType)
