@@ -97,6 +97,17 @@ void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (State->IsStateAction())
+	{
+		FRotator actorRotator = GetActorRotation();
+		FRotator controlRotator = GetControlRotation();
+
+		actorRotator = UKismetMathLibrary::RInterpTo(actorRotator, controlRotator, DeltaTime, RotatorSpeed);
+		actorRotator.Pitch = 0;
+		actorRotator.Roll = 0;
+		SetActorRotation(actorRotator);
+	}
+
 	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, L"EStateType", true);
 	if (!!enumPtr)
 		CLog::Print(enumPtr->GetNameStringByIndex((int32)State->GetState()), 4, 0);

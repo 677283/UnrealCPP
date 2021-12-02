@@ -45,6 +45,7 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 	float life = Status->SetLife(-Damage);
 	if (life > 0)
 	{
+		CLog::Log("Hitted");
 		if (!!damageEvent->HitMontage)
 			PlayAnimMontage(damageEvent->HitMontage, damageEvent->PlayRatio);
 		else
@@ -58,8 +59,8 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
 	UCWidget_Damage* damage = CreateWidget<UCWidget_Damage, APlayerController>(pc, DamageWidget);
-	CLog::Log("Call");
-	damage->SetWorldPos(GetMesh()->GetSocketLocation("head"));
+	int32 damageCount = (int32)Damage;
+	damage->SetWorldPos(GetMesh()->GetSocketLocation("head"), FString::FromInt(damageCount));
 	damage->AddToViewport();
 	return Damage;
 }

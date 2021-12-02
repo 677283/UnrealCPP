@@ -2,14 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "CItemStructures.h"
 #include "CItemAsset.generated.h"
-
-UENUM(BlueprintType)
-enum class EItemType : uint8
-{
-	None, Equip, Consumable, ETC, Max,
-};
-
 
 UCLASS(Blueprintable)
 class CPP_PORTFOLIO_API UCItemAsset : public UObject

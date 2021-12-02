@@ -37,6 +37,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCWeaponAsset> BasicWeaponClass;
 
+	UPROPERTY(EditAnywhere)
+		float RotatorSpeed = 1;
+
 public:
 	ACPlayer();
 

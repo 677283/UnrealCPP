@@ -4,9 +4,6 @@
 #include "Enemy/CEnemy.h"
 #include "Player/CPlayer.h"
 
-
-#define PUSHINCOMPONENT_DEBUG
-
 UCPushingComponent::UCPushingComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -43,35 +40,8 @@ void UCPushingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 		offset.Normalize();
 		offset *= PushingPower * GetScaledSphereRadius();
 		actor->AddActorWorldOffset(offset);
-		if (!!player)
-		{
-			FRotator rotator = UKismetMathLibrary::FindLookAtRotation(actor->GetActorLocation(), OwnerCharacter->GetActorLocation());
-			actor->SetActorRotation(rotator);
-		}
+		
 	}
-/*
-	TArray<AActor*> ignoreActors;
-	ignoreActors.Add(OwnerCharacter);
-
-	TArray<FHitResult> hitResults;
-	UKismetSystemLibrary::SphereTraceMultiByProfile(GetWorld(), GetComponentLocation(), GetComponentLocation(), Radius, "Pushing", false, ignoreActors, DrawDebugType, hitResults, true);
-
-	if (hitResults.Num() <= 0)
-	{
-		SetComponentTickEnabled(false);
-		return;
-	}
-
-	for (FHitResult hitResult : hitResults)
-	{
-		if (hitResult.Actor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
-			continue;
-		FVector offset = hitResult.Actor->GetActorLocation() - GetComponentLocation();
-		offset.Normalize();
-		offset *= PushingPower * Radius;
-		hitResult.Actor->AddActorWorldOffset(offset);
-	}
-*/
 }
 
 void UCPushingComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -80,9 +50,5 @@ void UCPushingComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	if (!!OtherActor)
 	{
 		SetComponentTickEnabled(true);
-		/*FVector offset = character->GetActorLocation() - GetComponentLocation();
-		offset.Normalize();
-		offset *= PushingPower * Radius;
-		character->AddActorWorldOffset(offset);*/
 	}
 }

@@ -11,22 +11,29 @@ class CPP_PORTFOLIO_API UCWidget_Damage : public UUserWidget
 private:
 	UPROPERTY(EditDefaultsOnly)
 		float SpawnLife;
-	UPROPERTY(EditDefaultsOnly)
-		float ZPower = 1;
-
-
 
 	UPROPERTY(EditDefaultsOnly)
-		float Jump = 100;
+		float YOffsetSpeed = 1;
+
+	UPROPERTY(EditDefaultsOnly)
+		float XOffsetSpeed = 1;
+
+	UPROPERTY(EditDefaultsOnly)
+		float YHeight = 100;
 
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
-	void SetWorldPos(FVector InPosition);
+	void SetWorldPos(FVector InPosition, FString InDamage);
 
 private:
 	FVector WorldPosition;
-	float ZValue = 0.5;
+	class UTextBlock* Text;
+	FString Damage;
+	float StackSpawnLife=0;
+
+	float YOffset = 0;
+	float XOffset = 0;
 };
