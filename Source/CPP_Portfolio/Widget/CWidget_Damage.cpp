@@ -9,6 +9,7 @@ void UCWidget_Damage::NativeConstruct()
 void UCWidget_Damage::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
+
 	CLog::Log(WorldPosition);
 	ZValue += InDeltaTime * ZPower;
 	FVector pos = WorldPosition;
@@ -20,6 +21,7 @@ void UCWidget_Damage::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
 
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->ProjectWorldLocationToScreen(pos, screenPos);
+	
 	screenPos.Y -= sin(ZValue) * Jump;
 	CLog::Log(screenPos.X);
 	CLog::Log(screenPos.Y);

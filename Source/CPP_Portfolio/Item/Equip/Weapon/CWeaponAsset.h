@@ -70,7 +70,8 @@ private:
 	class ACEquipActor* EquipActor;
 	UPROPERTY()
 		class UCDoAction* DoAction;
-	class UCEquipment_Weapon* Equipment;
+	UPROPERTY()
+		class UCEquipment_Weapon* Equipment;
 	const bool* bOnHands;
 
 	class UCEquipComponent* EquipComponent;
