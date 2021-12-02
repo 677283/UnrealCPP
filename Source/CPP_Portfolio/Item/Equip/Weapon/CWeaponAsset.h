@@ -68,7 +68,8 @@ public:
 
 private:
 	class ACEquipActor* EquipActor;
-	class UCDoAction* DoAction;
+	UPROPERTY()
+		class UCDoAction* DoAction;
 	class UCEquipment_Weapon* Equipment;
 	const bool* bOnHands;
 

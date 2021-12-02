@@ -15,6 +15,7 @@
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
 #include "Widget/CWidget_PickUp.h"
 #include "Widget/CWidget_Inventory.h"
+#include "Widget/CWidget_Damage.h"
 
 #define ACPlayer_DEBUG
 
@@ -87,7 +88,7 @@ void ACPlayer::BeginPlay()
 		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 		InventoryWidget->bIsFocusable = true;
 	}
-	
+
 	Inventory->AddItem(BasicWeapon);
 	Inventory->UseItem(0);
 }

@@ -24,7 +24,8 @@ public:
 	bool IsHandsOn();
 
 private:
-	class UCWeaponAsset* Weapon;
+	UPROPERTY()
+		class UCWeaponAsset* Weapon;
 
 public:
 	FOnEquipComponentEquipAndUnequip OnEquip;

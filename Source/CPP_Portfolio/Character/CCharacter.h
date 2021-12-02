@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 		float WalkSpeed = 200;
 
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCWidget_Damage> DamageWidget;
+
 public:
 	ACCharacter();
 

@@ -6,6 +6,7 @@
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Item/Equip/Weapon/CDoAction.h"
+#include "Widget/CWidget_Damage.h"
 
 #define ACCharacter_DEBUG
 
@@ -54,5 +55,11 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 		//TODO Death
 	}
 
+	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	UCWidget_Damage* damage = CreateWidget<UCWidget_Damage, APlayerController>(pc, DamageWidget);
+	CLog::Log("Call");
+	damage->SetWorldPos(GetMesh()->GetSocketLocation("head"));
+	damage->AddToViewport();
 	return Damage;
 }
