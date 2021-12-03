@@ -42,9 +42,10 @@ public:
 	virtual void DestroyItem();
 	int32 AddAmount(int32 InAmount);
 
+protected:
+	FORCEINLINE void SetType(EItemType InType) { ItemType = InType; }
 public:
 	FORCEINLINE EItemType GetType() { return ItemType; }
-	FORCEINLINE void SetType(EItemType InType) { ItemType = InType; }
 	FORCEINLINE void SellItem() {};
 	FORCEINLINE void BuyItem() {};
 	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
