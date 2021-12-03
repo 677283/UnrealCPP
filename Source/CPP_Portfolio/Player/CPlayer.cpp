@@ -17,7 +17,8 @@
 #include "Widget/CWidget_Inventory.h"
 #include "Widget/CWidget_Damage.h"
 
-#define ACPlayer_DEBUG
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
 
 ACPlayer::ACPlayer()
 {
@@ -91,11 +92,19 @@ void ACPlayer::BeginPlay()
 
 	Inventory->AddItem(BasicWeapon);
 	Inventory->UseItem(0);
+
+	
+	Path = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), GetActorLocation(), FVector(300, 500, 0));
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	CLog::Log(Path->PathPoints.Num());
+	for (FVector location : Path->PathPoints)
+	{
+		DrawDebugSphere(GetWorld(), location, 30, 0, FColor::Red);
+	}
 
 	if (State->IsStateAction())
 	{

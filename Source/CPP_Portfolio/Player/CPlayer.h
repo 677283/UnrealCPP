@@ -85,5 +85,6 @@ private:
 	class UCItemAsset* CheckItem;
 	class UCWeaponAsset* BasicWeapon;
 	bool bTest = true;
+	class UNavigationPath* Path;
 };
 

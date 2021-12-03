@@ -19,6 +19,13 @@ public:
 	virtual void DestroyItem() {};
 
 	int32 AddAmount(int32 InAmount) { return Amount; };
+	
+public:
+	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
+	FORCEINLINE void SetAmount(int32 InAmount) { Amount = InAmount; }
+	FORCEINLINE int32 GetAmount() { return Amount; }
+	FORCEINLINE class UTexture2D* GetIcon() { return Icon; };
+	FORCEINLINE FString GetItemName() { return Name; }
 
 protected:
 	class ACharacter* OwnerCharacter;

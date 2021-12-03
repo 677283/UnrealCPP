@@ -46,8 +46,6 @@ protected:
 	FORCEINLINE void SetType(EItemType InType) { ItemType = InType; }
 public:
 	FORCEINLINE EItemType GetType() { return ItemType; }
-	FORCEINLINE void SellItem() {};
-	FORCEINLINE void BuyItem() {};
 	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
 	FORCEINLINE void SetAmount(int32 InAmount) { Amount = InAmount; }
 	FORCEINLINE int32 GetAmount() { return Amount; }
