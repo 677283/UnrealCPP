@@ -39,7 +39,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		float RotatorSpeed = 1;
-
 public:
 	ACPlayer();
 
@@ -69,12 +68,14 @@ private:
 	void OnDebug();
 
 public:
-	void OnPickUpWidget(class UCItemAsset* InItem);
+	void OnPickUpWidget(class UCItem* InItem);
 	void OffPickUpWidget();
 	
 public:
+	UPROPERTY()
 	class UCSkill* Slash;
 	TSubclassOf<UCSkill> SlashClass;
+	UPROPERTY()
 	class UCSkill* Throw;
 	TSubclassOf<UCSkill> ThrowClass;
 
@@ -82,9 +83,6 @@ private:
 	class UCWidget_PickUp* PickUpWidget;
 	class UCWidget_Inventory* InventoryWidget;
 	bool bPickUp = false;
-	class UCItemAsset* CheckItem;
-	class UCWeaponAsset* BasicWeapon;
-	bool bTest = true;
-	class UNavigationPath* Path;
+	class UCItem* CheckItem;
 };
 

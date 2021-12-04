@@ -1,8 +1,7 @@
 #include "CEquipComponent.h"
 #include "Global.h"
-#include "Item/Equip/Weapon/CWeaponAsset.h"
+#include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
-#define TESTMODE
 
 UCEquipComponent::UCEquipComponent()
 {
@@ -16,7 +15,7 @@ void UCEquipComponent::BeginPlay()
 
 }
 
-void UCEquipComponent::EquipItem(UCEquipAsset* InItem)
+void UCEquipComponent::EquipItem(UCEquipItem* InItem)
 {
 	CheckNull(InItem);
 
@@ -31,7 +30,7 @@ void UCEquipComponent::EquipItem(UCEquipAsset* InItem)
 		{
 			if (OnEquip.IsBound())
 				OnEquip.Broadcast(InItem);
-			Weapon = Cast<UCWeaponAsset>(InItem);
+			Weapon = Cast<UCWeaponItem>(InItem);
 			//Weapon->GetEquipment()->Equip();
 		}
 		break;

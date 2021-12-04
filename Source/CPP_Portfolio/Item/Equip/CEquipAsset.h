@@ -2,13 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Item/CItemAsset.h"
+#include "Item/CItemStructures.h"
 #include "CEquipAsset.generated.h"
-
-UENUM(BlueprintType)
-enum class EEquipType : uint8
-{
-	Weapon, Armor, Max,
-};
 
 UCLASS()
 class CPP_PORTFOLIO_API UCEquipAsset : public UCItemAsset
@@ -23,22 +18,9 @@ private:
 		EEquipType EquipType;
 
 public:
-	virtual void BeginPlay(class ACharacter* InOwner) override;
+	virtual class UCItem* CreateItem(class ACharacter* InOwner, class UCItem* InItem) override;
 
 protected:
 	FORCEINLINE void SetEquipType(EEquipType type) { EquipType = type; }
 
-public:
-	FORCEINLINE const EEquipType GetEquipType() { return EquipType; }
-	FORCEINLINE bool IsEquipping() { return bEquipping; }
-public:
-	virtual void UseItem() override;
-
-public:
-	virtual void Equip();
-	virtual void Unequip();
-
-protected:
-	bool bEquipping = false;
-	bool Enabled;
 };

@@ -41,7 +41,6 @@ void UCWidget_Inventory::NativeConstruct()
 void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
-	CLog::Log("INVENTORY : TICK TEST");
 	//float x, y;
 	//UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
 	//FVector2D pos(x, y);

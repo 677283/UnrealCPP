@@ -3,7 +3,7 @@
 #include "GameFramework/Character.h"
 #include "Item/CDropActor.h"
 #include "Player/CPlayer.h"
-
+#include "Item/CItem.h"
 
 UCItemAsset::UCItemAsset()
 {
@@ -11,42 +11,20 @@ UCItemAsset::UCItemAsset()
 	DropActorClass = ACDropActor::StaticClass();
 }
 
-void UCItemAsset::BeginPlay(class ACharacter* InOwner)
+UCItem* UCItemAsset::CreateItem(ACharacter* InOwner, UCItem* InItem)
 {
-	OwnerCharacter = InOwner;
+	if (!InItem)
+	{
+		InItem = NewObject<UCItem>();
+	}
 
 	FActorSpawnParameters params;
-	params.Owner = OwnerCharacter;
-	DropActor = InOwner->GetWorld()->SpawnActor<ACDropActor>(DropActorClass, params);
-	DropActor->OnDropActorBeginOverlap.AddDynamic(this, &UCItemAsset::OnDropActorBeginOverlap);
+	params.Owner = InOwner;
+	ACDropActor* dropActor = InOwner->GetWorld()->SpawnActor<ACDropActor>(DropActorClass, params);
+	dropActor->OnDropActorBeginOverlap.AddDynamic(InItem, &UCItem::OnDropActorBeginOverlap);
+
+	InItem->InitializeItem(Name, dropActor, ItemType, Icon, MaxAmount);
+
+	ItemList.Add(InItem);
+	return InItem;
 }
-
-void UCItemAsset::DropItem(FVector InDropPosition)
-{
-	DropActor->Drop(InDropPosition);
-	OwnerCharacter = NULL;
-}
-
-void UCItemAsset::PickUpItem(class ACharacter* InOwner)
-{
-	OwnerCharacter = InOwner;
-	DropActor->PickUp();
-}
-
-void UCItemAsset::DestroyItem()
-{
-	DropActor->Destroy();
-	ConditionalBeginDestroy();
-}
-
-int32 UCItemAsset::AddAmount(int32 InAmount)
-{
-	Amount += InAmount;
-
-	return Amount > MaxAmount ? Amount -= MaxAmount : 0;
-}
-
-void UCItemAsset::OnDropActorBeginOverlap(class ACPlayer* InPlayer)
-{
-	InPlayer->OnPickUpWidget(this);
-}	

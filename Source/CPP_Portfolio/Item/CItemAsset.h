@@ -6,7 +6,7 @@
 #include "CItemAsset.generated.h"
 
 UCLASS(Blueprintable)
-class CPP_PORTFOLIO_API UCItemAsset : public UObject
+class CPP_PORTFOLIO_API UCItemAsset : public UDataAsset
 {
 	GENERATED_BODY()
 	
@@ -30,35 +30,12 @@ private:
 		int32 MaxAmount;
 
 public:
-	virtual void BeginPlay(class ACharacter* InOwner);
-	
-public:
-	virtual void DropItem(FVector InDropPosition);
-	virtual void PickUpItem(class ACharacter* InOwner);
-
-
-public:
-	virtual void UseItem() {}
-	virtual void DestroyItem();
-	int32 AddAmount(int32 InAmount);
+	virtual class UCItem* CreateItem(class ACharacter* InOwner, class UCItem* InItem);
 
 protected:
 	FORCEINLINE void SetType(EItemType InType) { ItemType = InType; }
-public:
-	FORCEINLINE EItemType GetType() { return ItemType; }
-	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
-	FORCEINLINE void SetAmount(int32 InAmount) { Amount = InAmount; }
-	FORCEINLINE int32 GetAmount() { return Amount; }
-	FORCEINLINE class UTexture2D* GetIcon() { return Icon; };
-	FORCEINLINE FString GetItemName() { return Name; }
 
-private:
-	UFUNCTION()
-		void OnDropActorBeginOverlap(class ACPlayer* InPlayer);
 protected:
-	class ACharacter* OwnerCharacter;
-	class ACDropActor* DropActor;
-	
-private:
-	int32 Amount = 1;
+	UPROPERTY()
+	TArray<class UCItem*> ItemList;
 };

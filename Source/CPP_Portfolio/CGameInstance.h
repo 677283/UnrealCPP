@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "Engine/DataTable.h"
 #include "CGameInstance.generated.h"
 
 UCLASS()
@@ -14,5 +13,9 @@ public:
 	UCGameInstance();
 
 private:
-	class UDataTable* DataTable;
+	UPROPERTY(EditDefaultsOnly)
+		TMap<FString, class UCItemAsset*> ItemList;
+
+public:
+	class UCItem* CreateItem(class ACharacter* InOwner, FString InItemName);
 };

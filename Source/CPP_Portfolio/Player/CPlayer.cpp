@@ -9,7 +9,7 @@
 #include "Components/CSkillComponent.h"
 #include "Components/CInventoryComponent.h"
 #include "Components/CStateComponent.h"
-#include "Item/Equip/Weapon/CWeaponAsset.h"
+#include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CDoAction.h"
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
@@ -19,6 +19,7 @@
 
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
+
 
 ACPlayer::ACPlayer()
 {
@@ -71,10 +72,7 @@ void ACPlayer::BeginPlay()
 	Throw = NewObject<UCSkill>(this, ThrowClass);
 	Throw->BeginPlay(this);
 	Skill->AddSkill(Throw);
-
-	BasicWeapon = NewObject<UCWeaponAsset>(this, BasicWeaponClass);
-	BasicWeapon->BeginPlay(this);
-
+	
 	if (!!PickUpWidgetClass)
 	{
 		PickUpWidget = CreateWidget<UCWidget_PickUp, APlayerController>(GetController<APlayerController>(), PickUpWidgetClass);
@@ -89,22 +87,12 @@ void ACPlayer::BeginPlay()
 		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 		InventoryWidget->bIsFocusable = true;
 	}
-
-	Inventory->AddItem(BasicWeapon);
-	Inventory->UseItem(0);
-
-	
-	Path = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), GetActorLocation(), FVector(300, 500, 0));
+			
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	CLog::Log(Path->PathPoints.Num());
-	for (FVector location : Path->PathPoints)
-	{
-		DrawDebugSphere(GetWorld(), location, 30, 0, FColor::Red);
-	}
 
 	if (State->IsStateAction())
 	{
@@ -218,7 +206,7 @@ void ACPlayer::OnDebug()
 	SetActorTickEnabled(!IsActorTickEnabled());
 }
 
-void ACPlayer::OnPickUpWidget(UCItemAsset* InItem)
+void ACPlayer::OnPickUpWidget(UCItem* InItem)
 {
 	if (!!CheckItem)
 		return;

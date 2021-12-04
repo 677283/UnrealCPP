@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "GameFramework/Character.h"
 #include "Components/CEquipComponent.h"
+#include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 
 void UCAnimInstance::NativeBeginPlay()
@@ -20,7 +21,7 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Speed = OwnerCharacter->GetVelocity().Size2D();
 	
-	UCWeaponAsset* weapon = Equip->GetWeapon();
+	UCWeaponItem* weapon = Equip->GetWeapon();
 	CheckNull(weapon);
 	weapon->IsHandsOn() ? WeaponType = weapon->GetWeaponType() : WeaponType = EWeaponType::Max;
 	

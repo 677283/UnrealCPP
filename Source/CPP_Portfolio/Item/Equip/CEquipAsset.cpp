@@ -1,32 +1,29 @@
 #include "CEquipAsset.h"
 #include "Global.h"
 #include "GameFramework/Character.h"
+#include "Item/Equip/CEquipItem.h"
 
 UCEquipAsset::UCEquipAsset()
 {
 	SetType(EItemType::Equip);
 }
 
-void UCEquipAsset::BeginPlay(ACharacter* InOwner)
+UCItem* UCEquipAsset::CreateItem(class ACharacter* InOwner, UCItem* InItem)
 {
-	Super::BeginPlay(InOwner);
+	UCEquipItem* equipItem;
 
-}
-
-void UCEquipAsset::UseItem()
-{
-	if (bEquipping)
-		Equip();
+	if (!InItem)
+	{
+		equipItem = NewObject<UCEquipItem>();
+	}
 	else
-		Unequip();
-}
+	{
+		equipItem = Cast<UCEquipItem>(InItem);
+	}
 
-void UCEquipAsset::Equip()
-{
-	bEquipping = true;
-}
+	Super::CreateItem(InOwner, equipItem);
 
-void UCEquipAsset::Unequip()
-{
-	bEquipping = false;
+	equipItem->InitializeEquipItem(EquipType);
+
+	return equipItem;
 }

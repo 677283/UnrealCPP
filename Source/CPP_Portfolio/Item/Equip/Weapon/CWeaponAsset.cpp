@@ -5,6 +5,7 @@
 #include "Item/Equip/Weapon/CEquipActor.h"
 #include "Item/Equip/Weapon/CDoAction_DoubleCombo.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
+#include "Item/Equip/Weapon/CWeaponItem.h"
 
 UCWeaponAsset::UCWeaponAsset()
 {
@@ -15,30 +16,39 @@ UCWeaponAsset::UCWeaponAsset()
 	EquipmentClass = UCEquipment_Weapon::StaticClass();
 }
 
-void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
+UCItem* UCWeaponAsset::CreateItem(class ACharacter* InOwner, UCItem* InItem)
 {
-	CheckNull(EquipActorClass);
+	UCWeaponItem* weaponItem;
 
-	Super::BeginPlay(InOwner);
+	if (!InItem)
+	{
+		weaponItem = NewObject<UCWeaponItem>();
+	}
+	else
+	{
+		weaponItem = Cast<UCWeaponItem>(InItem);
+	}
 
+	Super::CreateItem(InOwner, weaponItem);
+
+	CheckNullResult(EquipActorClass, NULL);
 	FActorSpawnParameters params;
-	params.Owner = OwnerCharacter;
-	EquipActor = OwnerCharacter->GetWorld()->SpawnActor<ACEquipActor>(EquipActorClass, params);
+	params.Owner = InOwner;
+	ACEquipActor* equipActor = InOwner->GetWorld()->SpawnActor<ACEquipActor>(EquipActorClass, params);
 
-	CheckNull(EquipmentClass);
-	Equipment = NewObject<UCEquipment_Weapon>(this, EquipmentClass);
-	Equipment->BeginPlay(InOwner);
-	Equipment->OnEquipmentToggleHands.AddDynamic(EquipActor, &ACEquipActor::AttachTo);
-	Equipment->OnEquip.AddDynamic(EquipActor, &ACEquipActor::Equip);
-	Equipment->OnUnequip.AddDynamic(EquipActor, &ACEquipActor::Unequip);
-	bOnHands = Equipment->GetHands();
+	CheckNullResult(EquipmentClass, NULL);
+	UCEquipment_Weapon* equipment = NewObject<UCEquipment_Weapon>(this, EquipmentClass);
+	equipment->BeginPlay(InOwner);
+	equipment->OnEquipmentToggleHands.AddDynamic(equipActor, &ACEquipActor::AttachTo);
+	equipment->OnEquip.AddDynamic(equipActor, &ACEquipActor::Equip);
+	equipment->OnUnequip.AddDynamic(equipActor, &ACEquipActor::Unequip);
 
-	CheckNull(DoActionClass);
-	DoAction = NewObject<UCDoAction>(this, DoActionClass);
-	DoAction->BeginPlay(InOwner);
-	DoAction->OnDoActionBeginOverlap.AddDynamic(this, &UCWeaponAsset::OnDoActionBeginOverlap);
-	DoAction->InitHands(Equipment->GetHands());
-	EquipActor->OnEquipActorBeginOverlap.AddDynamic(DoAction, &UCDoAction::OnEquipActorBeginOverlap);
+	CheckNullResult(DoActionClass, NULL);
+	UCDoAction* doAction = NewObject<UCDoAction>(this, DoActionClass);
+	doAction->BeginPlay(InOwner);
+	doAction->OnDoActionBeginOverlap.AddDynamic(weaponItem, &UCWeaponItem::OnDoActionBeginOverlap);
+	doAction->InitHands(equipment->GetHands());
+	equipActor->OnEquipActorBeginOverlap.AddDynamic(doAction, &UCDoAction::OnEquipActorBeginOverlap);
 
 	if (MinDamage < MaxDamage)
 	{
@@ -46,98 +56,8 @@ void UCWeaponAsset::BeginPlay(ACharacter* InOwner)
 		MinDamage = MaxDamage;
 		MaxDamage = temp;
 	}
-}
 
-void UCWeaponAsset::UseItem()
-{
-	Super::UseItem();
+	weaponItem->InitializeWeaponItem(equipActor, doAction, equipment, WeaponType, MinDamage, MaxDamage);
 
-	EquipComponent = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
-	CheckNull(EquipComponent);
-	Equipment->Equip();
-	EquipComponent->EquipItem(this);
-}
-
-void UCWeaponAsset::DestroyItem()
-{
-	//TODO DoAction,Equipment,EquipActor »èÁ¦
-
-
-	Super::DestroyItem();
-}
-
-void UCWeaponAsset::SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter,float InActionDamage, FCustomDamageEvent InDamageEvent)
-{
-	InActionDamage += UKismetMathLibrary::RandomFloatInRange(MinDamage, MaxDamage);
-	
-	InOtherCharacter->TakeDamage(InActionDamage, InDamageEvent, InAttacker->GetController(), InAttackCauser);
-}
-
-void UCWeaponAsset::Do_Action(class ACharacter* InOwner, FKey InKey)
-{
-	CheckFalse(OwnerCharacter == InOwner);
-	DoAction->DoAction(InKey);
-}
-
-void UCWeaponAsset::BeginDoAction(class ACharacter* InOwner)
-{
-	CheckFalse(OwnerCharacter == InOwner);
-	DoAction->BeginDoAction();
-}
-
-void UCWeaponAsset::EndDoAction(class ACharacter* InOwner)
-{
-	CheckFalse(OwnerCharacter == InOwner);
-	DoAction->EndDoAction();
-}
-
-void UCWeaponAsset::OnHands(class ACharacter* InOwner)
-{
-	CheckFalse(OwnerCharacter == InOwner);
-	Equipment->OnHands();
-}
-
-void UCWeaponAsset::BeginOnHands(class ACharacter* InOwner)
-{
-	CheckFalse(OwnerCharacter == InOwner);
-	Equipment->Begin_OnHands();
-}
-
-void UCWeaponAsset::EndOnHands(class ACharacter* InOwner)
-{
-	CheckFalse(OwnerCharacter == InOwner);
-	Equipment->End_OnHands();
-}
-
-void UCWeaponAsset::OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent)
-{
-	SendDamage(InAttacker, InAttackerCauser, InOtherCharacter, InActionDamage, InDamageEvent);
-}
-
-void UCWeaponAsset::DropItem(FVector InDropPosition)
-{
-	Super::DropItem(InDropPosition);
-
-	DoAction->SetOwnerCharacter(NULL);
-	Equipment->SetOwnerCharacter(NULL);
-	EquipActor->SetOwnerCharacter(NULL);
-	EquipActor->SetVisibility(false);
-}
-
-void UCWeaponAsset::PickUpItem(class ACharacter* InOwner)
-{
-	Super::PickUpItem(InOwner);
-
-	DoAction->SetOwnerCharacter(InOwner);
-	Equipment->SetOwnerCharacter(InOwner);
-	EquipActor->SetOwnerCharacter(InOwner);
-
-	/*UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(InOwner);
-
-	CheckNull(equip);
-
-	if (!(equip->GetWeapon()))
-	{
-		equip->EquipItem(this);
-	}*/
+	return weaponItem;
 }
