@@ -27,9 +27,11 @@ public:
 	void BeginDoAction(class ACharacter* InOwner);
 	void EndDoAction(class ACharacter* InOwner);
 
-	void OnHands(class ACharacter* InOwner);
-	void BeginOnHands(class ACharacter* InOwner);
-	void EndOnHands(class ACharacter* InOwner);
+	void OnHands();
+	void BeginOnHands();
+	void EndOnHands();
+	void OffHands();
+	void ToggleHands();
 
 	virtual void DropItem(FVector InDropPosition) override;
 	virtual void PickUpItem(class ACharacter* InOwner) override;

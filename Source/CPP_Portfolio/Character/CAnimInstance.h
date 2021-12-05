@@ -13,8 +13,10 @@ class CPP_PORTFOLIO_API UCAnimInstance : public UAnimInstance
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterMovement")
 		float Speed;
-	/*UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterMovement")
-		float Direction;*/
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterMovement")
+		float Direction;
+	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Weapon")
 		EWeaponType WeaponType = EWeaponType::Max;
 

@@ -22,6 +22,37 @@ enum class EWeaponType : uint8
 	Dual, Max,
 };
 
+USTRUCT(BlueprintType)
+struct FCustomDamageEvent : public FDamageEvent
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly)
+		FVector LuanchDirect;
+	UPROPERTY(EditDefaultsOnly)
+		float LuanchPower;
+	UPROPERTY(EditDefaultsOnly)
+		class UAnimMontage* HitMontage;
+	UPROPERTY(EditDefaultsOnly)
+		float PlayRatio;
+};
+
+USTRUCT(BlueprintType)
+struct FDoActionData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly)
+		class UAnimMontage* Montage;
+	UPROPERTY(EditDefaultsOnly)
+		float PlayRatio = 1;
+	UPROPERTY(EditDefaultsOnly)
+		float AddDamage;
+	UPROPERTY(EditDefaultsOnly)
+		FCustomDamageEvent DamageEvent;
+};
 
 UCLASS()
 class CPP_PORTFOLIO_API UCItemStructures : public UObject

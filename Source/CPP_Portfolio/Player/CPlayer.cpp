@@ -148,7 +148,7 @@ void ACPlayer::Sprint_Released()
 void ACPlayer::Equip_Weapon()
 {
 	CheckNull(Equip->GetWeapon());
-	Equip->GetWeapon()->GetEquipment()->ToggleHands();
+	Equip->GetWeapon()->ToggleHands();
 }
 
 void ACPlayer::BasicAttack(FKey InKey)

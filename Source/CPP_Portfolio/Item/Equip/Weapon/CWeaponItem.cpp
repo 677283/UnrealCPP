@@ -67,22 +67,29 @@ void UCWeaponItem::EndDoAction(class ACharacter* InOwner)
 	DoAction->EndDoAction();
 }
 
-void UCWeaponItem::OnHands(class ACharacter* InOwner)
+void UCWeaponItem::OnHands()
 {
-	CheckFalse(OwnerCharacter == InOwner);
 	Equipment->OnHands();
 }
 
-void UCWeaponItem::BeginOnHands(class ACharacter* InOwner)
+void UCWeaponItem::BeginOnHands()
 {
-	CheckFalse(OwnerCharacter == InOwner);
 	Equipment->Begin_OnHands();
 }
 
-void UCWeaponItem::EndOnHands(class ACharacter* InOwner)
+void UCWeaponItem::EndOnHands()
 {
-	CheckFalse(OwnerCharacter == InOwner);
 	Equipment->End_OnHands();
+}
+
+void UCWeaponItem::OffHands()
+{
+	Equipment->OffHands();
+}
+
+void UCWeaponItem::ToggleHands()
+{
+	Equipment->ToggleHands();
 }
 
 void UCWeaponItem::OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent)

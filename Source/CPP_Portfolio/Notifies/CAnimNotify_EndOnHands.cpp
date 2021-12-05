@@ -22,5 +22,5 @@ void UCAnimNotify_EndOnHands::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 	//equip->GetWeapon()->GetEquipment()->End_OnHands();
 	ACharacter* owner = Cast<ACharacter>(MeshComp->GetOwner());
 	CheckNull(owner);
-	equip->GetWeapon()->EndOnHands(owner);
+	equip->GetWeapon()->EndOnHands();
 }

@@ -38,6 +38,4 @@ public:
 	FORCEINLINE EStateType GetState() { return State; }
 private:
 	EStateType State;
-public:
-	int32 count = 0;
 };

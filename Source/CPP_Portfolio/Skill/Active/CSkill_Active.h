@@ -33,6 +33,7 @@ public:
 
 protected:
 	bool WeaponCheck();
+	void SendDamage() {};
 
 protected:
 	class UCStateComponent* State;
