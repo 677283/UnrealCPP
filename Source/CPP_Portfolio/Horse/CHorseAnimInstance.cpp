@@ -15,15 +15,11 @@ void UCHorseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	CheckNull(OwnerCharacter);
 
 	Speed = OwnerCharacter->GetVelocity().Size2D();
-	Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
 	
-	FVector forward = OwnerCharacter->GetActorForwardVector();
+	Direction = OwnerCharacter->GetActorRotation().Yaw - LastRotate.Yaw;
+	float abs = UKismetMathLibrary::Abs(Direction);
+	if (abs > 100)
+		Direction *= -1;
 
-	float angle = UKismetMathLibrary::Dot_VectorVector(forward, PreviousForward);
-
-	angle = UKismetMathLibrary::Acos(angle);
-
-	PreviousForward = forward;
-
-	CLog::Log(angle);
+	LastRotate = OwnerCharacter->GetActorRotation();
 }

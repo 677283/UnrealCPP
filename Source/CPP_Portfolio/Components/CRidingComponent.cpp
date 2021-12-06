@@ -16,7 +16,7 @@ void UCRidingComponent::BeginPlay()
 	Super::BeginPlay();
 
 	GetOwner()->GetComponents<UShapeComponent>(Collisions);
-	
+	SetComponentTickEnabled(false);
 }
 
 void UCRidingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -28,7 +28,7 @@ void UCRidingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 void UCRidingComponent::OnRide(ACHorse* InHorse)
 {
 	CheckNull(InHorse);
-	RiddingHorse = InHorse;
+	RidingHorse = InHorse;
 
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(GetOwner());
 
@@ -42,6 +42,9 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 		CollisionEnableds.Add(collision->GetCollisionEnabled());
 		collision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+
+	GetOwner()->AttachToActor(RidingHorse,FAttachmentTransformRules::KeepRelativeTransform);
+	GetOwner()->SetActorRelativeTransform(FTransform());
 }
 
 void UCRidingComponent::OffRide()
@@ -50,4 +53,9 @@ void UCRidingComponent::OffRide()
 	{
 		Collisions[i]->SetCollisionEnabled(CollisionEnableds[i]);
 	}
+}
+
+bool UCRidingComponent::IsRiding()
+{
+	return RidingHorse ? true : false;
 }

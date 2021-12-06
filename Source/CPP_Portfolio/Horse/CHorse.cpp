@@ -3,6 +3,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SphereComponent.h"
+#include "Player/CPlayer.h"
 
 ACHorse::ACHorse()
 {
@@ -14,6 +16,8 @@ ACHorse::ACHorse()
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
+	GetMesh()->SetRelativeLocation(FVector(-60, 0, -70));
+	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 
 	SpringArm->SetRelativeLocation(FVector(0, 0, 140));
 	SpringArm->SetRelativeRotation(FRotator(0, 90, 0));
@@ -22,6 +26,11 @@ ACHorse::ACHorse()
 	SpringArm->bUsePawnControlRotation = true;
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->SocketOffset = FVector(0, 60, 0);
+
+	UShapeComponent* collision = CHelpers::GetComponent<UShapeComponent>(this);
+
+	collision->OnComponentBeginOverlap.AddDynamic(this, &ACHorse::OnComponentBeginOverlap);
+	collision->OnComponentEndOverlap.AddDynamic(this, &ACHorse::OnComponentEndOverlap);
 }
 
 void ACHorse::BeginPlay()
@@ -79,4 +88,22 @@ void ACHorse::OnVerticalLook(float AxisValue)
 	}
 
 	AddControllerPitchInput(AxisValue);
+}
+
+void ACHorse::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	CLog::Log("In");
+	ACPlayer* player = Cast<ACPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	CheckFalse(OtherActor == player);
+
+	player->OnRideWidget(this);
+}
+
+void ACHorse::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	CLog::Log("Out");
+	ACPlayer* player = Cast<ACPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	CheckFalse(OtherActor == player);
+
+	player->OffRideWidget();
 }

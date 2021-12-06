@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
+#include "Components/CRidingComponent.h"
 #include "Item/Equip/Weapon/CDoAction.h"
 #include "Widget/CWidget_Damage.h"
 
@@ -18,6 +19,7 @@ ACCharacter::ACCharacter()
 	CHelpers::CreateActorComponent<UCEquipComponent>(this, &Equip, "Equip");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
+	CHelpers::CreateActorComponent<UCRidingComponent>(this, &Riding, "Riding");
 }
 
 void ACCharacter::BeginPlay()

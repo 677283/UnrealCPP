@@ -22,5 +22,5 @@ public:
 
 private:
 	class ACharacter* OwnerCharacter;
-	FVector PreviousForward;
+	FRotator LastRotate;
 };

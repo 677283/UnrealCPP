@@ -29,6 +29,9 @@ private:
 		TSubclassOf<class UCWidget_PickUp> PickUpWidgetClass;
 
 	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCWidget_OnRide> RideWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCWidget_Inventory> InventoryWidgetClass;
 
 	UPROPERTY(EditAnywhere)
@@ -70,6 +73,8 @@ private:
 public:
 	void OnPickUpWidget(class UCItem* InItem);
 	void OffPickUpWidget();
+	void OnRideWidget(class ACHorse* InHorse);
+	void OffRideWidget();
 	
 public:
 	UPROPERTY()
@@ -82,7 +87,10 @@ public:
 private:
 	class UCWidget_PickUp* PickUpWidget;
 	class UCWidget_Inventory* InventoryWidget;
+	class UCWidget_OnRide* RideWidget;
+
 	bool bPickUp = false;
 	class UCItem* CheckItem;
+	class ACHorse* CheckHorse;
 };
 

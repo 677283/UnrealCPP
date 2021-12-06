@@ -12,10 +12,12 @@
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CDoAction.h"
+#include "Horse/CHorse.h"
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
 #include "Widget/CWidget_PickUp.h"
 #include "Widget/CWidget_Inventory.h"
 #include "Widget/CWidget_Damage.h"
+#include "Widget/CWidget_OnRide.h"
 
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
@@ -86,6 +88,13 @@ void ACPlayer::BeginPlay()
 		InventoryWidget->AddToViewport();
 		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 		InventoryWidget->bIsFocusable = true;
+	}
+
+	if (!!RideWidgetClass)
+	{
+		RideWidget = CreateWidget<UCWidget_OnRide, APlayerController>(GetController<APlayerController>(), RideWidgetClass);
+		RideWidget->AddToViewport();
+		RideWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 			
 }
@@ -222,6 +231,23 @@ void ACPlayer::OffPickUpWidget()
 {
 	PickUpWidget->SetVisibility(ESlateVisibility::Hidden);
 	CheckItem = NULL;
+}
+
+void ACPlayer::OnRideWidget(ACHorse* InHorse)
+{
+	CheckNull(InHorse);
+	CheckHorse = InHorse;
+	RideWidget->SetVisibility(ESlateVisibility::Visible);
+	FVector2D position;
+	GetController<APlayerController>()->ProjectWorldLocationToScreen(GetMesh()->GetSocketLocation("head"), position);
+	position.X += 100;
+	RideWidget->SetPositionInViewport(position, true);
+}
+
+void ACPlayer::OffRideWidget()
+{
+	RideWidget->SetVisibility(ESlateVisibility::Hidden);
+	CheckHorse = NULL;
 }
 
 

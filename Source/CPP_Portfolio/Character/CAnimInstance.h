@@ -20,6 +20,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Weapon")
 		EWeaponType WeaponType = EWeaponType::Max;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Riding")
+		bool bRiding;
+
 public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
@@ -27,4 +30,6 @@ public:
 private:
 	class ACharacter* OwnerCharacter;
 	class UCEquipComponent* Equip;
+	class UCRidingComponent* Riding;
+
 };

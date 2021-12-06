@@ -29,6 +29,9 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStatusComponent* Status;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCRidingComponent* Riding;
+
 	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* DefaultHitMontage;
 
