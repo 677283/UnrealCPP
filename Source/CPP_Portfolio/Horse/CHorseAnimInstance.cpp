@@ -1,6 +1,7 @@
 #include "CHorseAnimInstance.h"
 #include "Global.h"
 #include "GameFramework/Character.h"
+#include "Horse/CHorse.h"
 
 void UCHorseAnimInstance::NativeBeginPlay()
 {
@@ -15,8 +16,14 @@ void UCHorseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	CheckNull(OwnerCharacter);
 
 	Speed = OwnerCharacter->GetVelocity().Size2D();
+
+	float dot = UKismetMathLibrary::Dot_VectorVector(OwnerCharacter->GetActorForwardVector(), OwnerCharacter->GetVelocity());
+
+	if (dot < 0)
+		Speed *= -1;
 	
 	Direction = OwnerCharacter->GetActorRotation().Yaw - LastRotate.Yaw;
+
 	float abs = UKismetMathLibrary::Abs(Direction);
 	if (abs > 100)
 		Direction *= -1;

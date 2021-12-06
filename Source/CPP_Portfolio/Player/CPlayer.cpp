@@ -9,6 +9,7 @@
 #include "Components/CSkillComponent.h"
 #include "Components/CInventoryComponent.h"
 #include "Components/CStateComponent.h"
+#include "Components/CRidingComponent.h"
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CDoAction.h"
@@ -138,6 +139,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("PickUp", EInputEvent::IE_Pressed, this, &ACPlayer::PickUp);
 	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACPlayer::InventoryToggle);
 	PlayerInputComponent->BindAction("OnDebug", EInputEvent::IE_Pressed, this, &ACPlayer::OnDebug);
+	PlayerInputComponent->BindAction("Riding", EInputEvent::IE_Pressed, this, &ACPlayer::OnRiding);
 
 	//델리게이트를 이용해서 키 바인딩에 데이터 보내는 방법. 델리게이트 만들어준뒤 Template 이용
 	/*PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Pressed, this, &ACPlayer::Sprint_Pressed, 1);
@@ -213,6 +215,14 @@ void ACPlayer::InventoryToggle()
 void ACPlayer::OnDebug()
 {
 	SetActorTickEnabled(!IsActorTickEnabled());
+}
+
+void ACPlayer::OnRiding()
+{
+	CheckNull(CheckHorse);
+	CheckFalse(State->IsStateIdle());
+
+	Riding->OnRide(CheckHorse);
 }
 
 void ACPlayer::OnPickUpWidget(UCItem* InItem)

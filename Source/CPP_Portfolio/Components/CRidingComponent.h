@@ -26,6 +26,7 @@ public:
 	FORCEINLINE class ACHorse* GetRidingHorse() { return RidingHorse; }
 
 private:
+	class ACharacter* OwnerCharacter;
 	class ACHorse* RidingHorse;
 
 	TArray<class UShapeComponent*> Collisions;

@@ -9,6 +9,7 @@ UCRidingComponent::UCRidingComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
+	OwnerCharacter = Cast<ACharacter>(GetOwner());
 }
 
 void UCRidingComponent::BeginPlay()
@@ -32,9 +33,12 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(GetOwner());
 
-	if (equip->GetWeapon()->IsHandsOn())
+	if (!!equip->GetWeapon())
 	{
-		equip->GetWeapon()->OffHands();
+		if (equip->GetWeapon()->IsHandsOn())
+		{
+			equip->GetWeapon()->OffHands();
+		}
 	}
 
 	for (UShapeComponent* collision : Collisions)
@@ -45,6 +49,8 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 
 	GetOwner()->AttachToActor(RidingHorse,FAttachmentTransformRules::KeepRelativeTransform);
 	GetOwner()->SetActorRelativeTransform(FTransform());
+
+	OwnerCharacter->GetController()->Possess(RidingHorse);
 }
 
 void UCRidingComponent::OffRide()

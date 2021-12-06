@@ -32,4 +32,6 @@ private:
 	class UCEquipComponent* Equip;
 	class UCRidingComponent* Riding;
 
+	FRotator LastRotate;
+
 };
