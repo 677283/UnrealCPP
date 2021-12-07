@@ -50,9 +50,9 @@ void ACHorse::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACHorse::OnMoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ACHorse::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalMouse", this, &ACHorse::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalMouse", this, &ACHorse::OnVerticalLook);
+
 }
 
 void ACHorse::OnMoveForward(float AxisValue)
@@ -62,17 +62,12 @@ void ACHorse::OnMoveForward(float AxisValue)
 
 	AddMovementInput(direction, AxisValue);
 }
-void ACHorse::OnMoveRight(float AxisValue)
-{
-	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
-	FVector direction = FQuat(rotator).GetRightVector().GetSafeNormal2D();
 
-	AddMovementInput(direction, AxisValue);
-}
 void ACHorse::OnHorizontalLook(float AxisValue)
 {
 	AddControllerYawInput(AxisValue);
 }
+
 void ACHorse::OnVerticalLook(float AxisValue)
 {
 	CheckTrue(UKismetMathLibrary::NearlyEqual_FloatFloat(AxisValue, 0));
@@ -92,7 +87,6 @@ void ACHorse::OnVerticalLook(float AxisValue)
 
 void ACHorse::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	CLog::Log("In");
 	ACPlayer* player = Cast<ACPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	CheckFalse(OtherActor == player);
 
@@ -101,7 +95,6 @@ void ACHorse::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 void ACHorse::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	CLog::Log("Out");
 	ACPlayer* player = Cast<ACPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	CheckFalse(OtherActor == player);
 
