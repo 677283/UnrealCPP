@@ -25,20 +25,19 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (bRiding)
 	{
 		Speed = Riding->GetRidingHorse()->GetVelocity().Size2D();
-		Direction = Riding->GetRidingHorse()->GetActorRotation().Yaw - LastRotate.Yaw;
+		Direction = OwnerCharacter->GetActorRotation().Yaw - LastRotate.Yaw;
 		float abs = UKismetMathLibrary::Abs(Direction);
 		if (abs > 100)
 			Direction *= -1;
-		LastRotate = Riding->GetRidingHorse()->GetActorRotation();
+		LastRotate = OwnerCharacter->GetActorRotation();
 	}
 	else
 	{
 		Speed = OwnerCharacter->GetVelocity().Size2D();
 		Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
 	}
+
 	UCWeaponItem* weapon = Equip->GetWeapon();
 	if (!!weapon)
 		weapon->IsHandsOn() ? WeaponType = weapon->GetWeaponType() : WeaponType = EWeaponType::Max;
-
-	//Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
 }

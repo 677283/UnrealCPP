@@ -33,10 +33,17 @@ private:
 	void OnHorizontalLook(float AxisValue);
 	void OnVerticalLook(float AxisValue);
 
+	void OffRiding();
+
 private:
 	UFUNCTION()
 		void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 	UFUNCTION()
 		void OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+public:
+	FORCEINLINE void SetRider(class ACharacter* InRider) { Rider = InRider; }
+
+private:
+	class ACharacter* Rider;
 };

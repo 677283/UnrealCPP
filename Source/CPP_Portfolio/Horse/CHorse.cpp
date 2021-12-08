@@ -4,6 +4,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/CRidingComponent.h"
 #include "Player/CPlayer.h"
 
 ACHorse::ACHorse()
@@ -49,11 +50,11 @@ void ACHorse::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &ACHorse::OnMoveForward);
+	PlayerInputComponent->BindAxis("MoveForward_Horse", this, &ACHorse::OnMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACHorse::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalMouse", this, &ACHorse::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalMouse", this, &ACHorse::OnVerticalLook);
-
+	PlayerInputComponent->BindAction("Riding", EInputEvent::IE_Pressed, this, &ACHorse::OffRiding);
 }
 
 void ACHorse::OnMoveForward(float AxisValue)
@@ -108,4 +109,11 @@ void ACHorse::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	CheckFalse(OtherActor == player);
 
 	player->OffRideWidget();
+}
+
+void ACHorse::OffRiding()
+{
+	CheckNull(Rider);
+	UCRidingComponent* riding = CHelpers::GetComponent<UCRidingComponent>(Rider);
+	riding->OffRide();
 }

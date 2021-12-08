@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Components/SphereComponent.h"
 #include "Components/CEquipComponent.h"
+#include "GameFramework/MovementComponent.h"
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Horse/CHorse.h"
 
@@ -30,6 +31,9 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 {
 	CheckNull(InHorse);
 	RidingHorse = InHorse;
+	RidingHorse->SetRider(OwnerCharacter);
+
+	bRiding = true;
 
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(GetOwner());
 
@@ -55,13 +59,16 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 
 void UCRidingComponent::OffRide()
 {
+	GetOwner()->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	RidingHorse->GetController()->Possess(OwnerCharacter);
+	UMovementComponent* movement = CHelpers::GetComponent<UMovementComponent>(RidingHorse);
+	movement->Velocity = FVector::ZeroVector;
+
+	bRiding = false;
+	RidingHorse = nullptr;
+
 	for (int32 i=0; i<Collisions.Num(); i++)
 	{
 		Collisions[i]->SetCollisionEnabled(CollisionEnableds[i]);
 	}
-}
-
-bool UCRidingComponent::IsRiding()
-{
-	return RidingHorse ? true : false;
 }

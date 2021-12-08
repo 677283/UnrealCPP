@@ -21,7 +21,7 @@ public:
 
 	void OnRide(class ACHorse* InHorse);
 	void OffRide();
-	bool IsRiding();
+	FORCEINLINE bool IsRiding() { return bRiding; };
 
 	FORCEINLINE class ACHorse* GetRidingHorse() { return RidingHorse; }
 
@@ -31,4 +31,6 @@ private:
 
 	TArray<class UShapeComponent*> Collisions;
 	TArray<TEnumAsByte<ECollisionEnabled::Type>> CollisionEnableds;
+
+	bool bRiding;
 };
