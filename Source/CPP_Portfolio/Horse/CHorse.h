@@ -29,6 +29,7 @@ public:
 
 private:
 	void OnMoveForward(float AxisValue);
+	void OnMoveRight(float AxisValue);
 	void OnHorizontalLook(float AxisValue);
 	void OnVerticalLook(float AxisValue);
 

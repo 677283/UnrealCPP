@@ -17,10 +17,10 @@ void UCHorseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Speed = OwnerCharacter->GetVelocity().Size2D();
 
-	float dot = UKismetMathLibrary::Dot_VectorVector(OwnerCharacter->GetActorForwardVector(), OwnerCharacter->GetVelocity());
+	//float dot = UKismetMathLibrary::Dot_VectorVector(OwnerCharacter->GetActorForwardVector(), OwnerCharacter->GetVelocity());
 
-	if (dot < 0)
-		Speed *= -1;
+	//if (dot < 0)
+	//	Speed *= -1;
 	
 	Direction = OwnerCharacter->GetActorRotation().Yaw - LastRotate.Yaw;
 

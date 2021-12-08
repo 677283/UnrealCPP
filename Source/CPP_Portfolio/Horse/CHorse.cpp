@@ -50,6 +50,7 @@ void ACHorse::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACHorse::OnMoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ACHorse::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalMouse", this, &ACHorse::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalMouse", this, &ACHorse::OnVerticalLook);
 
@@ -59,6 +60,14 @@ void ACHorse::OnMoveForward(float AxisValue)
 {
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetForwardVector().GetSafeNormal2D();
+
+	AddMovementInput(direction, AxisValue);
+}
+
+void ACHorse::OnMoveRight(float AxisValue)
+{
+	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
+	FVector direction = FQuat(rotator).GetRightVector().GetSafeNormal2D();
 
 	AddMovementInput(direction, AxisValue);
 }
