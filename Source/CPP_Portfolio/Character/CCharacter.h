@@ -38,6 +38,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 		float DefaultHitMontagePlayRitio = 1;
 
+	UPROPERTY(EditDefaultsOnly)
+		class UAnimMontage* BrakeMontage;
+
 protected:
 	UPROPERTY(VisibleInstanceOnly)
 		bool CanMove = true;
@@ -64,5 +67,5 @@ public:
 
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	
+	void PlayBrakeMontage();
 };

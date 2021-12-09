@@ -66,3 +66,8 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 	damage->AddToViewport();
 	return Damage;
 }
+
+void ACCharacter::PlayBrakeMontage()
+{
+	PlayAnimMontage(BrakeMontage);
+}

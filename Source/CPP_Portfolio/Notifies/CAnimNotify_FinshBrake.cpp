@@ -15,5 +15,6 @@ void UCAnimNotify_FinshBrake::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 	
 	ACHorse* horse = Cast<ACHorse>(MeshComp->GetOwner());
 
+	CheckNull(horse);
 	horse->FinishBrake();
 }

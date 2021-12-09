@@ -68,8 +68,8 @@ void ACHorse::OnMoveForward(float AxisValue)
 	if (GetVelocity().Size2D() > 0 && !bMoveForward && !bMoveRight)
 	{
 		PlayAnimMontage(BrakeMontage);
+		Rider->PlayBrakeMontage();
 		bBrake = true;
-		CLog::Log("Brake");
 	}
 	
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);

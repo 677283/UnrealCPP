@@ -45,11 +45,11 @@ private:
 		void OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 public:
-	FORCEINLINE void SetRider(class ACharacter* InRider) { Rider = InRider; }
+	FORCEINLINE void SetRider(class ACCharacter* InRider) { Rider = InRider; }
 	FORCEINLINE void FinishBrake() { bBrake = false; }
 
 private:
-	class ACharacter* Rider;
+	class ACCharacter* Rider;
 	bool bMoveForward;
 	bool bMoveRight;
 	bool bBrake;

@@ -6,6 +6,13 @@
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Horse/CHorse.h"
 
+#define LEFT 0
+#define RIGHT 1
+
+#define FRONT 0
+#define MID 1
+#define BACK 2
+
 UCRidingComponent::UCRidingComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -16,7 +23,7 @@ UCRidingComponent::UCRidingComponent()
 void UCRidingComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	GetOwner()->GetComponents<UShapeComponent>(Collisions);
 	SetComponentTickEnabled(false);
 }
@@ -31,9 +38,33 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 {
 	CheckNull(InHorse);
 	RidingHorse = InHorse;
-	RidingHorse->SetRider(OwnerCharacter);
+	RidingHorse->SetRider(Cast<ACCharacter>(OwnerCharacter));
 
 	bRiding = true;
+	
+	FVector find = OwnerCharacter->GetActorLocation() - RidingHorse->GetActorLocation();
+	find.Normalize();
+	
+	float dot = UKismetMathLibrary::Dot_VectorVector(RidingHorse->GetActorForwardVector(), find);	
+	FVector cross = UKismetMathLibrary::Cross_VectorVector(RidingHorse->GetActorForwardVector(), find);
+	float crossDot = UKismetMathLibrary::Dot_VectorVector(cross, FVector::UpVector);
+	int fIdx;
+	crossDot > 0 ? fIdx = LEFT : fIdx = RIGHT;
+
+	if (dot > 0.5f)
+	{
+		MountMontage[fIdx][FRONT];
+	}
+	else if (dot > -0.5f)
+	{
+		MountMontage[fIdx][MID];
+	}
+	else
+	{
+		MountMontage[fIdx][BACK];
+	}
+
+	
 
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(GetOwner());
 

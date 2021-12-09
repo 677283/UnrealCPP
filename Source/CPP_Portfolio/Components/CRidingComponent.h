@@ -9,6 +9,9 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CPP_PORTFOLIO_API UCRidingComponent : public UActorComponent
 {
 	GENERATED_BODY()
+private:
+	UPROPERTY(EditDefaultsOnly)
+		TArray<TArray<class UAnimMontage*>> MountMontage;
 
 public:	
 	UCRidingComponent();
