@@ -19,6 +19,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* Camera;
 
+	UPROPERTY(EditDefaultsOnly)
+		class UAnimMontage* BrakeMontage;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -43,7 +46,11 @@ private:
 
 public:
 	FORCEINLINE void SetRider(class ACharacter* InRider) { Rider = InRider; }
+	FORCEINLINE void FinishBrake() { bBrake = false; }
 
 private:
 	class ACharacter* Rider;
+	bool bMoveForward;
+	bool bMoveRight;
+	bool bBrake;
 };

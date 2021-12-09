@@ -59,6 +59,19 @@ void ACHorse::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ACHorse::OnMoveForward(float AxisValue)
 {
+	CheckTrue(bBrake);
+	if (FMath::IsNearlyZero(AxisValue))
+		bMoveForward = false;
+	else
+		bMoveForward = true;
+
+	if (GetVelocity().Size2D() > 0 && !bMoveForward && !bMoveRight)
+	{
+		PlayAnimMontage(BrakeMontage);
+		bBrake = true;
+		CLog::Log("Brake");
+	}
+	
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetForwardVector().GetSafeNormal2D();
 
@@ -67,6 +80,11 @@ void ACHorse::OnMoveForward(float AxisValue)
 
 void ACHorse::OnMoveRight(float AxisValue)
 {
+	CheckTrue(bBrake);
+	if (FMath::IsNearlyZero(AxisValue))
+		bMoveRight = false;
+	else
+		bMoveRight = true;
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetRightVector().GetSafeNormal2D();
 
