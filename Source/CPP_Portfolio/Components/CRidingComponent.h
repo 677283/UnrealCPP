@@ -9,12 +9,13 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CPP_PORTFOLIO_API UCRidingComponent : public UActorComponent
 {
 	GENERATED_BODY()
-private:
-	UPROPERTY(EditDefaultsOnly)
-		TArray<TArray<class UAnimMontage*>> MountMontage;
 
 public:	
 	UCRidingComponent();
+
+private:
+	UPROPERTY(EditDefaultsOnly)
+		TArray<class UAnimMontage*> MountMontage;
 
 protected:
 	virtual void BeginPlay() override;
@@ -23,7 +24,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void OnRide(class ACHorse* InHorse);
+	void BeginOnRide();
 	void OffRide();
+	void BeginOffRide();
 	FORCEINLINE bool IsRiding() { return bRiding; };
 
 	FORCEINLINE class ACHorse* GetRidingHorse() { return RidingHorse; }

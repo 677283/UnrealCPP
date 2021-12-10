@@ -9,9 +9,9 @@
 #define LEFT 0
 #define RIGHT 1
 
-#define FRONT 0
+#define BACK 0
 #define MID 1
-#define BACK 2
+#define FRONT 3
 
 UCRidingComponent::UCRidingComponent()
 {
@@ -39,8 +39,6 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 	CheckNull(InHorse);
 	RidingHorse = InHorse;
 	RidingHorse->SetRider(Cast<ACCharacter>(OwnerCharacter));
-
-	bRiding = true;
 	
 	FVector find = OwnerCharacter->GetActorLocation() - RidingHorse->GetActorLocation();
 	find.Normalize();
@@ -53,18 +51,16 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 
 	if (dot > 0.5f)
 	{
-		MountMontage[fIdx][FRONT];
+		OwnerCharacter->PlayAnimMontage(MountMontage[fIdx + FRONT]);
 	}
 	else if (dot > -0.5f)
 	{
-		MountMontage[fIdx][MID];
+		OwnerCharacter->PlayAnimMontage(MountMontage[fIdx + MID]);
 	}
 	else
 	{
-		MountMontage[fIdx][BACK];
-	}
-
-	
+		OwnerCharacter->PlayAnimMontage(MountMontage[BACK]);
+	}	
 
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(GetOwner());
 
@@ -84,22 +80,32 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 
 	GetOwner()->AttachToActor(RidingHorse,FAttachmentTransformRules::KeepRelativeTransform);
 	GetOwner()->SetActorRelativeTransform(FTransform());
+	bRiding = true;
+}
 
+void UCRidingComponent::BeginOnRide()
+{
 	OwnerCharacter->GetController()->Possess(RidingHorse);
 }
 
 void UCRidingComponent::OffRide()
 {
 	GetOwner()->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-	RidingHorse->GetController()->Possess(OwnerCharacter);
+
 	UMovementComponent* movement = CHelpers::GetComponent<UMovementComponent>(RidingHorse);
 	movement->Velocity = FVector::ZeroVector;
 
-	bRiding = false;
-	RidingHorse = nullptr;
 
 	for (int32 i=0; i<Collisions.Num(); i++)
 	{
 		Collisions[i]->SetCollisionEnabled(CollisionEnableds[i]);
 	}
+
+	RidingHorse = nullptr;
+	bRiding = false;
+}
+
+void UCRidingComponent::BeginOffRide()
+{
+	RidingHorse->GetController()->Possess(OwnerCharacter);
 }

@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class EStateType : uint8
 {
-	Idle, Equip, Action, Skill, Hitted, Dead, Max,
+	Idle, Equip, Action, Skill, Hitted, Dead, Mount, Max,
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -28,6 +28,7 @@ public:
 	FORCEINLINE void SetStateSkill() { State = EStateType::Skill;  }
 	FORCEINLINE void SetStateHitted() { State = EStateType::Hitted; }
 	FORCEINLINE void SetStateDead() { State = EStateType::Dead; }
+	FORCEINLINE void SetStateMount() { State = EStateType::Mount; }
 
 	FORCEINLINE bool IsStateIdle() { return State == EStateType::Idle; }
 	FORCEINLINE bool IsStateEquip() { return State == EStateType::Equip; }
@@ -35,6 +36,7 @@ public:
 	FORCEINLINE bool IsStateSkill() { return State == EStateType::Skill; }
 	FORCEINLINE bool IsStateHitted() { return State == EStateType::Hitted; }
 	FORCEINLINE bool IsStateDead() { return State == EStateType::Dead; }
+	FORCEINLINE bool IsStateMount() { return State == EStateType::Mount; }
 	FORCEINLINE EStateType GetState() { return State; }
 private:
 	EStateType State;
