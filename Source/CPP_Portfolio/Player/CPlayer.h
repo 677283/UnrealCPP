@@ -70,6 +70,7 @@ private:
 	void InventoryToggle();
 	void OnDebug();
 	void OnRiding();
+	void OnJump();
 
 public:
 	void OnPickUpWidget(class UCItem* InItem);

@@ -22,6 +22,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Riding")
 		bool bRiding;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+		bool bJumping;
 
 public:
 	virtual void NativeBeginPlay() override;
@@ -31,7 +33,9 @@ private:
 	class ACharacter* OwnerCharacter;
 	class UCEquipComponent* Equip;
 	class UCRidingComponent* Riding;
+	class UNavMovementComponent* Movement;
 
 	FRotator LastRotate;
+
 
 };

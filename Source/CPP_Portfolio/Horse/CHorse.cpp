@@ -28,16 +28,17 @@ ACHorse::ACHorse()
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->SocketOffset = FVector(0, 60, 0);
 
-	UShapeComponent* collision = CHelpers::GetComponent<UShapeComponent>(this);
-
-	collision->OnComponentBeginOverlap.AddDynamic(this, &ACHorse::OnComponentBeginOverlap);
-	collision->OnComponentEndOverlap.AddDynamic(this, &ACHorse::OnComponentEndOverlap);
+	
 }
 
 void ACHorse::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	USphereComponent* collision = CHelpers::GetComponent<USphereComponent>(this);
+
+	collision->OnComponentBeginOverlap.AddDynamic(this, &ACHorse::OnComponentBeginOverlap);
+	collision->OnComponentEndOverlap.AddDynamic(this, &ACHorse::OnComponentEndOverlap);
 }
 
 void ACHorse::Tick(float DeltaTime)
@@ -65,7 +66,7 @@ void ACHorse::OnMoveForward(float AxisValue)
 	else
 		bMoveForward = true;
 
-	if (GetVelocity().Size2D() > 0 && !bMoveForward && !bMoveRight)
+	if (GetVelocity().Size2D() > 800 && !bMoveForward && !bMoveRight)
 	{
 		PlayAnimMontage(BrakeMontage);
 		Rider->PlayBrakeMontage();

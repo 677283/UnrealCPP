@@ -47,13 +47,13 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 	FVector cross = UKismetMathLibrary::Cross_VectorVector(RidingHorse->GetActorForwardVector(), find);
 	float crossDot = UKismetMathLibrary::Dot_VectorVector(cross, FVector::UpVector);
 	int fIdx;
-	crossDot > 0 ? fIdx = LEFT : fIdx = RIGHT;
+	crossDot > 0 ? fIdx = RIGHT : fIdx = LEFT;
 
 	if (dot > 0.5f)
 	{
 		OwnerCharacter->PlayAnimMontage(MountMontage[fIdx + FRONT]);
 	}
-	else if (dot > -0.5f)
+	else if (dot > -0.3f)
 	{
 		OwnerCharacter->PlayAnimMontage(MountMontage[fIdx + MID]);
 	}
