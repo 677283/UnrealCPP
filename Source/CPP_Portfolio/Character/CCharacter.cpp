@@ -71,3 +71,10 @@ void ACCharacter::PlayBrakeMontage()
 {
 	PlayAnimMontage(BrakeMontage);
 }
+
+void ACCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+
+	bSecondJump = false;
+}

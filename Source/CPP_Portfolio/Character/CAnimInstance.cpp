@@ -1,6 +1,7 @@
 #include "CAnimInstance.h"
 #include "Global.h"
-#include "GameFramework/Character.h"
+//#include "GameFramework/Character.h"
+#include "Character/CCharacter.h"
 #include "GameFramework/NavMovementComponent.h"
 #include "Horse/CHorse.h"
 #include "Components/CEquipComponent.h"
@@ -12,7 +13,7 @@ void UCAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
-	OwnerCharacter = Cast<ACharacter>(TryGetPawnOwner());
+	OwnerCharacter = Cast<ACCharacter>(TryGetPawnOwner());
 	CheckNull(OwnerCharacter);
 	Equip = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
 	Riding = CHelpers::GetComponent<UCRidingComponent>(OwnerCharacter);
@@ -25,6 +26,8 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	CheckNull(OwnerCharacter);
 	bRiding = Riding->IsRiding();
 	bJumping = Movement->IsFalling();
+	bSecondJump = OwnerCharacter->IsSecondJump();
+
 	if (bRiding)
 	{
 		Speed = Riding->GetRidingHorse()->GetVelocity().Size2D();

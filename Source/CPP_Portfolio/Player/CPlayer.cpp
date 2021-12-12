@@ -20,6 +20,8 @@
 #include "Widget/CWidget_Damage.h"
 #include "Widget/CWidget_OnRide.h"
 
+#include "CGameInstance.h"
+
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 
@@ -68,6 +70,8 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Movement = CHelpers::GetComponent<UCharacterMovementComponent>(this);
+
 	Slash = NewObject<UCSkill>(this, SlashClass);
 	Slash->BeginPlay(this);
 	Skill->AddSkill(Slash);
@@ -98,6 +102,10 @@ void ACPlayer::BeginPlay()
 		RideWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 			
+	UCItem* basicWeapon = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()))->CreateItem(this, "Dual_Silver");
+	basicWeapon->PickUpItem(this);
+	basicWeapon->UseItem();
+
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -229,6 +237,11 @@ void ACPlayer::OnRiding()
 void ACPlayer::OnJump()
 {
 	Jump();
+	if (!bSecondJump && Movement->IsFalling())
+	{
+		bSecondJump = true;
+		LaunchCharacter(FVector::UpVector * 900, false, false);
+	}
 }
 
 

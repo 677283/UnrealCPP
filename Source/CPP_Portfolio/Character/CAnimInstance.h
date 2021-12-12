@@ -24,13 +24,15 @@ protected:
 		bool bRiding;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 		bool bJumping;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+		bool bSecondJump;
 
 public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
-	class ACharacter* OwnerCharacter;
+	class ACCharacter* OwnerCharacter;
 	class UCEquipComponent* Equip;
 	class UCRidingComponent* Riding;
 	class UNavMovementComponent* Movement;

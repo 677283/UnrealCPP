@@ -69,9 +69,11 @@ public:
 
 	void PlayBrakeMontage();
 
-public:
-	FORCEINLINE bool IsJumping() { return bJumping; }
+	virtual void Landed(const FHitResult& Hit) override;
 
-private:
-	bool bJumping;
+public:
+	FORCEINLINE bool IsSecondJump() { return bSecondJump; }
+
+protected:
+	bool bSecondJump;
 };

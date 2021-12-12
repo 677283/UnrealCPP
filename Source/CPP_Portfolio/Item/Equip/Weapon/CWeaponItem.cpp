@@ -114,13 +114,4 @@ void UCWeaponItem::PickUpItem(class ACharacter* InOwner)
 	DoAction->SetOwnerCharacter(InOwner);
 	Equipment->SetOwnerCharacter(InOwner);
 	EquipActor->SetOwnerCharacter(InOwner);
-
-	/*UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(InOwner);
-
-	CheckNull(equip);
-
-	if (!(equip->GetWeapon()))
-	{
-		equip->EquipItem(this);
-	}*/
 }

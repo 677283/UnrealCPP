@@ -36,10 +36,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		float MouseSensitivity = 0.5;
-
-	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<class UCWeaponAsset> BasicWeaponClass;
-
+	
 	UPROPERTY(EditAnywhere)
 		float RotatorSpeed = 1;
 public:
@@ -90,6 +87,7 @@ private:
 	class UCWidget_PickUp* PickUpWidget;
 	class UCWidget_Inventory* InventoryWidget;
 	class UCWidget_OnRide* RideWidget;
+	class UCharacterMovementComponent* Movement;
 
 	bool bPickUp = false;
 	class UCItem* CheckItem;

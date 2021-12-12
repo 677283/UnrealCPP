@@ -53,7 +53,7 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 	{
 		OwnerCharacter->PlayAnimMontage(MountMontage[fIdx + FRONT]);
 	}
-	else if (dot > -0.3f)
+	else if (dot > -0.7f)
 	{
 		OwnerCharacter->PlayAnimMontage(MountMontage[fIdx + MID]);
 	}
@@ -101,11 +101,11 @@ void UCRidingComponent::OffRide()
 		Collisions[i]->SetCollisionEnabled(CollisionEnableds[i]);
 	}
 
+	RidingHorse->GetController()->Possess(OwnerCharacter);
 	RidingHorse = nullptr;
 	bRiding = false;
 }
 
 void UCRidingComponent::BeginOffRide()
 {
-	RidingHorse->GetController()->Possess(OwnerCharacter);
 }
