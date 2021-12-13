@@ -240,7 +240,8 @@ void ACPlayer::OnJump()
 	if (!bSecondJump && Movement->IsFalling())
 	{
 		bSecondJump = true;
-		LaunchCharacter(FVector::UpVector * 900, false, false);
+		Movement->Velocity = FVector::ZeroVector;
+		LaunchCharacter(FVector::UpVector * SecondJumpPower, false, false);
 	}
 }
 

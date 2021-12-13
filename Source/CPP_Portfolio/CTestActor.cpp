@@ -25,7 +25,7 @@ void ACTestActor::BeginPlay()
 
 	for (FName name : allName)
 	{
-		//Original.Add(Poseable->GetBoneLocation(name, EBoneSpaces)
+		CLog::Log(Poseable->GetBoneLocation(name, EBoneSpaces::ComponentSpace));
 	}
 
 	if (FMath::IsNearlyZero(Gap))
@@ -47,10 +47,13 @@ void ACTestActor::Tick(float DeltaTime)
 
 	float gap = Gap;
 
+	allName.Remove("Armature");
+	allName.Remove("Bone");
+
 	for (FName name : allName)
 	{
-		if (name == "Armature") continue;
-
+		subDir = SubRotate.RotateVector(subDir);
+		
 		FVector pos = subDir * Length;
 
 		pos.Y -= gap;
@@ -58,8 +61,6 @@ void ACTestActor::Tick(float DeltaTime)
 		gap += Gap;
 
 		Poseable->SetBoneLocationByName(name, pos, EBoneSpaces::ComponentSpace);
-
-		subDir = SubRotate.RotateVector(subDir);
 
 	}
 

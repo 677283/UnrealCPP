@@ -52,6 +52,9 @@ protected:
 		float WalkSpeed = 200;
 
 	UPROPERTY(EditDefaultsOnly)
+		float SecondJumpPower = 700;
+
+	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCWidget_Damage> DamageWidget;
 
 public:
