@@ -79,6 +79,10 @@ void ACPlayer::BeginPlay()
 	Throw = NewObject<UCSkill>(this, ThrowClass);
 	Throw->BeginPlay(this);
 	Skill->AddSkill(Throw);
+
+	BowUltimate = NewObject<UCSkill>(this, BowUltimateClass);
+	BowUltimate->BeginPlay(this);
+	Skill->AddSkill(BowUltimate);
 	
 	if (!!PickUpWidgetClass)
 	{
@@ -185,8 +189,11 @@ void ACPlayer::Skill_1()
 
 void ACPlayer::Skill_2()
 {
-	CheckNull(Slash);
-	Slash->DoSkill();
+	//CheckNull(Slash);
+	//Slash->DoSkill();
+
+	CheckNull(BowUltimate);
+	BowUltimate->DoSkill();
 }
 
 void ACPlayer::PickUp()

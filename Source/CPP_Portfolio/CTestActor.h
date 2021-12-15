@@ -40,4 +40,5 @@ public:
 private:
 	FVector RootDirection;
 	TArray<FVector> Original;
+	TArray<FName> AllName;
 };

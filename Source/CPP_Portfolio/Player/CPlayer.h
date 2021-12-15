@@ -39,6 +39,10 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 		float RotatorSpeed = 1;
+
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCSkill> BowUltimateClass;
+
 public:
 	ACPlayer();
 
@@ -82,7 +86,8 @@ public:
 	UPROPERTY()
 	class UCSkill* Throw;
 	TSubclassOf<UCSkill> ThrowClass;
-
+	UPROPERTY()
+	class UCSkill* BowUltimate;
 private:
 	class UCWidget_PickUp* PickUpWidget;
 	class UCWidget_Inventory* InventoryWidget;

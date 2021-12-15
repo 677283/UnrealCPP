@@ -21,15 +21,13 @@ void ACTestActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TArray<FName> allName = Poseable->GetAllSocketNames();
-
-	for (FName name : allName)
-	{
-		CLog::Log(Poseable->GetBoneLocation(name, EBoneSpaces::ComponentSpace));
-	}
-
 	if (FMath::IsNearlyZero(Gap))
 		Gap = Poseable->GetBoneLocation("Bone", EBoneSpaces::ComponentSpace).Y;
+
+	AllName = Poseable->GetAllSocketNames();
+	AllName.Remove("Armature");
+	AllName.Remove("Bone");
+
 }
 
 void ACTestActor::Tick(float DeltaTime)
@@ -42,23 +40,19 @@ void ACTestActor::Tick(float DeltaTime)
 
 	subDir = Direction;
 
-	TArray<FName> allName = Poseable->GetAllSocketNames();
 	Poseable->SetBoneLocationByName("Bone", Direction * Length, EBoneSpaces::ComponentSpace);
 
-	float gap = Gap;
+	float subGap = Gap;
 
-	allName.Remove("Armature");
-	allName.Remove("Bone");
-
-	for (FName name : allName)
+	for (FName name : AllName)
 	{
 		subDir = SubRotate.RotateVector(subDir);
 		
 		FVector pos = subDir * Length;
 
-		pos.Y -= gap;
+		pos.Y -= subGap;
 
-		gap += Gap;
+		subGap += Gap;
 
 		Poseable->SetBoneLocationByName(name, pos, EBoneSpaces::ComponentSpace);
 
