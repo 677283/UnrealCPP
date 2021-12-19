@@ -34,6 +34,10 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCWidget_Inventory> InventoryWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCWidget_SkillTree_Tap> Test;
+
+
 	UPROPERTY(EditAnywhere)
 		float MouseSensitivity = 0.5;
 	

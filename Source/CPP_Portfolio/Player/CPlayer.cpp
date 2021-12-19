@@ -19,6 +19,7 @@
 #include "Widget/CWidget_Inventory.h"
 #include "Widget/CWidget_Damage.h"
 #include "Widget/CWidget_OnRide.h"
+#include "Widget/CWidget_SkillTree_Tap.h"
 
 #include "CGameInstance.h"
 
@@ -28,6 +29,7 @@
 
 ACPlayer::ACPlayer()
 {
+	//Create Component
 	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetMesh());
 	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
 	CHelpers::CreateActorComponent<UCSkillComponent>(this, &Skill, "Skill");
@@ -38,7 +40,6 @@ ACPlayer::ACPlayer()
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-
 
 	SpringArm->SetRelativeLocation(FVector(0, 0, 140));
 	SpringArm->SetRelativeRotation(FRotator(0, 90, 0));
@@ -60,17 +61,19 @@ ACPlayer::ACPlayer()
 	GetMesh()->SetAnimInstanceClass(animInstance);
 
 	GetCapsuleComponent()->SetCollisionProfileName("Player");
+	
+	//CreateSkill
 	CHelpers::GetClass<UCSkill>(&SlashClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Slash/BP_CSkill_Active_Slash.BP_CSkill_Active_Slash_C'");
 	CHelpers::GetClass<UCSkill>(&ThrowClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Throw/BP_CSkill_Active_Throw.BP_CSkill_Active_Throw_C'");
 	
+	Movement = CHelpers::GetComponent<UCharacterMovementComponent>(this);
+
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Movement = CHelpers::GetComponent<UCharacterMovementComponent>(this);
 
 	Slash = NewObject<UCSkill>(this, SlashClass);
 	Slash->BeginPlay(this);
@@ -110,6 +113,9 @@ void ACPlayer::BeginPlay()
 	basicWeapon->PickUpItem(this);
 	basicWeapon->UseItem();
 
+
+	UCWidget_SkillTree_Tap* widget = CreateWidget<UCWidget_SkillTree_Tap, APlayerController>(GetController<APlayerController>(), Test);
+	widget->AddToViewport();
 }
 
 void ACPlayer::Tick(float DeltaTime)

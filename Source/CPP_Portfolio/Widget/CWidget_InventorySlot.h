@@ -27,8 +27,8 @@ public:
 	FOnMouseDelegate OnSlotReleased;
 	FOnMouseDelegate OnSlotUnhovered;
 	FOnMouseDelegate OnSlotDoubleClick;
-	int32 Index;
 
 private:
 	class UImage* Icon;
+	int32 Index;
 };

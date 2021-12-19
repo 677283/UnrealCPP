@@ -23,6 +23,4 @@ public:
 	virtual void BeginDoSkill() override;
 	virtual void EndDoSkill() override;
 
-private:
-	UParticleSystemComponent* ParticleComponent;
 };

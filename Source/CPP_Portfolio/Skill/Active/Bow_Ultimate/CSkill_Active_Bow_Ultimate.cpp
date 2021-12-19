@@ -32,18 +32,25 @@ void UCSkill_Active_Bow_Ultimate::BeginDoSkill()
 	Super::BeginDoSkill();
 
 	FTransform transform;
-	FVector vector = OwnerCharacter->GetActorForwardVector() * 100;
+	FVector vector = OwnerCharacter->GetActorForwardVector() * 900;
 	transform.SetLocation(OwnerCharacter->GetActorLocation() + vector);
+	transform.SetLocation(FVector(transform.GetLocation().X, transform.GetLocation().Y, transform.GetLocation().Z + 300));
 	transform.SetRotation(FQuat(OwnerCharacter->GetActorRotation()));
 
 	FActorSpawnParameters param;
 	param.Owner = OwnerCharacter;
 
 	ACBow_Ultimate_Dragon* projectile = OwnerCharacter->GetWorld()->SpawnActor<ACBow_Ultimate_Dragon>(ProjectileClass, transform, param);
-	ParticleComponent = UGameplayStatics::SpawnEmitterAtLocation(OwnerCharacter->GetWorld(), Particle, transform);
-
+	projectile->SetActorScale3D(FVector(5, 5, 5));
+	//transform.SetRotation(FQuat(transform.GetRotation().X, 90.f, transform.GetRotation().Z, transform.GetRotation().W));
+	UParticleSystemComponent* particle = UGameplayStatics::SpawnEmitterAtLocation(OwnerCharacter->GetWorld(), Particle, transform);
+	
+	FRotator rotate = particle->GetComponentRotation();
+	particle->SetRelativeRotation(FRotator(rotate.Pitch, rotate.Yaw, rotate.Roll + 90));
+	particle->SetWorldScale3D(FVector(1.5, 1.5, 1.5));
+	
 	FTimerHandle handle;
-	OwnerCharacter->GetWorld()->GetTimerManager().SetTimer(handle, [=]() {ParticleComponent->DestroyComponent(); }, 3, false, 3);
+	OwnerCharacter->GetWorld()->GetTimerManager().SetTimer(handle, [=]() {particle->DestroyComponent(); }, 3, false, 3);
 }
 
 void UCSkill_Active_Bow_Ultimate::EndDoSkill()

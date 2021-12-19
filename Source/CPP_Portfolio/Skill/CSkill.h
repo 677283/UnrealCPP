@@ -32,9 +32,12 @@ public:
 	virtual void EndDoSkill() {};
 
 	FORCEINLINE FName GetSkillName() { return Name; }
+	FORCEINLINE int32 GetSkillLevel() { return SkillLevel; }
+	FORCEINLINE void SkillLevelUp() { SkillLevel++; }
 protected:
 	void SetSkillType(ESkillType InSkillType) { Type = InSkillType; }
 
 protected:
 	class ACharacter* OwnerCharacter;
+	int32 SkillLevel;
 };
