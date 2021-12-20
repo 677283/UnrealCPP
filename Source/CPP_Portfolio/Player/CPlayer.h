@@ -35,7 +35,7 @@ private:
 		TSubclassOf<class UCWidget_Inventory> InventoryWidgetClass;
 
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<class UCWidget_SkillTree_Tap> Test;
+		TSubclassOf<class UCWidget_SkillTree_Tab> Test;
 
 
 	UPROPERTY(EditAnywhere)

@@ -19,7 +19,7 @@
 #include "Widget/CWidget_Inventory.h"
 #include "Widget/CWidget_Damage.h"
 #include "Widget/CWidget_OnRide.h"
-#include "Widget/CWidget_SkillTree_Tap.h"
+#include "Widget/CWidget_SkillTree_Tab.h"
 
 #include "CGameInstance.h"
 
@@ -113,9 +113,11 @@ void ACPlayer::BeginPlay()
 	basicWeapon->PickUpItem(this);
 	basicWeapon->UseItem();
 
-
-	UCWidget_SkillTree_Tap* widget = CreateWidget<UCWidget_SkillTree_Tap, APlayerController>(GetController<APlayerController>(), Test);
-	widget->AddToViewport();
+	if (!!Test)
+	{
+		UCWidget_SkillTree_Tab* widget = CreateWidget<UCWidget_SkillTree_Tab, APlayerController>(GetController<APlayerController>(), Test);
+		widget->AddToViewport();
+	}
 }
 
 void ACPlayer::Tick(float DeltaTime)

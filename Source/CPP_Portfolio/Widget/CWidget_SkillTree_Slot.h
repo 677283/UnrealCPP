@@ -39,6 +39,7 @@ private:
 
 public:
 	FORCEINLINE TSubclassOf<class UCSkill> GetSkillClass() { return Skill; }
+	FORCEINLINE TArray<FSkillTreeData> GetNeedSkillInfo() { return NeedSkillInfo; }
 
 private:
 	class ACharacter* OwnerCharacter;
