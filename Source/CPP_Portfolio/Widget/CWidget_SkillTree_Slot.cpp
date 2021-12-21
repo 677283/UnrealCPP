@@ -10,11 +10,12 @@ void UCWidget_SkillTree_Slot::NativeConstruct()
 	bActive = false;
 
 	UButton* btn = Cast<UButton>(GetWidgetFromName("SKILL_BTN"));
-
 	CheckNull(btn);
 	btn->WidgetStyle.Normal.SetResourceObject(Icon);
 	btn->OnClicked.AddDynamic(this, &UCWidget_SkillTree_Slot::OnClicked);
+	
 	SkillComponent = CHelpers::GetComponent<UCSkillComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+	
 	UpdateSlot();
 }
 

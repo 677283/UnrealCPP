@@ -20,16 +20,10 @@ void UCWidget_SkillTree_Tab::NativeConstruct()
 	}
 }
 
-void UCWidget_SkillTree_Tab::SynchronizeProperties()
-{
-	Super::SynchronizeProperties();
-	
-}
-
 int32 UCWidget_SkillTree_Tab::NativePaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
 	int32 returnInt = Super::NativePaint(Args, AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
-	FPaintContext test = FPaintContext(AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
+	FPaintContext context = FPaintContext(AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
 	for (UCWidget_SkillTree_Slot* slot : Slots)
 	{
 		TArray<FSkillTreeData> datas = slot->GetNeedSkillInfo();
@@ -47,14 +41,14 @@ int32 UCWidget_SkillTree_Tab::NativePaint(const FPaintArgs& Args, const FGeometr
 
 			UWidgetBlueprintLibrary::DrawLine
 			(
-				test,
+				context,
 				posA,
 				posB,
 				FLinearColor::Red
 			);
 		}
 	}
-	OnPaint(test);
+	
 	return returnInt;
 }
 
