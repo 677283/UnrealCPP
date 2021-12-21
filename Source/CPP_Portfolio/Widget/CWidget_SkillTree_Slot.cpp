@@ -12,21 +12,24 @@ void UCWidget_SkillTree_Slot::NativeConstruct()
 	UButton* btn = Cast<UButton>(GetWidgetFromName("SKILL_BTN"));
 
 	CheckNull(btn);
-	UpdateSlot();
-
+	//UpdateSlot();
+	btn->WidgetStyle.Normal.SetResourceObject(Icon);
+	CLog::Log("BTN OK");
 	btn->OnClicked.AddDynamic(this, &UCWidget_SkillTree_Slot::OnClicked);
 
 	SkillComponent = CHelpers::GetComponent<UCSkillComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
 }
 
-//FReply UCWidget_SkillTree_Slot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
-//{
-//	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
-//
-//	CheckFalseResult(SkillComponent->GetSkillPoint() > 0, reply);
-//
-//	return reply;
-//}
+void UCWidget_SkillTree_Slot::SynchronizeProperties()
+{
+	Super::SynchronizeProperties();
+	OnSynchronizeProperties();
+}
+
+void UCWidget_SkillTree_Slot::OnSynchronizeProperties_Implementation()
+{
+	// Override this event in Blueprint
+}
 
 void UCWidget_SkillTree_Slot::UpdateSlot()
 {

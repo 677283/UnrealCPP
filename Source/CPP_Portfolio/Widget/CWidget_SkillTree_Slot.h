@@ -25,16 +25,22 @@ class CPP_PORTFOLIO_API UCWidget_SkillTree_Slot : public UUserWidget
 private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UCSkill> Skill;
-
+	
 protected:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		class UTexture2D* Icon;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TArray<FSkillTreeData> NeedSkillInfo;
 
 protected:
 	virtual void NativeConstruct() override;
-	//virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void SynchronizeProperties() override;
+	UFUNCTION(BlueprintNativeEvent)
+		void OnSynchronizeProperties();
 private:
 	void UpdateSlot();
+	UFUNCTION()
 	void OnClicked();
 
 public:
