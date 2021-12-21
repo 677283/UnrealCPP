@@ -23,7 +23,6 @@ void UCWidget_SkillTree_Tab::NativeConstruct()
 void UCWidget_SkillTree_Tab::SynchronizeProperties()
 {
 	Super::SynchronizeProperties();
-
 	
 }
 

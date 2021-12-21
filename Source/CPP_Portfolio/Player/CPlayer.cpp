@@ -75,13 +75,13 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Slash = NewObject<UCSkill>(this, SlashClass);
-	Slash->BeginPlay(this);
-	Skill->AddSkill(Slash);
+	//Slash = NewObject<UCSkill>(this, SlashClass);
+	//Slash->BeginPlay(this);
+	//Skill->AddSkill(Slash);
 
-	Throw = NewObject<UCSkill>(this, ThrowClass);
+	/*Throw = NewObject<UCSkill>(this, ThrowClass);
 	Throw->BeginPlay(this);
-	Skill->AddSkill(Throw);
+	Skill->AddSkill(Throw);*/
 
 	BowUltimate = NewObject<UCSkill>(this, BowUltimateClass);
 	BowUltimate->BeginPlay(this);
@@ -191,17 +191,16 @@ void ACPlayer::BasicAttack(FKey InKey)
 
 void ACPlayer::Skill_1()
 {
-	CheckNull(Throw);
-	Throw->DoSkill();
+	CheckNull(Skill);
+	CheckNull(Skill->GetSkill("Throw"));
+	Skill->GetSkill("Throw")->DoSkill();
 }
 
 void ACPlayer::Skill_2()
 {
-	//CheckNull(Slash);
-	//Slash->DoSkill();
-
-	CheckNull(BowUltimate);
-	BowUltimate->DoSkill();
+	CheckNull(Skill);
+	CheckNull(Skill->GetSkill("Slash"));
+	Skill->GetSkill("Slash")->DoSkill();
 }
 
 void ACPlayer::PickUp()

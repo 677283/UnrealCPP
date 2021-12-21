@@ -21,12 +21,12 @@ public:
 	class UCSkill* GetSkill(TSubclassOf<class UCSkill> InSkillClass);
 
 	int32 LevelCheck(TSubclassOf<class UCSkill> InSkillClass);
+	void SkillLevelUp(TSubclassOf<class UCSkill> InSkillClass);
 
 	FORCEINLINE int32 GetSkillPoint() { return SkillPoint; }
-
 private:
 	UPROPERTY()
 	TMap<FName, class UCSkill*> Skills;
-	int32 SkillPoint;
+	int32 SkillPoint = 3;
 
 };

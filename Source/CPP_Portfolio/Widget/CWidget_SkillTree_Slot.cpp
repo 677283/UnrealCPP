@@ -12,12 +12,10 @@ void UCWidget_SkillTree_Slot::NativeConstruct()
 	UButton* btn = Cast<UButton>(GetWidgetFromName("SKILL_BTN"));
 
 	CheckNull(btn);
-	//UpdateSlot();
 	btn->WidgetStyle.Normal.SetResourceObject(Icon);
-	CLog::Log("BTN OK");
 	btn->OnClicked.AddDynamic(this, &UCWidget_SkillTree_Slot::OnClicked);
-
 	SkillComponent = CHelpers::GetComponent<UCSkillComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+	UpdateSlot();
 }
 
 void UCWidget_SkillTree_Slot::SynchronizeProperties()
@@ -33,6 +31,7 @@ void UCWidget_SkillTree_Slot::OnSynchronizeProperties_Implementation()
 
 void UCWidget_SkillTree_Slot::UpdateSlot()
 {
+	CheckNull(SkillComponent);
 	for (FSkillTreeData info : NeedSkillInfo)
 	{
 		TSubclassOf<UCSkill> skillClass = info.OtherSlot->GetSkillClass();
@@ -47,15 +46,18 @@ void UCWidget_SkillTree_Slot::UpdateSlot()
 void UCWidget_SkillTree_Slot::OnClicked()
 {
 	CheckFalse(SkillComponent->GetSkillPoint() > 0);
+	CLog::Log(SkillComponent->GetSkillPoint());
 	CheckFalse(bActive);
-
 	if (SkillComponent->LevelCheck(Skill) == -1)
 	{
-		UCSkill* skill = NewObject<UCSkill>(Skill);
+		UCSkill* skill = NewObject<UCSkill>(this, Skill);
 		SkillComponent->AddSkill(skill);
+		CLog::Log("CreateSkill");
 	}
 	else
 	{
-		SkillComponent->GetSkill(Skill)->SkillLevelUp();
+		CheckNull(SkillComponent->GetSkill(Skill));
+		SkillComponent->SkillLevelUp(Skill);
+		CLog::Log("UpSkill");
 	}
 }
