@@ -29,15 +29,17 @@ void UCWeaponItem::UseItem()
 	Super::UseItem();
 
 	EquipComponent = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
-	CheckNull(EquipComponent);
 	Equipment->Equip();
+	CheckNull(EquipComponent);
 	EquipComponent->EquipItem(this);
 }
 
 void UCWeaponItem::DestroyItem()
 {
 	//TODO DoAction,Equipment,EquipActor »èÁ¦
-
+	DoAction->ConditionalBeginDestroy();
+	Equipment->ConditionalBeginDestroy();
+	EquipActor->Destroy();
 
 	Super::DestroyItem();
 }

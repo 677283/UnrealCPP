@@ -36,7 +36,6 @@ public:
 
 protected:
 	class ACharacter* OwnerCharacter;
-	class UCItemAsset* ItemAsset;
 	class UCStateComponent* State;
 	bool bComboEnable;
 	bool bOnCombo;

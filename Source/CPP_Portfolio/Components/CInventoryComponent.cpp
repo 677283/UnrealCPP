@@ -33,6 +33,8 @@ bool UCInventoryComponent::AddItem(class UCItem* InItem)
 void UCInventoryComponent::UseItem(int32 InIndex)
 {
 	CheckNull(Inventory[InIndex]);
+	CheckFalse(InIndex > -1 && InIndex < Inventory.Num());
+
 	Inventory[InIndex]->UseItem();
 
 	CheckNull(Inventory[InIndex]);

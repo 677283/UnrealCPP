@@ -32,6 +32,9 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCRidingComponent* Riding;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
+		class UCSkillComponent* Skill;
+
 	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* DefaultHitMontage;
 

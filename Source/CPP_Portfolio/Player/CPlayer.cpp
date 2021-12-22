@@ -30,43 +30,52 @@
 ACPlayer::ACPlayer()
 {
 	//Create Component
-	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetMesh());
-	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
-	CHelpers::CreateActorComponent<UCSkillComponent>(this, &Skill, "Skill");
-	CHelpers::CreateActorComponent<UCInventoryComponent>(this, &Inventory, "Inventory");
+	{
+		CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetMesh());
+		CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
+		CHelpers::CreateActorComponent<UCInventoryComponent>(this, &Inventory, "Inventory");
+		
+		//EquipComponent - InventoryComponent Link
+		Equip->OnEquip.AddDynamic(Inventory, &UCInventoryComponent::OnEquip);
 
-	Equip->OnEquip.AddDynamic(Inventory, &UCInventoryComponent::OnEquip);
+		//View Setting
+		{
+			bUseControllerRotationYaw = false;
+			GetCharacterMovement()->bOrientRotationToMovement = true;
+			GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+		}
 
-	bUseControllerRotationYaw = false;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+		//SpringArm Setting
+		{
+			SpringArm->SetRelativeLocation(FVector(0, 0, 140));
+			SpringArm->SetRelativeRotation(FRotator(0, 90, 0));
+			SpringArm->TargetArmLength = 200;
+			SpringArm->bDoCollisionTest = false;
+			SpringArm->bUsePawnControlRotation = true;
+			SpringArm->bEnableCameraLag = true;
+			SpringArm->SocketOffset = FVector(0, 60, 0);
+		}
 
-	SpringArm->SetRelativeLocation(FVector(0, 0, 140));
-	SpringArm->SetRelativeRotation(FRotator(0, 90, 0));
-	SpringArm->TargetArmLength = 200;
-	SpringArm->bDoCollisionTest = false;
-	SpringArm->bUsePawnControlRotation = true;
-	SpringArm->bEnableCameraLag = true;
-	SpringArm->SocketOffset = FVector(0, 60, 0);
+		//Mesh Setting
+		{
+			USkeletalMesh* mesh;
+			CHelpers::GetAsset<USkeletalMesh>(&mesh, "SkeletalMesh'/Game/ParagonGideon/Characters/Heroes/Gideon/Skins/Inquisitor/Meshes/Gideon_Inquisitor.Gideon_Inquisitor'");
 
-	USkeletalMesh* mesh;
-	CHelpers::GetAsset<USkeletalMesh>(&mesh, "SkeletalMesh'/Game/ParagonGideon/Characters/Heroes/Gideon/Skins/Inquisitor/Meshes/Gideon_Inquisitor.Gideon_Inquisitor'");
-	
-	TSubclassOf<UAnimInstance> animInstance;
-	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/__ProjectFile/Player/Animation/ABP_CPlayer.ABP_CPlayer_C'");
+			TSubclassOf<UAnimInstance> animInstance;
+			CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/__ProjectFile/Player/Animation/ABP_CPlayer.ABP_CPlayer_C'");
+			
+			GetMesh()->SetSkeletalMesh(mesh);
+			GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
+			GetMesh()->SetRelativeRotation(FQuat(FRotator(0, -90, 0)));
+			GetMesh()->SetAnimInstanceClass(animInstance);
+		}
 
-	GetMesh()->SetSkeletalMesh(mesh);
-	GetMesh()->SetRelativeLocation(FVector(0, 0, -80));
-	GetMesh()->SetRelativeRotation(FQuat(FRotator(0, -90, 0)));
-	GetMesh()->SetAnimInstanceClass(animInstance);
+		//Collision Setting
+		GetCapsuleComponent()->SetCollisionProfileName("Player");
+		
+		Movement = CHelpers::GetComponent<UCharacterMovementComponent>(this);
+	}
 
-	GetCapsuleComponent()->SetCollisionProfileName("Player");
-	
-	//CreateSkill
-	CHelpers::GetClass<UCSkill>(&SlashClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Slash/BP_CSkill_Active_Slash.BP_CSkill_Active_Slash_C'");
-	CHelpers::GetClass<UCSkill>(&ThrowClass, "Blueprint'/Game/__ProjectFile/Skills/Dual_Throw/BP_CSkill_Active_Throw.BP_CSkill_Active_Throw_C'");
-	
-	Movement = CHelpers::GetComponent<UCharacterMovementComponent>(this);
 
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -74,49 +83,40 @@ ACPlayer::ACPlayer()
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//Slash = NewObject<UCSkill>(this, SlashClass);
-	//Slash->BeginPlay(this);
-	//Skill->AddSkill(Slash);
-
-	/*Throw = NewObject<UCSkill>(this, ThrowClass);
-	Throw->BeginPlay(this);
-	Skill->AddSkill(Throw);*/
-
-	BowUltimate = NewObject<UCSkill>(this, BowUltimateClass);
-	BowUltimate->BeginPlay(this);
-	Skill->AddSkill(BowUltimate);
 	
-	if (!!PickUpWidgetClass)
+	//Widget Initialize
 	{
-		PickUpWidget = CreateWidget<UCWidget_PickUp, APlayerController>(GetController<APlayerController>(), PickUpWidgetClass);
-		PickUpWidget->AddToViewport();
-		PickUpWidget->SetVisibility(ESlateVisibility::Hidden);
+		if (!!PickUpWidgetClass)
+		{
+			PickUpWidget = CreateWidget<UCWidget_PickUp, APlayerController>(GetController<APlayerController>(), PickUpWidgetClass);
+			PickUpWidget->AddToViewport();
+			PickUpWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+
+		if (!!InventoryWidgetClass)
+		{
+			InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(GetController<APlayerController>(), InventoryWidgetClass);
+			InventoryWidget->AddToViewport();
+			InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+			InventoryWidget->bIsFocusable = true;
+		}
+
+		if (!!RideWidgetClass)
+		{
+			RideWidget = CreateWidget<UCWidget_OnRide, APlayerController>(GetController<APlayerController>(), RideWidgetClass);
+			RideWidget->AddToViewport();
+			RideWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 
-	if (!!InventoryWidgetClass)
+	//Basic Item Create
 	{
-		InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(GetController<APlayerController>(), InventoryWidgetClass);
-		InventoryWidget->AddToViewport();
-		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-		InventoryWidget->bIsFocusable = true;
-	}
-
-	if (!!RideWidgetClass)
-	{
-		RideWidget = CreateWidget<UCWidget_OnRide, APlayerController>(GetController<APlayerController>(), RideWidgetClass);
-		RideWidget->AddToViewport();
-		RideWidget->SetVisibility(ESlateVisibility::Hidden);
-	}
-			
-	UCItem* basicWeapon = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()))->CreateItem(this, "Dual_Silver");
-	basicWeapon->PickUpItem(this);
-	basicWeapon->UseItem();
-
-	if (!!Test)
-	{
-		UCWidget_SkillTree_Tab* widget = CreateWidget<UCWidget_SkillTree_Tab, APlayerController>(GetController<APlayerController>(), Test);
-		widget->AddToViewport();
+		if (BaiscWeaponName.Len() > 0)
+		{
+			UCItem* basicWeapon = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()))->CreateItem(this, BaiscWeaponName);
+			basicWeapon->PickUpItem(this);
+			basicWeapon->UseItem();
+		}
 	}
 }
 
@@ -206,6 +206,7 @@ void ACPlayer::Skill_2()
 void ACPlayer::PickUp()
 {
 	CheckNull(CheckItem);
+	
 	CheckFalse(Inventory->AddItem(CheckItem));
 
 	CheckItem = NULL;

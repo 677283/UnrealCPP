@@ -13,39 +13,32 @@ class CPP_PORTFOLIO_API ACPlayer : public ACCharacter
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class UCameraComponent* Camera;
 
-	UPROPERTY(VisibleDefaultsOnly)
-		class UCSkillComponent* Skill;
-
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class UCInventoryComponent* Inventory;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<class UCWidget_PickUp> PickUpWidgetClass;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<class UCWidget_OnRide> RideWidgetClass;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<class UCWidget_Inventory> InventoryWidgetClass;
 
-	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<class UCWidget_SkillTree_Tab> Test;
-
+	UPROPERTY(EditDefaultsOnly, Category = "BasicItem")
+		FString BaiscWeaponName;
 
 	UPROPERTY(EditAnywhere)
 		float MouseSensitivity = 0.5;
 	
 	UPROPERTY(EditAnywhere)
 		float RotatorSpeed = 1;
-
-	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<class UCSkill> BowUltimateClass;
 
 public:
 	ACPlayer();

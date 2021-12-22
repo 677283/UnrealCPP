@@ -20,6 +20,7 @@ ACCharacter::ACCharacter()
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
 	CHelpers::CreateActorComponent<UCRidingComponent>(this, &Riding, "Riding");
+	CHelpers::CreateActorComponent<UCSkillComponent>(this, &Skill, "Skill");
 }
 
 void ACCharacter::BeginPlay()

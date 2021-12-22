@@ -21,6 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	void RegisterSlot(int32 InIndex, UObject* InObject);
 	void UseSlot(int32 InIndex);
 
 private:

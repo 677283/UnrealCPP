@@ -1,4 +1,5 @@
 #include "Components/CQuickSlotComponent.h"
+#include "Global.h"
 #include "Item/CItem.h"
 #include "Skill/CSkill.h"
 
@@ -13,6 +14,14 @@ void UCQuickSlotComponent::BeginPlay()
 	Super::BeginPlay();
 
 	SlotList.SetNum(MaxSlotCount);
+}
+
+void UCQuickSlotComponent::RegisterSlot(int32 InIndex, UObject* InObject)
+{
+	CheckNull(InObject);
+	CheckFalse(InIndex > -1 && InIndex < SlotList.Num());
+
+	SlotList[InIndex] = InObject;
 }
 
 void UCQuickSlotComponent::UseSlot(int32 InIndex)
