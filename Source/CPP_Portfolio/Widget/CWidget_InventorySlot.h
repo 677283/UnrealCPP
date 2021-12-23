@@ -20,6 +20,7 @@ protected:
 	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 public:
 	void SetIcon(class UTexture2D* InIcon);
+	class UTexture2D* GetIcon();
 
 public:
 	FOnMouseDelegate OnSlotHoverd;

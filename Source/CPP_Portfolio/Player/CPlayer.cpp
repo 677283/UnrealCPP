@@ -114,8 +114,9 @@ void ACPlayer::BeginPlay()
 		if (BaiscWeaponName.Len() > 0)
 		{
 			UCItem* basicWeapon = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()))->CreateItem(this, BaiscWeaponName);
-			basicWeapon->PickUpItem(this);
-			basicWeapon->UseItem();
+			Inventory->AddItem(basicWeapon);
+			//basicWeapon->PickUpItem(this);
+			//basicWeapon->UseItem();
 		}
 	}
 }

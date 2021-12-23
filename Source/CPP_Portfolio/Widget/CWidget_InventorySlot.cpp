@@ -17,11 +17,19 @@ void UCWidget_InventorySlot::NativeConstruct()
 FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
+	{
+		if (OnSlotPressed.IsBound())
+			OnSlotPressed.Broadcast(Index);
+	}
+	else if (InMouseEvent.GetEffectingButton() == FKey("RightMouseButton"))
+	{
+		if (Icon->Brush.GetResourceObject() != nullptr)
+			CLog::Log("Test");
+	}
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
 	Viewport->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
-	if (OnSlotPressed.IsBound())
-		OnSlotPressed.Broadcast(Index);
 
 	return reply;
 }
@@ -29,19 +37,20 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeomet
 FReply UCWidget_InventorySlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
-	   
+
 	if (OnSlotReleased.IsBound())
 		OnSlotReleased.Broadcast(Index);
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
 	Viewport->SetMouseCaptureMode(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
-
+	
 	return reply;
 }
 
 FReply UCWidget_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDoubleClick(InGeometry, InMouseEvent);
+	CheckFalseResult(InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"), reply);
 
 	if (OnSlotDoubleClick.IsBound())
 		OnSlotDoubleClick.Broadcast(Index);
@@ -61,4 +70,9 @@ void UCWidget_InventorySlot::NativeOnMouseEnter(const FGeometry& InGeometry, con
 void UCWidget_InventorySlot::SetIcon(class UTexture2D* InIcon)
 {
 	Icon->SetBrushFromTexture(InIcon);
+}
+
+UTexture2D* UCWidget_InventorySlot::GetIcon()
+{
+	return Cast<UTexture2D>(Icon->Brush.GetResourceObject());
 }

@@ -31,7 +31,11 @@ void UCWidget_Inventory::NativeConstruct()
 
 	APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	DragAndDrop = CreateWidget<UCWidget_DragAndDrop, APlayerController>(controller, DragAndDropClass, "DragAndDrop");
-	//DragAndDrop->AddToViewport(1);
+	DragAndDrop->AddToViewport(1);
+	int32 sizeX, sizeY;
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
+	DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
+	//DragAndDrop->SetVisibility(ESlateVisibility::Hidden);
 
 	ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	Inventory = CHelpers::GetComponent<UCInventoryComponent>(player);
@@ -41,6 +45,8 @@ void UCWidget_Inventory::NativeConstruct()
 void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
+	CheckFalse(bPressed);
+
 	//float x, y;
 	//UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
 	//FVector2D pos(x, y);
@@ -53,26 +59,10 @@ void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
-
 	CheckFalseResult(bPressed, reply);
+	DragAndDrop->SetVisibility(ESlateVisibility::Hidden);
 
 	bPressed = false;
-
-	return reply;
-}
-
-FReply UCWidget_Inventory::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
-{
-	FReply reply = Super::NativeOnKeyDown(InGeometry, InKeyEvent);
-
-	/*if (InKeyEvent.GetKey() == FKey("I"))
-	{
-		APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-		controller->SetShowMouseCursor(false);
-		controller->SetInputMode(FInputModeGameOnly());
-
-		this->SetVisibility(ESlateVisibility::Hidden);
-	}*/
 
 	return reply;
 }
@@ -93,7 +83,10 @@ void UCWidget_Inventory::OnSlotHoverd(int32 InIndex)
 void UCWidget_Inventory::OnSlotPressed(int32 InIndex)
 {
 	CheckNull(Inventory->GetIcon(InIndex));
-
+	DragAndDrop->SetIcon(Inventory->GetIcon(InIndex));
+	{
+		DragAndDrop->SetPositionInViewport(FVector2D(0,0));
+	}
 	bPressed = true;
 	PressedIndex = InIndex;
 }
@@ -102,6 +95,12 @@ void UCWidget_Inventory::OnSlotReleased(int32 InIndex)
 {
 	CheckFalse(bPressed);
 	CheckTrue(InIndex == PressedIndex);
+	
+	{
+		int32 sizeX, sizeY;
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
+		DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
+	}
 
 	bPressed = false;
 	Inventory->SwapItem(PressedIndex, InIndex);
