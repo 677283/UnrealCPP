@@ -15,4 +15,5 @@ public:
 
 private:
 	class UImage* Icon;
+	class UUserWidget* Wid;
 };

@@ -17,6 +17,7 @@ void UCWidget_InventorySlot::NativeConstruct()
 FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
 		if (OnSlotPressed.IsBound())
@@ -24,12 +25,16 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeomet
 	}
 	else if (InMouseEvent.GetEffectingButton() == FKey("RightMouseButton"))
 	{
-		if (Icon->Brush.GetResourceObject() != nullptr)
-			CLog::Log("Test");
+		/*if (Icon->Brush.GetResourceObject() != nullptr)
+			CLog::*/
 	}
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
+	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, L"EMouseCaptureMode", true);
+	if (!!enumPtr)
+		CLog::Log("Test : " + enumPtr->GetNameStringByIndex((int32)Viewport->GetMouseCaptureMode()));
 	Viewport->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
+
 
 	return reply;
 }
@@ -37,12 +42,12 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeomet
 FReply UCWidget_InventorySlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
-
+	
 	if (OnSlotReleased.IsBound())
 		OnSlotReleased.Broadcast(Index);
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
-	Viewport->SetMouseCaptureMode(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
+	Viewport->SetMouseCaptureMode(EMouseCaptureMode::CaptureDuringMouseDown);
 	
 	return reply;
 }
@@ -56,13 +61,16 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& I
 		OnSlotDoubleClick.Broadcast(Index);
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
-	Viewport->SetMouseCaptureMode(EMouseCaptureMode::CapturePermanently_IncludingInitialMouseDown);
+	Viewport->SetMouseCaptureMode(EMouseCaptureMode::CaptureDuringMouseDown);
 
 	return reply;
 }
 
 void UCWidget_InventorySlot::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	Super::NativeOnMouseEnter(InGeometry, InMouseEvent);
+
+	//Viewport->GetMouseCaptureMode()
 	if (OnSlotHoverd.IsBound())
 		OnSlotHoverd.Broadcast(Index);
 

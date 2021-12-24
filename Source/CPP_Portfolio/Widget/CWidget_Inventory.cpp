@@ -32,10 +32,10 @@ void UCWidget_Inventory::NativeConstruct()
 	APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	DragAndDrop = CreateWidget<UCWidget_DragAndDrop, APlayerController>(controller, DragAndDropClass, "DragAndDrop");
 	DragAndDrop->AddToViewport(1);
+	
 	int32 sizeX, sizeY;
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
 	DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
-	//DragAndDrop->SetVisibility(ESlateVisibility::Hidden);
 
 	ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	Inventory = CHelpers::GetComponent<UCInventoryComponent>(player);
@@ -47,21 +47,25 @@ void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 	Super::NativeTick(MyGeometry, InDeltaTime);
 	CheckFalse(bPressed);
 
-	//float x, y;
-	//UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
-	//FVector2D pos(x, y);
-	//FVector2D size = DragAndDrop->GetDesiredSize();
-	//pos.X -= size.X / 2;
-	//pos.Y -= size.Y / 2;
-	//DragAndDrop->SetPositionInViewport(pos);
+	float x, y;
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
+	FVector2D pos(x, y);
+	FVector2D size = DragAndDrop->GetDesiredSize();
+	
+	pos.X -= size.X / 4.0f;
+	pos.Y -= size.Y / 4.0f;
+	DragAndDrop->SetPositionInViewport(pos);
 }
 
 FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 	CheckFalseResult(bPressed, reply);
-	DragAndDrop->SetVisibility(ESlateVisibility::Hidden);
-
+	{
+		int32 sizeX, sizeY;
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
+		DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
+	}
 	bPressed = false;
 
 	return reply;
@@ -83,8 +87,8 @@ void UCWidget_Inventory::OnSlotHoverd(int32 InIndex)
 void UCWidget_Inventory::OnSlotPressed(int32 InIndex)
 {
 	CheckNull(Inventory->GetIcon(InIndex));
-	DragAndDrop->SetIcon(Inventory->GetIcon(InIndex));
 	{
+		DragAndDrop->SetIcon(Inventory->GetIcon(InIndex));
 		DragAndDrop->SetPositionInViewport(FVector2D(0,0));
 	}
 	bPressed = true;
