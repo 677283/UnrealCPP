@@ -1,18 +1,30 @@
 #include "CInventoryComponent.h"
 #include "Global.h"
 #include "Item/CItem.h"
+#include "Item/Equip/CEquipItem.h"
 #include "GameFramework/Character.h"
+#include "Widget/CWidget_Inventory.h"
 
 UCInventoryComponent::UCInventoryComponent()
 {
-	
+	CHelpers::GetClass<UCWidget_Inventory>(&InventoryWidgetClass, "WidgetBlueprint'/Game/__ProjectFile/Widgets/Inventory/WB_Inventory.WB_Inventory_C'");
 }
 
 void UCInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
 	Inventory.SetNum(InventorySize);
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
+
+	CheckNull(InventoryWidgetClass);
+
+	InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(OwnerCharacter->GetController<APlayerController>(), InventoryWidgetClass, "Inventory");
+	InventoryWidget->AddToViewport();
+	InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	InventoryWidget->OnSwapItem.BindUObject(this, &UCInventoryComponent::SwapItem);
+	InventoryWidget->OnUseItem.BindUObject(this, &UCInventoryComponent::UseItem);
 }
 
 bool UCInventoryComponent::AddItem(class UCItem* InItem)
@@ -20,12 +32,8 @@ bool UCInventoryComponent::AddItem(class UCItem* InItem)
 	int32 index = CheckSlot(InItem);
 	CheckTrueResult(index == -1, false);
 
-	Inventory[index] = InItem;
-
+	SetItem(index, InItem);
 	InItem->PickUpItem(OwnerCharacter);
-
-	if (OnInventoryUpdate.IsBound())
-		OnInventoryUpdate.Broadcast();
 
 	return true;
 }
@@ -37,35 +45,49 @@ void UCInventoryComponent::UseItem(int32 InIndex)
 
 	Inventory[InIndex]->UseItem();
 
-	CheckNull(Inventory[InIndex]);
-	if (Inventory[InIndex]->GetAmount() < 1)
-	{
-		Inventory[InIndex]->DestroyItem();
-		Inventory[InIndex] = NULL;
-
-		if (OnInventoryUpdate.IsBound())
-			OnInventoryUpdate.Broadcast();
-	}
+	if (!Inventory[InIndex])
+		SetItem(InIndex, nullptr);
 }
 
 void UCInventoryComponent::SwapItem(int32 InIndex_1, int32 InIndex_2)
 {
 	CheckTrue(!Inventory[InIndex_1] && !Inventory[InIndex_2]);
 	UCItem* temp = Inventory[InIndex_1];
-	Inventory[InIndex_1] = Inventory[InIndex_2];
-	Inventory[InIndex_2] = temp;
+
+	SetItem(InIndex_1, Inventory[InIndex_2]);
+	SetItem(InIndex_2, temp);
 }
 
-void UCInventoryComponent::OnEquip(class UCItem* InItem)
+void UCInventoryComponent::WidgetToggle()
 {
-	int32 index = Inventory.Find(InItem);
+	if (InventoryWidget->IsVisible())
+	{
+		OwnerCharacter->GetController<APlayerController>()->SetShowMouseCursor(false);
+		OwnerCharacter->GetController<APlayerController>()->SetInputMode(FInputModeGameOnly());
+		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		OwnerCharacter->GetController<APlayerController>()->SetShowMouseCursor(true);
+		
+		FInputModeGameAndUI mode;
+		mode.SetHideCursorDuringCapture(false);
+		mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		OwnerCharacter->GetController<APlayerController>()->SetInputMode(mode);
+		
+		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		InventoryWidget->SetFocus();
+	}
+}
+
+void UCInventoryComponent::OnEquip(class UCItem* InEquipItem, class UCItem* InUnequipItem)
+{
+	int32 index = Inventory.Find(InEquipItem);
 
 	CheckTrue(index == INDEX_NONE);
-
-	Inventory[index] = NULL;
-
-	if (OnInventoryUpdate.IsBound())
-		OnInventoryUpdate.Broadcast();
+	if (!!InUnequipItem)
+		Cast<UCEquipItem>(InUnequipItem)->Unequip();
+	SetItem(index, InUnequipItem);
 }
 
 void UCInventoryComponent::OnUnequip(class UCItem* InItem)
@@ -98,4 +120,13 @@ int32 UCInventoryComponent::CheckSlot(UCItem* InItem)
 	}
 
 	return -1;
+}
+
+void UCInventoryComponent::SetItem(int32 InIndex, class UCItem* InItem)
+{
+	Inventory[InIndex] = InItem;
+	UTexture2D* icon;
+
+	!!InItem ? icon = InItem->GetIcon() : icon = nullptr;
+	InventoryWidget->SetSlotIcon(InIndex, icon);
 }

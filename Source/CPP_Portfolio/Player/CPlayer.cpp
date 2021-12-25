@@ -10,6 +10,7 @@
 #include "Components/CInventoryComponent.h"
 #include "Components/CStateComponent.h"
 #include "Components/CRidingComponent.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CDoAction.h"
@@ -26,7 +27,6 @@
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 
-
 ACPlayer::ACPlayer()
 {
 	//Create Component
@@ -34,7 +34,15 @@ ACPlayer::ACPlayer()
 		CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetMesh());
 		CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
 		CHelpers::CreateActorComponent<UCInventoryComponent>(this, &Inventory, "Inventory");
-		
+		CHelpers::CreateComponent<USceneCaptureComponent2D>(this, &Capture, "Capture",GetRootComponent());
+		UTextureRenderTarget2D* texture;
+		CHelpers::GetAsset(&texture, "TextureRenderTarget2D'/Game/__ProjectFile/Textures/EquipTargetTexutre.EquipTargetTexutre'");
+		Capture->TextureTarget = texture;
+		Capture->ShowFlags.Atmosphere = 0;
+		Capture->bCaptureEveryFrame = false;
+		Capture->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
+		Capture->ShowFlags.Atmosphere = SFG_Transient;
+
 		//EquipComponent - InventoryComponent Link
 		Equip->OnEquip.AddDynamic(Inventory, &UCInventoryComponent::OnEquip);
 
@@ -84,6 +92,8 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Capture->ShowOnlyActors.Add(this);
+
 	//Widget Initialize
 	{
 		if (!!PickUpWidgetClass)
@@ -91,14 +101,6 @@ void ACPlayer::BeginPlay()
 			PickUpWidget = CreateWidget<UCWidget_PickUp, APlayerController>(GetController<APlayerController>(), PickUpWidgetClass);
 			PickUpWidget->AddToViewport();
 			PickUpWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
-
-		if (!!InventoryWidgetClass)
-		{
-			InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(GetController<APlayerController>(), InventoryWidgetClass);
-			InventoryWidget->AddToViewport();
-			InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-			InventoryWidget->bIsFocusable = true;
 		}
 
 		if (!!RideWidgetClass)
@@ -115,8 +117,8 @@ void ACPlayer::BeginPlay()
 		{
 			UCItem* basicWeapon = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()))->CreateItem(this, BaiscWeaponName);
 			Inventory->AddItem(basicWeapon);
-			//basicWeapon->PickUpItem(this);
-			//basicWeapon->UseItem();
+			basicWeapon->PickUpItem(this);
+			basicWeapon->UseItem();
 		}
 	}
 }
@@ -130,7 +132,7 @@ void ACPlayer::Tick(float DeltaTime)
 		FRotator actorRotator = GetActorRotation();
 		FRotator controlRotator = GetControlRotation();
 
-		actorRotator = UKismetMathLibrary::RInterpTo(actorRotator, controlRotator, DeltaTime, RotatorSpeed);
+		actorRotator = UKismetMathLibrary::RInterpTo(actorRotator, controlRotator, DeltaTime, AttackRotatorSpeed);
 		actorRotator.Pitch = 0;
 		actorRotator.Roll = 0;
 		SetActorRotation(actorRotator);
@@ -150,6 +152,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalMouse", this, &ACPlayer::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalMouse", this, &ACPlayer::OnVerticalLook);
+
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Pressed, this, &ACPlayer::Sprint_Pressed);
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released);
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released);
@@ -159,6 +162,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Skill_2", EInputEvent::IE_Pressed, this, &ACPlayer::Skill_2);
 	PlayerInputComponent->BindAction("PickUp", EInputEvent::IE_Pressed, this, &ACPlayer::PickUp);
 	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACPlayer::InventoryToggle);
+	PlayerInputComponent->BindAction("SkillTree", EInputEvent::IE_Pressed, this, &ACPlayer::SkillTreeToggle);
+	PlayerInputComponent->BindAction("EquipWidget", EInputEvent::IE_Pressed, this, &ACPlayer::EquipToggle);
 	PlayerInputComponent->BindAction("OnDebug", EInputEvent::IE_Pressed, this, &ACPlayer::OnDebug);
 	PlayerInputComponent->BindAction("Riding", EInputEvent::IE_Pressed, this, &ACPlayer::OnRiding);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
@@ -215,26 +220,17 @@ void ACPlayer::PickUp()
 
 void ACPlayer::InventoryToggle()
 {
-	if (InventoryWidget->IsVisible())
-	{
-		GetController<APlayerController>()->SetShowMouseCursor(false);
+	Inventory->WidgetToggle();
+}
 
-		GetController<APlayerController>()->SetInputMode(FInputModeGameOnly());
+void ACPlayer::SkillTreeToggle()
+{
+	Skill->WidgetToggle();
+}
 
-		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-	}
-	else
-	{
-		GetController<APlayerController>()->SetShowMouseCursor(true);
-
-		FInputModeGameAndUI mode;
-		mode.SetHideCursorDuringCapture(false);
-		mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		GetController<APlayerController>()->SetInputMode(mode);
-
-		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-		InventoryWidget->SetFocus();
-	}
+void ACPlayer::EquipToggle()
+{
+	Equip->WidgetToggle();
 }
 
 void ACPlayer::OnDebug()
@@ -260,7 +256,6 @@ void ACPlayer::OnJump()
 		LaunchCharacter(FVector::UpVector * SecondJumpPower, false, false);
 	}
 }
-
 
 void ACPlayer::OnPickUpWidget(UCItem* InItem)
 {

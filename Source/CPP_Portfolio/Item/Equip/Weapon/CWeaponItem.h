@@ -16,6 +16,10 @@ public:
 	void InitializeWeaponItem(class ACEquipActor* InEquipActor, class UCDoAction* InDoAction, class UCEquipment_Weapon* InEquipment, EWeaponType InWeaponType, float InMinDamage, float InMaxDamage);
 	virtual void UseItem() override;
 	virtual void DestroyItem() override;
+
+	virtual void Equip() override;
+	virtual void Unequip() override;
+
 private:
 	void SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent);
 public:

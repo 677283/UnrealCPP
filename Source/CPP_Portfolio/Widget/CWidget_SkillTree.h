@@ -8,5 +8,7 @@ UCLASS()
 class CPP_PORTFOLIO_API UCWidget_SkillTree : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+protected:
+	virtual void NativeConstruct() override;
 };

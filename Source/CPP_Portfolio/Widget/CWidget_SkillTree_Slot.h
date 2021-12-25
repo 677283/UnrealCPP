@@ -23,11 +23,11 @@ class CPP_PORTFOLIO_API UCWidget_SkillTree_Slot : public UUserWidget
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, NoClear, meta = (BlueprintBaseOnly))
 		TSubclassOf<class UCSkill> Skill;
 	
 protected:
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, NoClear)
 		class UTexture2D* Icon;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)

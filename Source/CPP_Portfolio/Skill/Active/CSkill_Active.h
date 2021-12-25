@@ -11,9 +11,6 @@ class CPP_PORTFOLIO_API UCSkill_Active : public UCSkill
 	GENERATED_BODY()
 protected:
 	UPROPERTY(EditDefaultsOnly)
-		float Cooldown = 0;
-
-	UPROPERTY(EditDefaultsOnly)
 		TArray<EWeaponType> NeedWeaponTypes;
 
 	UPROPERTY(EditDefaultsOnly)

@@ -22,14 +22,14 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class UCInventoryComponent* Inventory;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	UPROPERTY(VisibleDefaultsOnly)
+		class USceneCaptureComponent2D* Capture;
+
+	UPROPERTY(EditDefaultsOnly, NoClear, Category = "Widget")
 		TSubclassOf<class UCWidget_PickUp> PickUpWidgetClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	UPROPERTY(EditDefaultsOnly, NoClear, Category = "Widget")
 		TSubclassOf<class UCWidget_OnRide> RideWidgetClass;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Widget")
-		TSubclassOf<class UCWidget_Inventory> InventoryWidgetClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "BasicItem")
 		FString BaiscWeaponName;
@@ -38,7 +38,7 @@ private:
 		float MouseSensitivity = 0.5;
 	
 	UPROPERTY(EditAnywhere)
-		float RotatorSpeed = 1;
+		float AttackRotatorSpeed = 1;
 
 public:
 	ACPlayer();
@@ -66,6 +66,10 @@ private:
 	void Skill_2();
 	void PickUp();
 	void InventoryToggle();
+	void SkillTreeToggle();
+	void EquipToggle();
+	
+	void WidgetToggleSetting();
 	void OnDebug();
 	void OnRiding();
 	void OnJump();
@@ -76,23 +80,13 @@ public:
 	void OnRideWidget(class ACHorse* InHorse);
 	void OffRideWidget();
 	
-public:
-	UPROPERTY()
-	class UCSkill* Slash;
-	TSubclassOf<UCSkill> SlashClass;
-	UPROPERTY()
-	class UCSkill* Throw;
-	TSubclassOf<UCSkill> ThrowClass;
-	UPROPERTY()
-	class UCSkill* BowUltimate;
 private:
 	class UCWidget_PickUp* PickUpWidget;
-	class UCWidget_Inventory* InventoryWidget;
 	class UCWidget_OnRide* RideWidget;
 	class UCharacterMovementComponent* Movement;
 
-	bool bPickUp = false;
 	class UCItem* CheckItem;
 	class ACHorse* CheckHorse;
+
 };
 

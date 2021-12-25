@@ -9,4 +9,7 @@ class CPP_PORTFOLIO_API UCWidget_QuickSlot : public UUserWidget
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+
 };

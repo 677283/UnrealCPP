@@ -12,6 +12,8 @@ void UCWidget_Inventory::NativeConstruct()
 {
 	Super::NativeConstruct();
 	
+	bIsFocusable = true;
+
 	TArray<UWidget*> widgets;
 	WidgetTree->GetAllWidgets(widgets);
 	
@@ -21,10 +23,8 @@ void UCWidget_Inventory::NativeConstruct()
 		if (!!slot)
 		{
 			Slots.Add(slot);
-			slot->OnSlotHoverd.AddDynamic(this, &UCWidget_Inventory::OnSlotHoverd);
 			slot->OnSlotReleased.AddDynamic(this, &UCWidget_Inventory::OnSlotReleased);
 			slot->OnSlotPressed.AddDynamic(this, &UCWidget_Inventory::OnSlotPressed);
-			slot->OnSlotUnhovered.AddDynamic(this, &UCWidget_Inventory::OnSlotUnhoverd);
 			slot->OnSlotDoubleClick.AddDynamic(this, &UCWidget_Inventory::OnSlotDoubleClick);
 		}
 	}
@@ -37,9 +37,6 @@ void UCWidget_Inventory::NativeConstruct()
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
 	DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
 
-	ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	Inventory = CHelpers::GetComponent<UCInventoryComponent>(player);
-	Inventory->OnInventoryUpdate.AddDynamic(this, &UCWidget_Inventory::OnInventoryUpdate);
 }
 
 void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -50,10 +47,11 @@ void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 	float x, y;
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
 	FVector2D pos(x, y);
-	FVector2D size = DragAndDrop->GetDesiredSize();
+	FVector2D size = DragAndDrop->GetCachedGeometry().GetDrawSize();
 	
-	pos.X -= size.X / 4.0f;
-	pos.Y -= size.Y / 4.0f;
+	
+	pos.X -= size.X / 2.0f;
+	pos.Y -= size.Y / 2.0f;
 	DragAndDrop->SetPositionInViewport(pos);
 }
 
@@ -71,25 +69,16 @@ FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, co
 	return reply;
 }
 
-void UCWidget_Inventory::UpdateSlot()
+void UCWidget_Inventory::SetSlotIcon(int32 InIndex, class UTexture2D* InIcon)
 {
-	for (int32 i = 0; i < Slots.Num(); i++)
-	{
-		Slots[i]->SetIcon(Inventory->GetIcon(i));
-	}
-}
-
-void UCWidget_Inventory::OnSlotHoverd(int32 InIndex)
-{
-	HoveredIndex = InIndex;
+	Slots[InIndex]->SetIcon(InIcon);
 }
 
 void UCWidget_Inventory::OnSlotPressed(int32 InIndex)
 {
-	CheckNull(Inventory->GetIcon(InIndex));
+	CheckNull(Slots[InIndex]->GetIcon());
 	{
-		DragAndDrop->SetIcon(Inventory->GetIcon(InIndex));
-		DragAndDrop->SetPositionInViewport(FVector2D(0,0));
+		DragAndDrop->SetIcon(Slots[InIndex]->GetIcon());
 	}
 	bPressed = true;
 	PressedIndex = InIndex;
@@ -107,21 +96,11 @@ void UCWidget_Inventory::OnSlotReleased(int32 InIndex)
 	}
 
 	bPressed = false;
-	Inventory->SwapItem(PressedIndex, InIndex);
-	UpdateSlot();
-}
 
-void UCWidget_Inventory::OnSlotUnhoverd(int32 InIndex)
-{
-	HoveredIndex = -1;
+	OnSwapItem.ExecuteIfBound(PressedIndex, InIndex);
 }
 
 void UCWidget_Inventory::OnSlotDoubleClick(int32 InIndex)
 {
-	Inventory->UseItem(InIndex);
-}
-
-void UCWidget_Inventory::OnInventoryUpdate()
-{
-	UpdateSlot();
+	OnUseItem.ExecuteIfBound(InIndex);
 }

@@ -28,10 +28,7 @@ void UCWeaponItem::UseItem()
 {
 	Super::UseItem();
 
-	EquipComponent = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
-	Equipment->Equip();
-	CheckNull(EquipComponent);
-	EquipComponent->EquipItem(this);
+	Equip();
 }
 
 void UCWeaponItem::DestroyItem()
@@ -42,6 +39,19 @@ void UCWeaponItem::DestroyItem()
 	EquipActor->Destroy();
 
 	Super::DestroyItem();
+}
+
+void UCWeaponItem::Equip()
+{
+	EquipComponent = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
+	Equipment->Equip();
+	CheckNull(EquipComponent);
+	EquipComponent->EquipItem(this);
+}
+
+void UCWeaponItem::Unequip()
+{
+	Equipment->Unequip();
 }
 
 void UCWeaponItem::SendDamage(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent)

@@ -14,7 +14,6 @@
 ACCharacter::ACCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
 	CHelpers::CreateComponent<UCPushingComponent>(this, &Pushing, "Pushing", GetRootComponent());
 	CHelpers::CreateActorComponent<UCEquipComponent>(this, &Equip, "Equip");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
