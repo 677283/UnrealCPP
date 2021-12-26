@@ -7,6 +7,7 @@
 #include "Components/CInventoryComponent.h"
 #include "GameFramework/Character.h"
 #include "Components/Image.h"
+#include "Components/PanelWidget.h"
 
 void UCWidget_Inventory::NativeConstruct()
 {
@@ -26,9 +27,10 @@ void UCWidget_Inventory::NativeConstruct()
 			slot->OnSlotReleased.AddDynamic(this, &UCWidget_Inventory::OnSlotReleased);
 			slot->OnSlotPressed.AddDynamic(this, &UCWidget_Inventory::OnSlotPressed);
 			slot->OnSlotDoubleClick.AddDynamic(this, &UCWidget_Inventory::OnSlotDoubleClick);
+			
 		}
 	}
-
+	
 	APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	DragAndDrop = CreateWidget<UCWidget_DragAndDrop, APlayerController>(controller, DragAndDropClass, "DragAndDrop");
 	DragAndDrop->AddToViewport(1);
@@ -37,6 +39,7 @@ void UCWidget_Inventory::NativeConstruct()
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
 	DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
 
+	
 }
 
 void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)

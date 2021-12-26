@@ -43,6 +43,7 @@ void UCWeaponItem::DestroyItem()
 
 void UCWeaponItem::Equip()
 {
+	Super::Equip();
 	EquipComponent = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
 	Equipment->Equip();
 	CheckNull(EquipComponent);
@@ -51,6 +52,7 @@ void UCWeaponItem::Equip()
 
 void UCWeaponItem::Unequip()
 {
+	Super::Unequip();
 	Equipment->Unequip();
 }
 

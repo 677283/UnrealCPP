@@ -9,9 +9,20 @@ void UCWidget_SkillTree_Slot::NativeConstruct()
 {
 	bActive = false;
 
-	UButton* btn = Cast<UButton>(GetWidgetFromName("SKILL_BTN"));
+	UButton* btn = Cast<UButton>(GetWidgetFromName("SkillIcon"));
 	CheckNull(btn);
 	btn->WidgetStyle.Normal.SetResourceObject(Icon);
+	btn->WidgetStyle.Normal.SetImageSize(FVector2D(400, 400));
+	btn->WidgetStyle.Normal.Margin = 0.0f;
+
+	btn->WidgetStyle.Hovered.SetResourceObject(Icon);
+	btn->WidgetStyle.Hovered.SetImageSize(FVector2D(400, 400));
+	btn->WidgetStyle.Hovered.Margin = 0.0f;
+
+	btn->WidgetStyle.Pressed.SetResourceObject(Icon);
+	btn->WidgetStyle.Pressed.SetImageSize(FVector2D(400, 400));
+	btn->WidgetStyle.Pressed.Margin = 0.0f;
+
 	btn->OnClicked.AddDynamic(this, &UCWidget_SkillTree_Slot::OnClicked);
 	
 	SkillComponent = CHelpers::GetComponent<UCSkillComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));

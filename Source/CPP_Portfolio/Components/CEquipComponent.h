@@ -22,7 +22,9 @@ protected:
 	
 public:
 	void WidgetToggle();
+	void AddWidget();
 	void EquipItem(class UCEquipItem* InItem);
+	void UnequipItem(FString InName);
 	FORCEINLINE class UCWeaponItem* GetWeapon() { return Weapon; }
 	bool IsHandsOn();
 

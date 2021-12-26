@@ -21,6 +21,7 @@
 #include "Widget/CWidget_Damage.h"
 #include "Widget/CWidget_OnRide.h"
 #include "Widget/CWidget_SkillTree_Tab.h"
+#include "Widget/CWidget_HUD.h"
 
 #include "CGameInstance.h"
 
@@ -45,6 +46,7 @@ ACPlayer::ACPlayer()
 
 		//EquipComponent - InventoryComponent Link
 		Equip->OnEquip.AddDynamic(Inventory, &UCInventoryComponent::OnEquip);
+		Equip->OnUnequip.AddDynamic(Inventory, &UCInventoryComponent::OnUnequip);
 
 		//View Setting
 		{
@@ -108,6 +110,14 @@ void ACPlayer::BeginPlay()
 			RideWidget = CreateWidget<UCWidget_OnRide, APlayerController>(GetController<APlayerController>(), RideWidgetClass);
 			RideWidget->AddToViewport();
 			RideWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+
+		if (!!HUDClass)
+		{
+			HUD = CreateWidget<UCWidget_HUD, APlayerController>(GetController<APlayerController>(), HUDClass);
+			HUD->AddToViewport();
+			Equip->AddWidget();
+			Inventory->AddWidget();
 		}
 	}
 

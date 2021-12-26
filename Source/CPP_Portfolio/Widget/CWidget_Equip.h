@@ -4,11 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "CWidget_Equip.generated.h"
 
-UENUM()
-enum class EEquipSlot : uint8
-{
-	Helmet, Top, Bottoms, Weapon, Weapon_Sub, Boot, Max,
-};
+DECLARE_DELEGATE_OneParam(FOnEquipAction, FString);
 
 UCLASS()
 class CPP_PORTFOLIO_API UCWidget_Equip : public UUserWidget
@@ -19,8 +15,12 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
-	void SetSlotIcon(EEquipSlot InIndex, class UTexture2D* InIcon);
+	void SetSlotIcon(FString InName, class UTexture2D* InIcon);
+	void OnSlotMouseButtonDouble(FString InName);
 
 private:
-	TArray<class UCWidget_Equip_Slot*> Slots;
+	TMap<FString, class UCWidget_Equip_Slot*> Slots;
+	
+public:
+	FOnEquipAction OnEquipAction;
 };

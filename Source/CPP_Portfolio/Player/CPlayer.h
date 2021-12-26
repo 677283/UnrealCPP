@@ -31,6 +31,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, NoClear, Category = "Widget")
 		TSubclassOf<class UCWidget_OnRide> RideWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, NoClear, Category = "Widget")
+		TSubclassOf<class UCWidget_HUD> HUDClass;
+
+
 	UPROPERTY(EditDefaultsOnly, Category = "BasicItem")
 		FString BaiscWeaponName;
 
@@ -80,9 +84,12 @@ public:
 	void OnRideWidget(class ACHorse* InHorse);
 	void OffRideWidget();
 	
+	FORCEINLINE class UCWidget_HUD* GetHUD() { return HUD; }
+
 private:
 	class UCWidget_PickUp* PickUpWidget;
 	class UCWidget_OnRide* RideWidget;
+	class UCWidget_HUD* HUD;
 	class UCharacterMovementComponent* Movement;
 
 	class UCItem* CheckItem;

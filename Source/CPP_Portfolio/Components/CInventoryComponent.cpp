@@ -4,7 +4,11 @@
 #include "Item/Equip/CEquipItem.h"
 #include "GameFramework/Character.h"
 #include "Widget/CWidget_Inventory.h"
+#include "Widget/CWidget_HUD.h"
+#include "Player/CPlayer.h"
+#include "Components/PanelWidget.h"
 
+#include "Components/CanvasPanelSlot.h"
 UCInventoryComponent::UCInventoryComponent()
 {
 	CHelpers::GetClass<UCWidget_Inventory>(&InventoryWidgetClass, "WidgetBlueprint'/Game/__ProjectFile/Widgets/Inventory/WB_Inventory.WB_Inventory_C'");
@@ -19,12 +23,7 @@ void UCInventoryComponent::BeginPlay()
 
 	CheckNull(InventoryWidgetClass);
 
-	InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(OwnerCharacter->GetController<APlayerController>(), InventoryWidgetClass, "Inventory");
-	InventoryWidget->AddToViewport();
-	InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-
-	InventoryWidget->OnSwapItem.BindUObject(this, &UCInventoryComponent::SwapItem);
-	InventoryWidget->OnUseItem.BindUObject(this, &UCInventoryComponent::UseItem);
+	
 }
 
 bool UCInventoryComponent::AddItem(class UCItem* InItem)
@@ -47,6 +46,7 @@ void UCInventoryComponent::UseItem(int32 InIndex)
 
 	if (!Inventory[InIndex])
 		SetItem(InIndex, nullptr);
+
 }
 
 void UCInventoryComponent::SwapItem(int32 InIndex_1, int32 InIndex_2)
@@ -80,7 +80,20 @@ void UCInventoryComponent::WidgetToggle()
 	}
 }
 
-void UCInventoryComponent::OnEquip(class UCItem* InEquipItem, class UCItem* InUnequipItem)
+void UCInventoryComponent::AddWidget()
+{
+	InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(OwnerCharacter->GetController<APlayerController>(), InventoryWidgetClass, "Inventory");
+	InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	if (!!Cast<ACPlayer>(GetOwner())->GetHUD())
+		Cast<ACPlayer>(GetOwner())->GetHUD()->GetMainPanel()->AddChild(InventoryWidget);
+
+	InventoryWidget->OnSwapItem.BindUObject(this, &UCInventoryComponent::SwapItem);
+	InventoryWidget->OnUseItem.BindUObject(this, &UCInventoryComponent::UseItem);
+
+}
+
+void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
 {
 	int32 index = Inventory.Find(InEquipItem);
 
@@ -90,9 +103,11 @@ void UCInventoryComponent::OnEquip(class UCItem* InEquipItem, class UCItem* InUn
 	SetItem(index, InUnequipItem);
 }
 
-void UCInventoryComponent::OnUnequip(class UCItem* InItem)
+void UCInventoryComponent::OnUnequip(UCItem* InEquipItem, UCItem* InUnequipItem)
 {
-
+	CheckNull(InUnequipItem);
+	Cast<UCEquipItem>(InUnequipItem)->Unequip();
+	AddItem(InUnequipItem);
 }
 
 int32 UCInventoryComponent::CheckSlot(UCItem* InItem)

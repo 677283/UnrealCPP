@@ -14,7 +14,7 @@ public:
 	UCItemAsset();
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "BaseInfo")
+	UPROPERTY(EditDefaultsOnly, NoClear, Category = "BaseInfo")
 		FString Name;
 
 	UPROPERTY(VisibleAnywhere, Category = "BaseInfo")
@@ -23,11 +23,11 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "BaseInfo")
 		TSubclassOf<class ACDropActor> DropActorClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = "BaseInfo")
+	UPROPERTY(EditDefaultsOnly, NoClear, Category = "BaseInfo")
 		class UTexture2D* Icon;
 
-	UPROPERTY(EditDefaultsOnly)
-		int32 MaxAmount;
+	UPROPERTY(EditDefaultsOnly, NoClear, meta = (ClampMin = 1.00))
+		int32 MaxAmount = 1;
 
 public:
 	virtual class UCItem* CreateItem(class ACharacter* InOwner, class UCItem* InItem);

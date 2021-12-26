@@ -1,23 +1,32 @@
 #include "CWidget_Equip.h"
 #include "Global.h"
 #include "Widget/CWidget_Equip_Slot.h"
+#include "Blueprint/WidgetTree.h"
 
 void UCWidget_Equip::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	Slots.Add(Cast<UCWidget_Equip_Slot>(GetWidgetFromName("Helmet")));
-	Slots.Add(Cast<UCWidget_Equip_Slot>(GetWidgetFromName("Top")));
-	Slots.Add(Cast<UCWidget_Equip_Slot>(GetWidgetFromName("Bottoms")));
-	Slots.Add(Cast<UCWidget_Equip_Slot>(GetWidgetFromName("Weapon")));
-	Slots.Add(Cast<UCWidget_Equip_Slot>(GetWidgetFromName("Weapon_Sub")));
-	Slots.Add(Cast<UCWidget_Equip_Slot>(GetWidgetFromName("Boot")));
+	TArray<UWidget*> widgets;
+	WidgetTree->GetAllWidgets(widgets);
+	for (UWidget* widget : widgets)
+	{
+		UCWidget_Equip_Slot* slot = Cast<UCWidget_Equip_Slot>(widget);
+		if (!slot) continue;
+		Slots.Add(slot->GetName(), slot);
+		slot->OnSlotMouseButtonDouble.BindUObject(this, &UCWidget_Equip::OnSlotMouseButtonDouble);
+	}
 
 	bIsFocusable = true;
 }
 
-void UCWidget_Equip::SetSlotIcon(EEquipSlot InIndex, UTexture2D* InIcon)
+void UCWidget_Equip::SetSlotIcon(FString InName, UTexture2D* InIcon)
 {
-	Slots[(uint8)InIndex]->SetIcon(InIcon);
+	(*Slots.Find(InName))->SetIcon(InIcon);
 }
 
+void UCWidget_Equip::OnSlotMouseButtonDouble(FString InName)
+{
+	OnEquipAction.ExecuteIfBound(InName);
+	(*Slots.Find(InName))->SetIcon(nullptr);
+}

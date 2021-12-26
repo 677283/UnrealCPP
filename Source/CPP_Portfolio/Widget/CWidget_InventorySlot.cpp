@@ -17,7 +17,7 @@ void UCWidget_InventorySlot::NativeConstruct()
 FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
-
+	CLog::Log("INVEN SLOT DOWN");
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
 		if (OnSlotPressed.IsBound())

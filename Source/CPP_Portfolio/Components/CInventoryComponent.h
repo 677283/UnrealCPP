@@ -32,12 +32,14 @@ public:
 	void UseItem(int32 InIndex);
 	void SwapItem(int32 InIndex_1, int32 InIndex_2);
 	void WidgetToggle();
+	void AddWidget();
+	
 
 public:
 	UFUNCTION()
 		void OnEquip(class UCItem* InEquipItem, class UCItem* InUnequipItem);
 	UFUNCTION()
-		void OnUnequip(class UCItem* InItem);
+		void OnUnequip(class UCItem* InEquipItem, class UCItem* InUnequipItem);
 
 private:
 	int32 CheckSlot(class UCItem* InItem);
