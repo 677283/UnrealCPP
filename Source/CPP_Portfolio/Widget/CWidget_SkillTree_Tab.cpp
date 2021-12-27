@@ -8,6 +8,8 @@ void UCWidget_SkillTree_Tab::NativeConstruct()
 {
 	TArray<UWidget*> widgets;
 
+	SetVisibility(ESlateVisibility::Hidden);
+
 	WidgetTree->GetAllWidgets(widgets);
 
 	for (UWidget* widget : widgets)
