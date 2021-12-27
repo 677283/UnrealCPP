@@ -12,9 +12,6 @@ class CPP_PORTFOLIO_API UCSkillComponent : public UActorComponent
 public:	
 	UCSkillComponent();
 	
-	UPROPERTY(EditDefaultsOnly, NoClear, Category = "Widget")
-		TSubclassOf<class UCWidget_SkillTree> SkillTreeWidgetClass;
-
 protected:
 	virtual void BeginPlay() override;
 
@@ -34,5 +31,4 @@ private:
 	UPROPERTY()
 	TMap<FName, class UCSkill*> Skills;
 	int32 SkillPoint = 3;
-	class UCWidget_SkillTree* SkillTreeWidget;
 };

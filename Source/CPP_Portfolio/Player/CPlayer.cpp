@@ -1,8 +1,12 @@
 #include "Player/CPlayer.h"
 #include "Global.h"
+
+#include "CGameInstance.h"
+
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/CEquipComponent.h"
@@ -11,19 +15,22 @@
 #include "Components/CStateComponent.h"
 #include "Components/CRidingComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
+
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CDoAction.h"
+
 #include "Horse/CHorse.h"
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
+
 #include "Widget/CWidget_PickUp.h"
 #include "Widget/CWidget_Inventory.h"
+#include "Widget/CWidget_Equip.h"
+#include "Widget/CWidget_SkillTree.h"
 #include "Widget/CWidget_Damage.h"
 #include "Widget/CWidget_OnRide.h"
 #include "Widget/CWidget_SkillTree_Tab.h"
 #include "Widget/CWidget_HUD.h"
-
-#include "CGameInstance.h"
 
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
@@ -116,8 +123,37 @@ void ACPlayer::BeginPlay()
 		{
 			HUD = CreateWidget<UCWidget_HUD, APlayerController>(GetController<APlayerController>(), HUDClass);
 			HUD->AddToViewport();
-			Equip->AddWidget();
-			Inventory->AddWidget();
+			//Inventory Delegate Bind
+			{
+				UCWidget_Inventory* inventoryWidget = Cast<UCWidget_Inventory>(HUD->GetWidget("Inventory"));
+				if (!!inventoryWidget)
+				{
+					inventoryWidget->OnSwapItem.BindUObject(Inventory, &UCInventoryComponent::SwapItem);
+					inventoryWidget->OnUseItem.BindUObject(Inventory, &UCInventoryComponent::UseItem);
+					inventoryWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
+
+					Inventory->OnUpdateIcon.BindUObject(inventoryWidget, &UCWidget_Inventory::SetSlotIcon);
+				}
+			}
+			//Equip Delegate Bind
+			{
+				UCWidget_Equip* equipWidget = Cast<UCWidget_Equip>(HUD->GetWidget("Equip"));
+				if (!!equipWidget)
+				{
+					equipWidget->OnEquipAction.BindUObject(Equip, &UCEquipComponent::UnequipItem);
+					equipWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
+
+					Equip->OnUpdateIcon.BindUObject(equipWidget, &UCWidget_Equip::SetSlotIcon);
+				}
+			}
+			//SkillTree Delegate Bind
+			{
+				UCWidget_SkillTree* skillTreeWidget = Cast<UCWidget_SkillTree>(HUD->GetWidget("SkillTree"));
+				if (!!skillTreeWidget)
+				{
+					skillTreeWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
+				}
+			}
 		}
 	}
 
@@ -230,17 +266,17 @@ void ACPlayer::PickUp()
 
 void ACPlayer::InventoryToggle()
 {
-	Inventory->WidgetToggle();
+	HUD->ToggleWidget("Inventory");
 }
 
 void ACPlayer::SkillTreeToggle()
 {
-	Skill->WidgetToggle();
+	HUD->ToggleWidget("SkillTree");
 }
 
 void ACPlayer::EquipToggle()
 {
-	Equip->WidgetToggle();
+	HUD->ToggleWidget("Equip");
 }
 
 void ACPlayer::OnDebug()

@@ -1,11 +1,13 @@
 #include "CWidget_Equip.h"
 #include "Global.h"
 #include "Widget/CWidget_Equip_Slot.h"
+#include "Widget/CWidget_TitleBar.h"
 #include "Blueprint/WidgetTree.h"
 
 void UCWidget_Equip::NativeConstruct()
 {
 	Super::NativeConstruct();
+	SetVisibility(ESlateVisibility::Hidden);
 
 	TArray<UWidget*> widgets;
 	WidgetTree->GetAllWidgets(widgets);

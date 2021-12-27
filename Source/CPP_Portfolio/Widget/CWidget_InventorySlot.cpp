@@ -17,7 +17,6 @@ void UCWidget_InventorySlot::NativeConstruct()
 FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
-	CLog::Log("INVEN SLOT DOWN");
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
 		if (OnSlotPressed.IsBound())
@@ -30,9 +29,6 @@ FReply UCWidget_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeomet
 	}
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
-	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, L"EMouseCaptureMode", true);
-	if (!!enumPtr)
-		CLog::Log("Test : " + enumPtr->GetNameStringByIndex((int32)Viewport->GetMouseCaptureMode()));
 	Viewport->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
 
 

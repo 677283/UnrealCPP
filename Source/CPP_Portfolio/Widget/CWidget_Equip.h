@@ -1,13 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "Widget/CWindowWidget.h"
 #include "CWidget_Equip.generated.h"
 
 DECLARE_DELEGATE_OneParam(FOnEquipAction, FString);
 
 UCLASS()
-class CPP_PORTFOLIO_API UCWidget_Equip : public UUserWidget
+class CPP_PORTFOLIO_API UCWidget_Equip : public UCWindowWidget
 {
 	GENERATED_BODY()
 
@@ -16,6 +16,7 @@ protected:
 
 public:
 	void SetSlotIcon(FString InName, class UTexture2D* InIcon);
+	
 	void OnSlotMouseButtonDouble(FString InName);
 
 private:

@@ -1,8 +1,8 @@
-#include "CWidget_DragAndDrop.h"
+#include "CWidget_InventoryDragAndDrop.h"
 #include "Global.h"
 #include "Components/Image.h"
 
-void UCWidget_DragAndDrop::NativeConstruct()
+void UCWidget_InventoryDragAndDrop::NativeConstruct()
 {
 	Super::NativeConstruct();
 
@@ -10,7 +10,7 @@ void UCWidget_DragAndDrop::NativeConstruct()
 	SetVisibility(ESlateVisibility::HitTestInvisible);
 }
 
-void UCWidget_DragAndDrop::SetIcon(class UTexture2D* InIcon)
+void UCWidget_InventoryDragAndDrop::SetIcon(class UTexture2D* InIcon)
 {
 	Icon->SetBrushResourceObject(InIcon);
 }

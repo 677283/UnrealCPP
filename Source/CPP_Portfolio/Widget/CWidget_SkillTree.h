@@ -1,11 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "Widget/CWindowWidget.h"
 #include "CWidget_SkillTree.generated.h"
 
 UCLASS()
-class CPP_PORTFOLIO_API UCWidget_SkillTree : public UUserWidget
+class CPP_PORTFOLIO_API UCWidget_SkillTree : public UCWindowWidget
 {
 	GENERATED_BODY()
 

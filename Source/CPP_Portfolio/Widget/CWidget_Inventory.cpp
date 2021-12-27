@@ -2,17 +2,19 @@
 #include "Global.h"
 #include "Item/CItemAsset.h"
 #include "Widget/CWidget_InventorySlot.h"
-#include "Widget/CWidget_DragAndDrop.h"
+#include "Widget/CWidget_InventoryDragAndDrop.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/CInventoryComponent.h"
 #include "GameFramework/Character.h"
 #include "Components/Image.h"
 #include "Components/PanelWidget.h"
 
+#include "Widget/CWidget_TitleBar.h"
+
 void UCWidget_Inventory::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+	SetVisibility(ESlateVisibility::Hidden);
 	bIsFocusable = true;
 
 	TArray<UWidget*> widgets;
@@ -32,14 +34,10 @@ void UCWidget_Inventory::NativeConstruct()
 	}
 	
 	APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	DragAndDrop = CreateWidget<UCWidget_DragAndDrop, APlayerController>(controller, DragAndDropClass, "DragAndDrop");
-	DragAndDrop->AddToViewport(1);
-	
-	int32 sizeX, sizeY;
-	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
-	DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
+	DragAndDrop = CreateWidget<UCWidget_InventoryDragAndDrop, APlayerController>(controller, DragAndDropClass, "DragAndDrop");
+	DragAndDrop->AddToViewport(44);
+	DragAndDrop->SetVisibility(ESlateVisibility::Hidden);
 
-	
 }
 
 void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -82,6 +80,7 @@ void UCWidget_Inventory::OnSlotPressed(int32 InIndex)
 	CheckNull(Slots[InIndex]->GetIcon());
 	{
 		DragAndDrop->SetIcon(Slots[InIndex]->GetIcon());
+		DragAndDrop->SetVisibility(ESlateVisibility::HitTestInvisible);
 	}
 	bPressed = true;
 	PressedIndex = InIndex;

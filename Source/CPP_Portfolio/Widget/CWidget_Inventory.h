@@ -1,20 +1,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "Widget/CWindowWidget.h"
 #include "CWidget_Inventory.generated.h"
 
 DECLARE_DELEGATE_TwoParams(FOnSwapItem, int32, int32);
 DECLARE_DELEGATE_OneParam(FOnUseItem, int32);
 
 UCLASS()
-class CPP_PORTFOLIO_API UCWidget_Inventory : public UUserWidget
+class CPP_PORTFOLIO_API UCWidget_Inventory : public UCWindowWidget
 {
 	GENERATED_BODY()
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<class UCWidget_DragAndDrop> DragAndDropClass;
+		TSubclassOf<class UCWidget_InventoryDragAndDrop> DragAndDropClass;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -34,7 +34,7 @@ private:
 
 private:
 	TArray<class UCWidget_InventorySlot*> Slots;
-	class UCWidget_DragAndDrop* DragAndDrop;
+	class UCWidget_InventoryDragAndDrop* DragAndDrop;
 	int32 PressedIndex;
 	bool bPressed=false;
 	bool bHovered = false;

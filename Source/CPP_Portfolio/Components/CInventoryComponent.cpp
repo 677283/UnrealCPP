@@ -11,7 +11,7 @@
 #include "Components/CanvasPanelSlot.h"
 UCInventoryComponent::UCInventoryComponent()
 {
-	CHelpers::GetClass<UCWidget_Inventory>(&InventoryWidgetClass, "WidgetBlueprint'/Game/__ProjectFile/Widgets/Inventory/WB_Inventory.WB_Inventory_C'");
+
 }
 
 void UCInventoryComponent::BeginPlay()
@@ -20,9 +20,6 @@ void UCInventoryComponent::BeginPlay()
 
 	Inventory.SetNum(InventorySize);
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-
-	CheckNull(InventoryWidgetClass);
-
 	
 }
 
@@ -56,41 +53,6 @@ void UCInventoryComponent::SwapItem(int32 InIndex_1, int32 InIndex_2)
 
 	SetItem(InIndex_1, Inventory[InIndex_2]);
 	SetItem(InIndex_2, temp);
-}
-
-void UCInventoryComponent::WidgetToggle()
-{
-	if (InventoryWidget->IsVisible())
-	{
-		OwnerCharacter->GetController<APlayerController>()->SetShowMouseCursor(false);
-		OwnerCharacter->GetController<APlayerController>()->SetInputMode(FInputModeGameOnly());
-		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-	}
-	else
-	{
-		OwnerCharacter->GetController<APlayerController>()->SetShowMouseCursor(true);
-		
-		FInputModeGameAndUI mode;
-		mode.SetHideCursorDuringCapture(false);
-		mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		OwnerCharacter->GetController<APlayerController>()->SetInputMode(mode);
-		
-		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-		InventoryWidget->SetFocus();
-	}
-}
-
-void UCInventoryComponent::AddWidget()
-{
-	InventoryWidget = CreateWidget<UCWidget_Inventory, APlayerController>(OwnerCharacter->GetController<APlayerController>(), InventoryWidgetClass, "Inventory");
-	InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-
-	if (!!Cast<ACPlayer>(GetOwner())->GetHUD())
-		Cast<ACPlayer>(GetOwner())->GetHUD()->GetMainPanel()->AddChild(InventoryWidget);
-
-	InventoryWidget->OnSwapItem.BindUObject(this, &UCInventoryComponent::SwapItem);
-	InventoryWidget->OnUseItem.BindUObject(this, &UCInventoryComponent::UseItem);
-
 }
 
 void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
@@ -143,5 +105,5 @@ void UCInventoryComponent::SetItem(int32 InIndex, class UCItem* InItem)
 	UTexture2D* icon;
 
 	!!InItem ? icon = InItem->GetIcon() : icon = nullptr;
-	InventoryWidget->SetSlotIcon(InIndex, icon);
+	OnUpdateIcon.ExecuteIfBound(InIndex, icon);
 }

@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CWidget_DragAndDrop.generated.h"
+#include "CWidget_InventoryDragAndDrop.generated.h"
 
 UCLASS()
-class CPP_PORTFOLIO_API UCWidget_DragAndDrop : public UUserWidget
+class CPP_PORTFOLIO_API UCWidget_InventoryDragAndDrop : public UUserWidget
 {
 	GENERATED_BODY()
 protected:

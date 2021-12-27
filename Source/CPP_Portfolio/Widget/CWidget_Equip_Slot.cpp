@@ -1,6 +1,7 @@
 #include "CWidget_Equip_Slot.h"
 #include "Global.h"
 #include "Components/Image.h"
+#include "Components/CanvasPanelSlot.h"
 
 void UCWidget_Equip_Slot::NativeConstruct()
 {
@@ -10,8 +11,6 @@ void UCWidget_Equip_Slot::NativeConstruct()
 FReply UCWidget_Equip_Slot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
-
-	CLog::Log("EQUIP SLOT DOWN");
 
 	OnSlotMouseButtonDown.ExecuteIfBound(GetName());
 

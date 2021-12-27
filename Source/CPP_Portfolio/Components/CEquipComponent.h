@@ -5,6 +5,7 @@
 #include "CEquipComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEquipComponentEquipAndUnequip, class UCItem*, InEquipItem, class UCItem*, InUnequipItem);
+DECLARE_DELEGATE_TwoParams(FEquipOnUpdateIcon, FString, class UTexture2D*);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CPP_PORTFOLIO_API UCEquipComponent : public UActorComponent
@@ -14,15 +15,10 @@ class CPP_PORTFOLIO_API UCEquipComponent : public UActorComponent
 public:	
 	UCEquipComponent();
 
-	UPROPERTY(EditDefaultsOnly, NoClear)
-		TSubclassOf<class UCWidget_Equip> EquipWidgetClass;
-
 protected:
 	virtual void BeginPlay() override;
 	
 public:
-	void WidgetToggle();
-	void AddWidget();
 	void EquipItem(class UCEquipItem* InItem);
 	void UnequipItem(FString InName);
 	FORCEINLINE class UCWeaponItem* GetWeapon() { return Weapon; }
@@ -37,4 +33,5 @@ private:
 public:
 	FOnEquipComponentEquipAndUnequip OnEquip;
 	FOnEquipComponentEquipAndUnequip OnUnequip;
+	FEquipOnUpdateIcon OnUpdateIcon;
 };

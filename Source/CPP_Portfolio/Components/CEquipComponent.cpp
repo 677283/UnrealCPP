@@ -11,7 +11,7 @@
 #include "Components/CanvasPanelSlot.h"
 UCEquipComponent::UCEquipComponent()
 {
-	CHelpers::GetClass(&EquipWidgetClass, "WidgetBlueprint'/Game/__ProjectFile/Widgets/Equip/WB_Equip.WB_Equip_C'");
+
 }
 
 void UCEquipComponent::BeginPlay()
@@ -20,41 +20,6 @@ void UCEquipComponent::BeginPlay()
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 	
-}
-
-void UCEquipComponent::WidgetToggle()
-{
-	if (EquipWidget->IsVisible())
-	{
-		OwnerCharacter->GetController<APlayerController>()->SetShowMouseCursor(false);
-		OwnerCharacter->GetController<APlayerController>()->SetInputMode(FInputModeGameOnly());
-		EquipWidget->SetVisibility(ESlateVisibility::Hidden);
-	}
-	else
-	{
-		OwnerCharacter->GetController<APlayerController>()->SetShowMouseCursor(true);
-
-		FInputModeGameAndUI mode;
-		mode.SetHideCursorDuringCapture(false);
-		mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		OwnerCharacter->GetController<APlayerController>()->SetInputMode(mode);
-
-		EquipWidget->SetVisibility(ESlateVisibility::Visible);
-		EquipWidget->SetFocus();
-	}
-}
-
-void UCEquipComponent::AddWidget()
-{
-
-	EquipWidget = CreateWidget<UCWidget_Equip, APlayerController>(OwnerCharacter->GetController<APlayerController>(), EquipWidgetClass, "Equip");
-	EquipWidget->SetVisibility(ESlateVisibility::Hidden);
-	EquipWidget->OnEquipAction.BindUObject(this, &UCEquipComponent::UnequipItem);
-
-	if (!!Cast<ACPlayer>(GetOwner())->GetHUD())
-		Cast<ACPlayer>(GetOwner())->GetHUD()->GetMainPanel()->AddChild(EquipWidget);
-
-	//Cast<UCanvasPanelSlot>(EquipWidget->Slot)->SetZOrder(1);
 }
 
 void UCEquipComponent::EquipItem(UCEquipItem* InItem)
@@ -71,7 +36,7 @@ void UCEquipComponent::EquipItem(UCEquipItem* InItem)
 		
 		UTexture2D* icon;
 		!!Weapon ? icon = Weapon->GetIcon() : icon = nullptr;
-		EquipWidget->SetSlotIcon("Weapon", icon);
+		OnUpdateIcon.ExecuteIfBound("Weapon", icon);
 		break;
 	case EEquipType::Armor:
 		//TODO °©¿Ê ÀåÂø
@@ -86,6 +51,8 @@ void UCEquipComponent::UnequipItem(FString InName)
 		if(OnUnequip.IsBound())
 			OnUnequip.Broadcast(nullptr, Weapon);
 		Weapon = nullptr;
+
+		OnUpdateIcon.ExecuteIfBound("Weapon", nullptr);
 	}
 
 }
