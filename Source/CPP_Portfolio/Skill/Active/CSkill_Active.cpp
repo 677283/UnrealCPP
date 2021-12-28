@@ -1,6 +1,7 @@
 #include "CSkill_Active.h"
 #include "Global.h"
 #include "Components/CEquipComponent.h"
+#include "GameFramework/Character.h"
 
 UCSkill_Active::UCSkill_Active()
 {
@@ -32,6 +33,7 @@ bool UCSkill_Active::WeaponCheck()
 			int32 typeSum = 0;
 			int32 weaponType = (int32)Equip->GetWeapon()->GetWeaponType();
 
+			
 			for (EWeaponType type : NeedWeaponTypes)
 			{
 				typeSum += pow(2, (int32)type);
@@ -43,4 +45,9 @@ bool UCSkill_Active::WeaponCheck()
 	}
 
 	return true;
+}
+
+void UCSkill_Active::SendDamage(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent)
+{
+	InOtherCharacter->TakeDamage(InActionDamage, InDamageEvent, InAttacker->GetController(), InAttackCauser);
 }

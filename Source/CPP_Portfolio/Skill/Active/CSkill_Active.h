@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Skill/CSkill.h"
 #include "Item/Equip/Weapon/CWeaponAsset.h"
+#include "Item/CItemStructures.h"
 #include "CSkill_Active.generated.h"
 
 UCLASS()
@@ -30,7 +31,7 @@ public:
 
 protected:
 	bool WeaponCheck();
-	void SendDamage() {};
+	void SendDamage(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent);
 
 protected:
 	class UCStateComponent* State;
