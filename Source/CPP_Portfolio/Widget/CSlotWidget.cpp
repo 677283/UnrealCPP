@@ -4,18 +4,24 @@
 #include "Interfaces/ISlotWidget.h"
 #include "BluePrint/WidgetTree.h"
 
-UCSlotWidget* UCSlotWidget::SelectData = nullptr;
+UCSlotWidget* UCSlotWidget::SelectSlot = nullptr;
 
 void UCSlotWidget::NativeConstruct()
 {
+	SetVisibility(ESlateVisibility::Visible);
+
 	IconWidget = Cast<UImage>(GetWidgetFromName(*IconWidgetName));
+
 }
 
 FReply UCSlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
-	SelectData = this;
+	UGameViewportClient* Viewport = GEngine->GameViewport;
+	Viewport->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
+
+	SelectSlot = this;
 
 	return reply;
 }
@@ -24,9 +30,13 @@ FReply UCSlotWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FP
 {
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 
-	OnDataCheck.ExecuteIfBound(this, SelectData);
+	if (SelectSlot != this)
+		OnDataCheck.ExecuteIfBound(this, SelectSlot);
 
-	SelectData = nullptr;
+	SelectSlot = nullptr;
+
+	UGameViewportClient* Viewport = GEngine->GameViewport;
+	Viewport->SetMouseCaptureMode(EMouseCaptureMode::CaptureDuringMouseDown);
 
 	return reply;
 }
@@ -38,9 +48,7 @@ void UCSlotWidget::SetData(UObject* InData)
 		SlotData = nullptr;
 		if (!!IconWidget)
 			IconWidget->SetBrushFromTexture(nullptr);
-
-		OnSetData.ExecuteIfBound(InData);
-
+		
 		return;
 	}
 	
@@ -68,6 +76,8 @@ void UCSlotWidget::SwapData(UCSlotWidget* InSlot)
 
 void UCSlotWidget::SetIcon(class UTexture2D* InIcon)
 {
+	CLog::Log("SLOT IMAGE ENTER");
 	CheckNull(IconWidget);
+	CLog::Log("SLOT IMAGE OK");
 	IconWidget->SetBrushFromTexture(InIcon);
 }

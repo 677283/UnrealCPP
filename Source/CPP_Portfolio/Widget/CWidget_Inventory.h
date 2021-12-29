@@ -4,7 +4,7 @@
 #include "Widget/CWindowWidget.h"
 #include "CWidget_Inventory.generated.h"
 
-DECLARE_DELEGATE_TwoParams(FOnSwapItem, int32, int32);
+DECLARE_DELEGATE_TwoParams(FOnSwapItem, UObject*, UObject*);
 DECLARE_DELEGATE_OneParam(FOnUseItem, int32);
 
 UCLASS()
@@ -32,8 +32,16 @@ private:
 	UFUNCTION()
 		void OnSlotDoubleClick(int32 InIndex);
 
+	void OnDataCheck(class UCSlotWidget* UpSlot, class UCSlotWidget* DownSlot);
+	void InventoryDataCheck(class UCSlotWidget* UpSlot, class UCSlotWidget* DownSlot);
+	void EquipDataCheck(class UCSlotWidget* UpSlot, class UCSlotWidget* DownSlot);
+	void QuickSlotDataCheck(class UCSlotWidget* UpSlot, class UCSlotWidget* DownSlot);
+
+public:
+	void OnAddItem(int32 InIndex, UObject* InItem);
+
 private:
-	TArray<class UCWidget_InventorySlot*> Slots;
+	TArray<class UCSlotWidget*> Slots;
 	class UCWidget_InventoryDragAndDrop* DragAndDrop;
 	int32 PressedIndex;
 	bool bPressed=false;

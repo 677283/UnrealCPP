@@ -4,6 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "CInventoryComponent.generated.h"
 
+DECLARE_DELEGATE_TwoParams(FOnAddItem, int32, UObject*);
 DECLARE_DELEGATE_TwoParams(FInventoryOnUpdateIcon, int32, class UTexture2D*);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -27,7 +28,7 @@ public:
 public:
 	bool AddItem(class UCItem* InItem);
 	void UseItem(int32 InIndex);
-	void SwapItem(int32 InIndex_1, int32 InIndex_2);
+	void SwapItem(UObject* InItem_1, UObject* InItem_2);
 	
 
 public:
@@ -45,5 +46,6 @@ private:
 	class ACharacter* OwnerCharacter;
 
 public:
+	FOnAddItem OnAddItem;
 	FInventoryOnUpdateIcon OnUpdateIcon;
 };

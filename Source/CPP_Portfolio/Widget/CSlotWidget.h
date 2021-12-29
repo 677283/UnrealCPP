@@ -4,7 +4,12 @@
 #include "Blueprint/UserWidget.h"
 #include "CSlotWidget.generated.h"
 
-DECLARE_DELEGATE_OneParam(FSlotOnSetData, UObject*);
+UENUM(BlueprintType)
+enum class ESlotType : uint8
+{
+	Inventory, Equip, SkillTree, QuickSlot, Max,
+};
+
 DECLARE_DELEGATE_TwoParams(FSlotOnDataCheck, UCSlotWidget*, UCSlotWidget*);
 
 UCLASS()
@@ -19,6 +24,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		FString IconWidgetName;
 
+	UPROPERTY(EditAnywhere, NoClear)
+		ESlotType Type;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -30,9 +37,10 @@ public:
 	void SwapData(UCSlotWidget* InSlot);
 	void SetIcon(class UTexture2D* InIcon);
 	FORCEINLINE UObject* GetData() { return SlotData; }
+	FORCEINLINE ESlotType GetSlotType() { return Type; }
 
 private:
-	static UCSlotWidget* SelectData;
+	static UCSlotWidget* SelectSlot;
 
 private:
 	UObject* SlotData;
@@ -40,5 +48,5 @@ private:
 
 public:
 	FSlotOnDataCheck OnDataCheck;
-	FSlotOnSetData OnSetData;
+
 };
