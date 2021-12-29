@@ -3,10 +3,11 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "CItemStructures.h"
+#include "Interfaces/ISlotWidget.h"
 #include "CItem.generated.h"
 
 UCLASS()
-class CPP_PORTFOLIO_API UCItem : public UObject
+class CPP_PORTFOLIO_API UCItem : public UObject, public IISlotWidget
 {
 	GENERATED_BODY()
 public:
@@ -27,7 +28,7 @@ public:
 	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
 	FORCEINLINE void SetAmount(int32 InAmount) { Amount = InAmount; }
 	FORCEINLINE int32 GetAmount() { return Amount; }
-	FORCEINLINE class UTexture2D* GetIcon() { return Icon; };
+	FORCEINLINE class UTexture2D* GetIcon() override { return Icon; };
 	FORCEINLINE FString GetItemName() { return Name; }
 
 public:

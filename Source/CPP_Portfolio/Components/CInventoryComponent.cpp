@@ -7,8 +7,8 @@
 #include "Widget/CWidget_HUD.h"
 #include "Player/CPlayer.h"
 #include "Components/PanelWidget.h"
-
 #include "Components/CanvasPanelSlot.h"
+
 UCInventoryComponent::UCInventoryComponent()
 {
 
@@ -60,6 +60,7 @@ void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
 	int32 index = Inventory.Find(InEquipItem);
 
 	CheckTrue(index == INDEX_NONE);
+
 	if (!!InUnequipItem)
 		Cast<UCEquipItem>(InUnequipItem)->Unequip();
 	SetItem(index, InUnequipItem);

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Interfaces/ISlotWidget.h"
 #include "CSkill.generated.h"
 
 DECLARE_DYNAMIC_DELEGATE(FOnCooldown);
@@ -14,7 +15,7 @@ enum class ESkillType : uint8
 
 
 UCLASS(Blueprintable)
-class CPP_PORTFOLIO_API UCSkill : public UObject
+class CPP_PORTFOLIO_API UCSkill : public UObject, public IISlotWidget
 {
 	GENERATED_BODY()
 protected:
@@ -40,6 +41,8 @@ public:
 	FORCEINLINE FName GetSkillName() { return Name; }
 	FORCEINLINE int32 GetSkillLevel() { return SkillLevel; }
 	FORCEINLINE void SkillLevelUp() { SkillLevel++; }
+	FORCEINLINE class UTexture2D* GetIcon() override { return Icon; }
+
 protected:
 	void SetSkillType(ESkillType InSkillType) { Type = InSkillType; }
 	void CooldownTick();

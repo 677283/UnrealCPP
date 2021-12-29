@@ -58,18 +58,15 @@ void UCWidget_SkillTree_Slot::UpdateSlot()
 void UCWidget_SkillTree_Slot::OnClicked()
 {
 	CheckFalse(SkillComponent->GetSkillPoint() > 0);
-	CLog::Log(SkillComponent->GetSkillPoint());
 	CheckFalse(bActive);
 	if (SkillComponent->LevelCheck(Skill) == -1)
 	{
 		UCSkill* skill = NewObject<UCSkill>(this, Skill);
 		SkillComponent->AddSkill(skill);
-		CLog::Log("CreateSkill");
 	}
 	else
 	{
 		CheckNull(SkillComponent->GetSkill(Skill));
 		SkillComponent->SkillLevelUp(Skill);
-		CLog::Log("UpSkill");
 	}
 }
