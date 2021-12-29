@@ -1,14 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Widget/CWindowWidget.h"
+#include "Widget/CWidget_Window.h"
 #include "CWidget_Inventory.generated.h"
 
 DECLARE_DELEGATE_TwoParams(FOnSwapItem, UObject*, UObject*);
-DECLARE_DELEGATE_OneParam(FOnUseItem, int32);
+DECLARE_DELEGATE_OneParam(FOnUseItem, class UCItem*);
 
 UCLASS()
-class CPP_PORTFOLIO_API UCWidget_Inventory : public UCWindowWidget
+class CPP_PORTFOLIO_API UCWidget_Inventory : public UCWidget_Window
 {
 	GENERATED_BODY()
 
@@ -25,23 +25,18 @@ public:
 	void SetSlotIcon(int32 InIndex, class UTexture2D* InIcon);
 
 private:
-	UFUNCTION()
-		void OnSlotPressed(int32 InIndex);
-	UFUNCTION()
-		void OnSlotReleased(int32 InIndex);
-	UFUNCTION()
-		void OnSlotDoubleClick(int32 InIndex);
+	void OnSlotDoubleClick(class UCWidget_Slot* InSlot);
 
-	void OnDataCheck(class UCSlotWidget* UpSlot, class UCSlotWidget* DownSlot);
-	void InventoryDataCheck(class UCSlotWidget* UpSlot, class UCSlotWidget* DownSlot);
-	void EquipDataCheck(class UCSlotWidget* UpSlot, class UCSlotWidget* DownSlot);
-	void QuickSlotDataCheck(class UCSlotWidget* UpSlot, class UCSlotWidget* DownSlot);
+	void OnDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
+	void InventoryDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
+	void EquipDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
+	void QuickSlotDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
 
 public:
 	void OnAddItem(int32 InIndex, UObject* InItem);
 
 private:
-	TArray<class UCSlotWidget*> Slots;
+	TArray<class UCWidget_Slot*> Slots;
 	class UCWidget_InventoryDragAndDrop* DragAndDrop;
 	int32 PressedIndex;
 	bool bPressed=false;

@@ -27,6 +27,7 @@ public:
 
 public:
 	bool AddItem(class UCItem* InItem);
+	bool AddItem(int32 InIndex, class UCItem* InItem);
 	void UseItem(int32 InIndex);
 	void SwapItem(UObject* InItem_1, UObject* InItem_2);
 	
@@ -39,7 +40,6 @@ public:
 
 private:
 	int32 CheckSlot(class UCItem* InItem);
-	void SetItem(int32 InIndex, class UCItem* InItem);
 
 private:
 	TArray<class UCItem*> Inventory;
@@ -47,5 +47,4 @@ private:
 
 public:
 	FOnAddItem OnAddItem;
-	FInventoryOnUpdateIcon OnUpdateIcon;
 };

@@ -1,8 +1,8 @@
-#include "CWindowWidget.h"
+#include "CWidget_Window.h"
 #include "Blueprint/WidgetTree.h"
 #include "Widget/CWidget_TitleBar.h"
 
-void UCWindowWidget::NativeConstruct()
+void UCWidget_Window::NativeConstruct()
 {
 	Super::NativeConstruct();
 
@@ -21,13 +21,13 @@ void UCWindowWidget::NativeConstruct()
 	
 }
 
-void UCWindowWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void UCWidget_Window::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
 }
 
-FReply UCWindowWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+FReply UCWidget_Window::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 	UpdateZOrder();
@@ -35,14 +35,14 @@ FReply UCWindowWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, cons
 	return reply;
 }
 
-//FReply UCWindowWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+//FReply UCWidget_Window::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 //{
 //	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 //
 //	return reply;
 //}
 
-void UCWindowWidget::UpdateZOrder()
+void UCWidget_Window::UpdateZOrder()
 {
 	OnZUpdate.ExecuteIfBound(this);
 }

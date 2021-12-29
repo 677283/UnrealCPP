@@ -32,7 +32,20 @@ bool UCInventoryComponent::AddItem(class UCItem* InItem)
 
 	OnAddItem.ExecuteIfBound(index, InItem);
 	
-	InItem->PickUpItem(OwnerCharacter);
+	if (!!InItem)
+		InItem->PickUpItem(OwnerCharacter);
+
+	return true;
+}
+
+bool UCInventoryComponent::AddItem(int32 InIndex, class UCItem* InItem)
+{
+	Inventory[InIndex] = InItem;
+
+	OnAddItem.ExecuteIfBound(InIndex, InItem);
+
+	if (!!InItem)
+		InItem->PickUpItem(OwnerCharacter);
 
 	return true;
 }
@@ -45,7 +58,7 @@ void UCInventoryComponent::UseItem(int32 InIndex)
 	Inventory[InIndex]->UseItem();
 
 	if (!Inventory[InIndex])
-		SetItem(InIndex, nullptr);
+		AddItem(InIndex, nullptr);
 
 }
 
@@ -58,23 +71,18 @@ void UCInventoryComponent::SwapItem(UObject* InItem_1, UObject* InItem_2)
 	int index2 = Inventory.Find(item2);
 
 	Inventory.Swap(index1, index2);
-
-	/*CheckTrue(!Inventory[InIndex_1] && !Inventory[InIndex_2]);
-	UCItem* temp = Inventory[InIndex_1];
-
-	SetItem(InIndex_1, Inventory[InIndex_2]);
-	SetItem(InIndex_2, temp);*/
 }
 
 void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
 {
 	int32 index = Inventory.Find(InEquipItem);
 
+	CLog::Log(index);
 	CheckTrue(index == INDEX_NONE);
 
 	if (!!InUnequipItem)
 		Cast<UCEquipItem>(InUnequipItem)->Unequip();
-	//SetItem(index, InUnequipItem);
+	AddItem(index, InUnequipItem);
 }
 
 void UCInventoryComponent::OnUnequip(UCItem* InEquipItem, UCItem* InUnequipItem)
@@ -109,13 +117,4 @@ int32 UCInventoryComponent::CheckSlot(UCItem* InItem)
 	}
 
 	return -1;
-}
-
-void UCInventoryComponent::SetItem(int32 InIndex, class UCItem* InItem)
-{
-	//Inventory[InIndex] = InItem;
-	//UTexture2D* icon;
-
-	//!!InItem ? icon = InItem->GetIcon() : icon = nullptr;
-	//OnUpdateIcon.ExecuteIfBound(InIndex, icon);
 }

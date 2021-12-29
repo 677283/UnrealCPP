@@ -2,12 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CWindowWidget.generated.h"
+#include "CWidget_Window.generated.h"
 
 DECLARE_DELEGATE_OneParam(FOnZUpdate, class UWidget*);
 
 UCLASS()
-class CPP_PORTFOLIO_API UCWindowWidget : public UUserWidget
+class CPP_PORTFOLIO_API UCWidget_Window : public UUserWidget
 {
 	GENERATED_BODY()
 	

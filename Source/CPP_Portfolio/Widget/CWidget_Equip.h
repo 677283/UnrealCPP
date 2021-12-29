@@ -1,13 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Widget/CWindowWidget.h"
+#include "Widget/CWidget_Window.h"
 #include "CWidget_Equip.generated.h"
 
 DECLARE_DELEGATE_OneParam(FOnEquipAction, FString);
 
 UCLASS()
-class CPP_PORTFOLIO_API UCWidget_Equip : public UCWindowWidget
+class CPP_PORTFOLIO_API UCWidget_Equip : public UCWidget_Window
 {
 	GENERATED_BODY()
 

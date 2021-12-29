@@ -3,7 +3,7 @@
 #include "Item/CItemAsset.h"
 #include "Widget/CWidget_InventorySlot.h"
 #include "Widget/CWidget_InventoryDragAndDrop.h"
-#include "Widget/CSlotWidget.h"
+#include "Widget/CWidget_Slot.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/CInventoryComponent.h"
 #include "GameFramework/Character.h"
@@ -29,21 +29,13 @@ void UCWidget_Inventory::NativeConstruct()
 
 		for (UWidget* widget : widgets)
 		{
-			UCSlotWidget* slot = Cast<UCSlotWidget>(widget);
+			UCWidget_Slot* slot = Cast<UCWidget_Slot>(widget);
 			if (!!slot)
 			{
 				Slots.Add(slot);
 				slot->OnDataCheck.BindUObject(this, &UCWidget_Inventory::OnDataCheck);
+				slot->OnSlotDoubleClick.BindUObject(this, &UCWidget_Inventory::OnSlotDoubleClick);
 			}
-			/*UCWidget_InventorySlot* slot = Cast<UCWidget_InventorySlot>(widget);
-			if (!!slot)
-			{
-				Slots.Add(slot);
-				slot->OnSlotReleased.AddDynamic(this, &UCWidget_Inventory::OnSlotReleased);
-				slot->OnSlotPressed.AddDynamic(this, &UCWidget_Inventory::OnSlotPressed);
-				slot->OnSlotDoubleClick.AddDynamic(this, &UCWidget_Inventory::OnSlotDoubleClick);
-
-			}*/
 		}
 	}
 
@@ -84,45 +76,14 @@ FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, co
 	return reply;
 }
 
-void UCWidget_Inventory::SetSlotIcon(int32 InIndex, UTexture2D* InIcon)
+void UCWidget_Inventory::OnSlotDoubleClick(UCWidget_Slot* InSlot)
 {
-	Slots[InIndex]->SetIcon(InIcon);
+	OnUseItem.ExecuteIfBound(Cast<UCItem>(InSlot->GetData()));
 }
 
-void UCWidget_Inventory::OnSlotPressed(int32 InIndex)
+void UCWidget_Inventory::OnDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 {
-	/*CheckNull(Slots[InIndex]->GetIcon());
-	{
-		DragAndDrop->SetIcon(Slots[InIndex]->GetIcon());
-		DragAndDrop->SetVisibility(ESlateVisibility::HitTestInvisible);
-	}
-	bPressed = true;
-	PressedIndex = InIndex;*/
-}
-
-void UCWidget_Inventory::OnSlotReleased(int32 InIndex)
-{
-	/*CheckFalse(bPressed);
-	CheckTrue(InIndex == PressedIndex);
-	
-	{
-		int32 sizeX, sizeY;
-		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
-		DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
-	}
-
-	bPressed = false;
-
-	OnSwapItem.ExecuteIfBound(PressedIndex, InIndex);*/
-}
-
-void UCWidget_Inventory::OnSlotDoubleClick(int32 InIndex)
-{
-	OnUseItem.ExecuteIfBound(InIndex);
-}
-
-void UCWidget_Inventory::OnDataCheck(UCSlotWidget* UpSlot, UCSlotWidget* DownSlot)
-{
+	CheckNull(DownSlot);
 	switch (DownSlot->GetSlotType())
 	{
 		case ESlotType::Inventory:
@@ -136,7 +97,7 @@ void UCWidget_Inventory::OnDataCheck(UCSlotWidget* UpSlot, UCSlotWidget* DownSlo
 			break;
 	}
 }
-void UCWidget_Inventory::InventoryDataCheck(UCSlotWidget* UpSlot, UCSlotWidget* DownSlot)
+void UCWidget_Inventory::InventoryDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 {
 	CheckNull(DownSlot->GetData());
 
@@ -144,19 +105,18 @@ void UCWidget_Inventory::InventoryDataCheck(UCSlotWidget* UpSlot, UCSlotWidget* 
 	OnSwapItem.ExecuteIfBound(UpSlot->GetData(), DownSlot->GetData());
 }
 
-void UCWidget_Inventory::EquipDataCheck(UCSlotWidget* UpSlot, UCSlotWidget* DownSlot)
+void UCWidget_Inventory::EquipDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 {
 
 }
 
-void UCWidget_Inventory::QuickSlotDataCheck(UCSlotWidget* UpSlot, UCSlotWidget* DownSlot)
+void UCWidget_Inventory::QuickSlotDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 {
 
 }
 
 void UCWidget_Inventory::OnAddItem(int32 InIndex, UObject* InItem)
 {
-	CLog::Log("INDEX : " + FString::FromInt(InIndex));
 	CheckFalse(Slots.Num() > InIndex);
 	Slots[InIndex]->SetData(InItem);
 }

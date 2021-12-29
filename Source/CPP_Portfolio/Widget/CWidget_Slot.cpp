@@ -1,12 +1,12 @@
-#include "CSlotWidget.h"
+#include "CWidget_Slot.h"
 #include "Global.h"
 #include "Components/Image.h"
 #include "Interfaces/ISlotWidget.h"
 #include "BluePrint/WidgetTree.h"
 
-UCSlotWidget* UCSlotWidget::SelectSlot = nullptr;
+UCWidget_Slot* UCWidget_Slot::SelectSlot = nullptr;
 
-void UCSlotWidget::NativeConstruct()
+void UCWidget_Slot::NativeConstruct()
 {
 	SetVisibility(ESlateVisibility::Visible);
 
@@ -14,7 +14,7 @@ void UCSlotWidget::NativeConstruct()
 
 }
 
-FReply UCSlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+FReply UCWidget_Slot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
@@ -26,11 +26,11 @@ FReply UCSlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const 
 	return reply;
 }
 
-FReply UCSlotWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+FReply UCWidget_Slot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 
-	if (SelectSlot != this)
+	if (SelectSlot != this && !!SelectSlot)
 		OnDataCheck.ExecuteIfBound(this, SelectSlot);
 
 	SelectSlot = nullptr;
@@ -41,7 +41,17 @@ FReply UCSlotWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FP
 	return reply;
 }
 
-void UCSlotWidget::SetData(UObject* InData)
+FReply UCWidget_Slot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	FReply reply = Super::NativeOnMouseButtonDoubleClick(InGeometry, InMouseEvent);
+
+	if (!!SlotData)
+		OnSlotDoubleClick.ExecuteIfBound(this);
+
+	return reply;
+}
+
+void UCWidget_Slot::SetData(UObject* InData)
 {
 	if (!InData)
 	{
@@ -64,7 +74,7 @@ void UCSlotWidget::SetData(UObject* InData)
 	
 }
 
-void UCSlotWidget::SwapData(UCSlotWidget* InSlot)
+void UCWidget_Slot::SwapData(UCWidget_Slot* InSlot)
 {
 	CheckNull(InSlot);
 
@@ -74,7 +84,7 @@ void UCSlotWidget::SwapData(UCSlotWidget* InSlot)
 	SetData(temp);
 }
 
-void UCSlotWidget::SetIcon(class UTexture2D* InIcon)
+void UCWidget_Slot::SetIcon(class UTexture2D* InIcon)
 {
 	CLog::Log("SLOT IMAGE ENTER");
 	CheckNull(IconWidget);

@@ -132,7 +132,6 @@ void ACPlayer::BeginPlay()
 					//inventoryWidget->OnUseItem.BindUObject(Inventory, &UCInventoryComponent::UseItem);
 					inventoryWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
 
-					Inventory->OnUpdateIcon.BindUObject(inventoryWidget, &UCWidget_Inventory::SetSlotIcon);
 					Inventory->OnAddItem.BindUObject(inventoryWidget, &UCWidget_Inventory::OnAddItem);
 				}
 			}
