@@ -14,9 +14,12 @@ protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
-	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent);
+	//virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent);
 public:
 	void SetMove(class UUserWidget* InWidget);
+
+private:
+	void OnMouseDown();
 
 private:
 	class UUserWidget* MoveWidget;

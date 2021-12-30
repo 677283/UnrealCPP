@@ -2,13 +2,25 @@
 #include "Global.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/PanelWidget.h"
+#include "Blueprint/WidgetTree.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Widget/CWidget_TitleBar_Button.h"
 
 void UCWidget_TitleBar::NativeConstruct()
 {
 //	MoveSlot = Cast<UCanvasPanelSlot>(MoveWidget->Slot);
 	Super::NativeConstruct();
 	Flag = false;
+
+	TArray<UWidget*> widgets;
+	WidgetTree->GetAllWidgets(widgets);
+
+	for (UWidget* widget : widgets)
+	{
+		UCWidget_TitleBar_Button* button = Cast<UCWidget_TitleBar_Button>(widget);
+		if (!!button)
+			button->OnMouseDwon.BindUObject(this, &UCWidget_TitleBar::OnMouseDown);
+	}
 
 }
 
@@ -33,11 +45,13 @@ void UCWidget_TitleBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 FReply UCWidget_TitleBar::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
-
-	Flag = true;
+	
+	if (MoveWidget->IsVisible())
+		Flag = true;
 
 	UGameViewportClient* Viewport = GEngine->GameViewport;
 	Viewport->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
+
 	float x, y;
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
 	FVector2D pos(x, y);
@@ -59,23 +73,30 @@ FReply UCWidget_TitleBar::NativeOnMouseButtonUp(const FGeometry& InGeometry, con
 	return reply;
 }
 
-void UCWidget_TitleBar::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
-{
-	Super::NativeOnMouseLeave(InMouseEvent);
-
-	CheckFalse(Flag);
-
-	float x, y;
-	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
-	FVector2D pos(x, y);
-
-	pos = pos / UWidgetLayoutLibrary::GetViewportScale(GetWorld());
-
-	MoveSlot->SetPosition(pos - Offset);
-}
+//void UCWidget_TitleBar::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
+//{
+//	Super::NativeOnMouseLeave(InMouseEvent);
+//
+//	CheckFalse(Flag);
+//
+//	float x, y;
+//	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
+//	FVector2D pos(x, y);
+//
+//	pos = pos / UWidgetLayoutLibrary::GetViewportScale(GetWorld());
+//
+//	MoveSlot->SetPosition(pos - Offset);
+//}
 
 void UCWidget_TitleBar::SetMove(class UUserWidget* InWidget)
 {
 	MoveWidget = InWidget;
 	MoveSlot = Cast<UCanvasPanelSlot>(InWidget->Slot);
+}
+
+void UCWidget_TitleBar::OnMouseDown()
+{
+	Flag = false;
+
+	MoveWidget->SetVisibility(ESlateVisibility::Hidden);
 }
