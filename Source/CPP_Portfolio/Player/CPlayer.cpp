@@ -130,10 +130,10 @@ void ACPlayer::BeginPlay()
 				UCWidget_Inventory* inventoryWidget = Cast<UCWidget_Inventory>(HUD->GetWidget("Inventory"));
 				if (!!inventoryWidget)
 				{
-					//inventoryWidget->OnSwapItem.BindUObject(Inventory, &UCInventoryComponent::SwapItem);
-					//inventoryWidget->OnUseItem.BindUObject(Inventory, &UCInventoryComponent::UseItem);
 					inventoryWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
-					//inventoryWidget->OnChangeEquipItem.BindUObject(Inventory,&UCInventoryComponent::UseItem())
+					inventoryWidget->OnUseItem.BindUObject(Inventory, &UCInventoryComponent::UseItem);
+					inventoryWidget->OnSwapItem.BindUObject(Inventory, &UCInventoryComponent::SwapItem);
+					inventoryWidget->OnUnequip_InvenWidget.BindUObject(Equip, &UCEquipComponent::UnequipItem);
 
 					Inventory->OnAddItem.BindUObject(inventoryWidget, &UCWidget_Inventory::OnAddItem);
 				}
@@ -143,10 +143,10 @@ void ACPlayer::BeginPlay()
 				UCWidget_Equip* equipWidget = Cast<UCWidget_Equip>(HUD->GetWidget("Equip"));
 				if (!!equipWidget)
 				{
-					equipWidget->OnEquipAction.BindUObject(Equip, &UCEquipComponent::UnequipItem);
 					equipWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
+					equipWidget->OnEquip_EquipWidget.BindUObject(Equip, &UCEquipComponent::EquipItem);
+					equipWidget->OnUnequip_EuipWidget.BindUObject(Equip, &UCEquipComponent::UnequipItem);
 
-					//Equip->OnUpdateIcon.BindUObject(equipWidget, &UCWidget_Equip::SetSlotIcon);
 					Equip->OnEquipWidget.BindUObject(equipWidget, &UCWidget_Equip::OnEquipWidget);
 				}
 			}

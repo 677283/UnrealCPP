@@ -91,5 +91,6 @@ void ACEquipActor::Equip()
 
 void ACEquipActor::Unequip()
 {
+	CLog::Log("ACTOR UNEQUIP");
 	Mesh->SetVisibility(false);
 }

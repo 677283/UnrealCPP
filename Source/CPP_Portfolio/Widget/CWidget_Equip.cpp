@@ -23,17 +23,8 @@ void UCWidget_Equip::NativeConstruct()
 		Slots.Add(slot->GetName(), slot);
 		slot->OnDataCheck.BindUObject(this, &UCWidget_Equip::OnDataCheck);
 		slot->OnSlotDoubleClick.BindUObject(this, &UCWidget_Equip::OnSlotDoubleClick);
-		/*UCWidget_Equip_Slot* slot = Cast<UCWidget_Equip_Slot>(widget);
-		if (!slot) continue;
-		Slots.Add(slot->GetName(), slot);
-		slot->OnSlotMouseButtonDouble.BindUObject(this, &UCWidget_Equip::OnSlotMouseButtonDouble);*/
 	}
 
-}
-
-void UCWidget_Equip::SetSlotIcon(FString InName, UTexture2D* InIcon)
-{
-	//(*Slots.Find(InName))->SetIcon(InIcon);
 }
 
 void UCWidget_Equip::OnDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
@@ -55,16 +46,15 @@ void UCWidget_Equip::InventoryDataCheck(class UCWidget_Slot* UpSlot, class UCWid
 		UCWeaponItem* weapon = Cast<UCWeaponItem>(DownSlot->GetData());
 		if (!!weapon)
 		{
-			weapon->Equip();
-			UpSlot->SwapData(DownSlot);
+			weapon->UseItem();
+			OnEquip_EquipWidget.ExecuteIfBound(weapon);
 		}
 	}
 }
 
 void UCWidget_Equip::OnSlotDoubleClick(UCWidget_Slot* InSlot)
 {
-	//OnEquipAction.ExecuteIfBound(InName);
-	//(*Slots.Find(InName))->SetIcon(nullptr);
+	OnUnequip_EuipWidget.ExecuteIfBound(InSlot->GetName());
 }
 
 void UCWidget_Equip::OnEquipWidget(FString InSlotName, UObject* InItem)

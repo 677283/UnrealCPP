@@ -5,7 +5,7 @@
 
 UCEquipItem::UCEquipItem()
 {
-
+	bEquipping = false;
 }
 
 void UCEquipItem::InitializeEquipItem(EEquipType InEquipType)
@@ -15,7 +15,7 @@ void UCEquipItem::InitializeEquipItem(EEquipType InEquipType)
 
 void UCEquipItem::UseItem()
 {
-	if (bEquipping)
+	if (!bEquipping)
 		Equip();
 	else
 		Unequip();

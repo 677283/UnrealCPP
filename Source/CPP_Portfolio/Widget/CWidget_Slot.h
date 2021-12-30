@@ -22,6 +22,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		TArray<TSubclassOf<UObject>> SlotDataClasses;
 	
+	UPROPERTY(EditAnywhere, NoClear)
+		TSubclassOf<class UCWidget_DragAndDrop> DragAndDropClass;
+
 	UPROPERTY(EditAnywhere)
 		FString IconWidgetName;
 
@@ -30,6 +33,7 @@ private:
 
 protected:
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
@@ -43,6 +47,7 @@ public:
 
 private:
 	static UCWidget_Slot* SelectSlot;
+	static class UCWidget_DragAndDrop* DragAndDrop;
 
 private:
 	UObject* SlotData;

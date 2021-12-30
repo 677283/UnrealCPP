@@ -40,10 +40,10 @@ void UCWidget_Inventory::NativeConstruct()
 		}
 	}
 
-	APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	/*APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	DragAndDrop = CreateWidget<UCWidget_InventoryDragAndDrop, APlayerController>(controller, DragAndDropClass, "DragAndDrop");
 	DragAndDrop->AddToViewport(44);
-	DragAndDrop->SetVisibility(ESlateVisibility::Hidden);
+	DragAndDrop->SetVisibility(ESlateVisibility::Hidden);*/
 
 }
 
@@ -52,26 +52,26 @@ void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 	Super::NativeTick(MyGeometry, InDeltaTime);
 	CheckFalse(bPressed);
 
-	float x, y;
-	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
-	FVector2D pos(x, y);
-	FVector2D size = DragAndDrop->GetCachedGeometry().GetDrawSize();
-	
-	
-	pos.X -= size.X / 2.0f;
-	pos.Y -= size.Y / 2.0f;
-	DragAndDrop->SetPositionInViewport(pos);
+	//float x, y;
+	//UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
+	//FVector2D pos(x, y);
+	//FVector2D size = DragAndDrop->GetCachedGeometry().GetDrawSize();
+	//
+	//
+	//pos.X -= size.X / 2.0f;
+	//pos.Y -= size.Y / 2.0f;
+	//DragAndDrop->SetPositionInViewport(pos);
 }
 
 FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 	CheckFalseResult(bPressed, reply);
-	{
+	/*{
 		int32 sizeX, sizeY;
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
 		DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
-	}
+	}*/
 	bPressed = false;
 
 	return reply;
@@ -103,20 +103,28 @@ void UCWidget_Inventory::InventoryDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot
 	CheckNull(DownSlot->GetData());
 
 	DownSlot->SwapData(UpSlot);
-	OnSwapItem.ExecuteIfBound(UpSlot->GetData(), DownSlot->GetData());
+	OnSwapItem.ExecuteIfBound(Slots.Find(UpSlot), Slots.Find(DownSlot));
 }
 
 void UCWidget_Inventory::EquipDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 {
 	FString slotName = DownSlot->GetName();
-
 	if (slotName == "Weapon")
 	{
-		UCWeaponItem* weapon = Cast<UCWeaponItem>(UpSlot->GetData());
+		if (!UpSlot->GetData())
+		{
+			OnUnequip_InvenWidget.ExecuteIfBound("Weapon");
+		}
+		else 
+		{
+			UCWeaponItem* weapon = Cast<UCWeaponItem>(UpSlot->GetData());
 
-		if (!weapon) return;
+			if (!weapon) return;
 
-		OnUseItem.ExecuteIfBound(weapon);
+			OnUseItem.ExecuteIfBound(weapon);
+
+		}
+
 
 	}
 }

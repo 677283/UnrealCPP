@@ -59,10 +59,15 @@ void UCInventoryComponent::UseItem(int32 InIndex)
 
 	UCEquipItem* equipItem = Cast<UCEquipItem>(Inventory[InIndex]);
 	if (!!equipItem)
-
+	{
+		OnEquipInventory.ExecuteIfBound(equipItem);
+	}
 
 	if (!Inventory[InIndex])
+	{
 		AddItem(InIndex, nullptr);
+
+	}
 
 }
 
@@ -73,19 +78,20 @@ void UCInventoryComponent::UseItem(class UCItem* InItem)
 
 	Inventory[index]->UseItem();
 
+	UCEquipItem* equipItem = Cast<UCEquipItem>(Inventory[index]);
+	if (!!equipItem)
+	{
+		OnEquipInventory.ExecuteIfBound(equipItem);
+	}
+
 	if (!Inventory[index])
 		AddItem(index, nullptr);
 }
 
-void UCInventoryComponent::SwapItem(UObject* InItem_1, UObject* InItem_2)
+void UCInventoryComponent::SwapItem(int32 InIndex_1, int32 InIndex_2)
 {
-	UCItem* item1 = Cast<UCItem>(InItem_1);
-	UCItem* item2 = Cast<UCItem>(InItem_2);
-
-	int index1 = Inventory.Find(item1);
-	int index2 = Inventory.Find(item2);
-
-	Inventory.Swap(index1, index2);
+	CLog::Log(FString::FromInt(InIndex_1) + " _ " + FString::FromInt(InIndex_2));
+	Inventory.Swap(InIndex_1, InIndex_2);
 }
 
 void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
@@ -94,8 +100,13 @@ void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
 
 	CheckTrue(index == INDEX_NONE);
 
+
 	if (!!InUnequipItem)
+	{
+		CLog::Log(index);
 		Cast<UCEquipItem>(InUnequipItem)->Unequip();
+	}
+
 	AddItem(index, InUnequipItem);
 }
 

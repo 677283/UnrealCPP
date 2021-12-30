@@ -4,9 +4,10 @@
 #include "Widget/CWidget_Window.h"
 #include "CWidget_Inventory.generated.h"
 
-DECLARE_DELEGATE_TwoParams(FOnSwapItem, UObject*, UObject*);
+DECLARE_DELEGATE_TwoParams(FOnSwapItem, int32, int32);
 DECLARE_DELEGATE_OneParam(FOnUseItem, class UCItem*);
 DECLARE_DELEGATE_OneParam(FOnChangeEquipItem, class UCItem*);
+DECLARE_DELEGATE_OneParam(FOnUnequip_InvenWidget, FString);
 
 UCLASS()
 class CPP_PORTFOLIO_API UCWidget_Inventory : public UCWidget_Window
@@ -47,4 +48,5 @@ public:
 	FOnSwapItem OnSwapItem;
 	FOnUseItem OnUseItem;
 	FOnChangeEquipItem OnChangeEquipItem;
+	FOnUnequip_InvenWidget OnUnequip_InvenWidget;
 };

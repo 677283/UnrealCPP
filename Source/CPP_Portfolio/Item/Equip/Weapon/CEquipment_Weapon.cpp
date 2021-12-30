@@ -24,7 +24,6 @@ void UCEquipment_Weapon::Equip()
 void UCEquipment_Weapon::Unequip()
 {
 	Super::Unequip();
-
 	if (OnUnequip.IsBound())
 		OnUnequip.Broadcast();
 }
