@@ -4,8 +4,9 @@
 #include "Components/ActorComponent.h"
 #include "CEquipComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEquipComponentEquipAndUnequip, class UCItem*, InEquipItem, class UCItem*, InUnequipItem);
-DECLARE_DELEGATE_TwoParams(FEquipOnUpdateIcon, FString, class UTexture2D*);
+DECLARE_DELEGATE_TwoParams(FOnEquip_EquipComponent, class UCItem*, class UCItem*);
+DECLARE_DELEGATE_RetVal_OneParam(bool, FOnUnequip_EquipComponent, class UCItem*);
+DECLARE_DELEGATE_TwoParams(FOnEquipWidget, FString, class UObject*);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CPP_PORTFOLIO_API UCEquipComponent : public UActorComponent
@@ -31,7 +32,8 @@ private:
 	class UCWidget_Equip* EquipWidget;
 
 public:
-	FOnEquipComponentEquipAndUnequip OnEquip;
-	FOnEquipComponentEquipAndUnequip OnUnequip;
-	FEquipOnUpdateIcon OnUpdateIcon;
+	FOnEquip_EquipComponent OnEquip;
+	FOnUnequip_EquipComponent OnUnequip;
+	FOnEquipWidget OnEquipWidget;
+	//FOnEquipWidget OnUnequipWidget;
 };

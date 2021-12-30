@@ -29,17 +29,12 @@ void UCEquipComponent::EquipItem(UCEquipItem* InItem)
 	switch (InItem->GetEquipType())
 	{
 	case EEquipType::Weapon:
-		if (OnEquip.IsBound())
-			OnEquip.Broadcast(InItem, Weapon);
+		OnEquip.ExecuteIfBound(InItem, Weapon);
+
+		OnEquipWidget.ExecuteIfBound("Weapon", InItem);
 
 		Weapon = Cast<UCWeaponItem>(InItem);
 		
-		UTexture2D* icon;
-		!!Weapon ? icon = Weapon->GetIcon() : icon = nullptr;
-		OnUpdateIcon.ExecuteIfBound("Weapon", icon);
-		break;
-	case EEquipType::Armor:
-		//TODO °©¿Ê ÀåÂø
 		break;
 	}
 }
@@ -48,11 +43,16 @@ void UCEquipComponent::UnequipItem(FString InName)
 {
 	if (InName == "Weapon")
 	{
-		if(OnUnequip.IsBound())
-			OnUnequip.Broadcast(nullptr, Weapon);
-		Weapon = nullptr;
+		if (!Weapon) return;
 
-		OnUpdateIcon.ExecuteIfBound("Weapon", nullptr);
+		if (OnUnequip.IsBound())
+		{
+			if (OnUnequip.Execute(Weapon))
+			{
+				Weapon = nullptr;
+				OnEquipWidget.ExecuteIfBound("Weapon", nullptr);
+			}
+		}
 	}
 
 }

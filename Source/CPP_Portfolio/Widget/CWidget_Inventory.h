@@ -6,6 +6,7 @@
 
 DECLARE_DELEGATE_TwoParams(FOnSwapItem, UObject*, UObject*);
 DECLARE_DELEGATE_OneParam(FOnUseItem, class UCItem*);
+DECLARE_DELEGATE_OneParam(FOnChangeEquipItem, class UCItem*);
 
 UCLASS()
 class CPP_PORTFOLIO_API UCWidget_Inventory : public UCWidget_Window
@@ -45,4 +46,5 @@ private:
 public:
 	FOnSwapItem OnSwapItem;
 	FOnUseItem OnUseItem;
+	FOnChangeEquipItem OnChangeEquipItem;
 };

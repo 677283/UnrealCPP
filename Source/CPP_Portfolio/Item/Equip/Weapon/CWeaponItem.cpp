@@ -44,10 +44,7 @@ void UCWeaponItem::DestroyItem()
 void UCWeaponItem::Equip()
 {
 	Super::Equip();
-	EquipComponent = CHelpers::GetComponent<UCEquipComponent>(OwnerCharacter);
 	Equipment->Equip();
-	CheckNull(EquipComponent);
-	EquipComponent->EquipItem(this);
 }
 
 void UCWeaponItem::Unequip()

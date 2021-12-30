@@ -52,14 +52,29 @@ bool UCInventoryComponent::AddItem(int32 InIndex, class UCItem* InItem)
 
 void UCInventoryComponent::UseItem(int32 InIndex)
 {
-	CheckNull(Inventory[InIndex]);
 	CheckFalse(InIndex > -1 && InIndex < Inventory.Num());
+	CheckNull(Inventory[InIndex]);
 
 	Inventory[InIndex]->UseItem();
+
+	UCEquipItem* equipItem = Cast<UCEquipItem>(Inventory[InIndex]);
+	if (!!equipItem)
+
 
 	if (!Inventory[InIndex])
 		AddItem(InIndex, nullptr);
 
+}
+
+void UCInventoryComponent::UseItem(class UCItem* InItem)
+{
+	int32 index = Inventory.Find(InItem);
+	CheckTrue(index == INDEX_NONE);
+
+	Inventory[index]->UseItem();
+
+	if (!Inventory[index])
+		AddItem(index, nullptr);
 }
 
 void UCInventoryComponent::SwapItem(UObject* InItem_1, UObject* InItem_2)
@@ -77,7 +92,6 @@ void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
 {
 	int32 index = Inventory.Find(InEquipItem);
 
-	CLog::Log(index);
 	CheckTrue(index == INDEX_NONE);
 
 	if (!!InUnequipItem)
@@ -85,11 +99,11 @@ void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
 	AddItem(index, InUnequipItem);
 }
 
-void UCInventoryComponent::OnUnequip(UCItem* InEquipItem, UCItem* InUnequipItem)
+bool UCInventoryComponent::OnUnequip(UCItem* InUnequipItem)
 {
-	CheckNull(InUnequipItem);
+	CheckFalseResult(AddItem(InUnequipItem), false);
 	Cast<UCEquipItem>(InUnequipItem)->Unequip();
-	AddItem(InUnequipItem);
+	return true;
 }
 
 int32 UCInventoryComponent::CheckSlot(UCItem* InItem)

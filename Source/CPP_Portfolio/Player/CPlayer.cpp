@@ -52,8 +52,10 @@ ACPlayer::ACPlayer()
 		Capture->ShowFlags.Atmosphere = SFG_Transient;
 
 		//EquipComponent - InventoryComponent Link
-		Equip->OnEquip.AddDynamic(Inventory, &UCInventoryComponent::OnEquip);
-		Equip->OnUnequip.AddDynamic(Inventory, &UCInventoryComponent::OnUnequip);
+		Equip->OnEquip.BindUObject(Inventory, &UCInventoryComponent::OnEquip);
+		Equip->OnUnequip.BindUObject(Inventory, &UCInventoryComponent::OnUnequip);
+		Inventory->OnEquipInventory.BindUObject(Equip, &UCEquipComponent::EquipItem);
+
 
 		//View Setting
 		{
@@ -131,6 +133,7 @@ void ACPlayer::BeginPlay()
 					//inventoryWidget->OnSwapItem.BindUObject(Inventory, &UCInventoryComponent::SwapItem);
 					//inventoryWidget->OnUseItem.BindUObject(Inventory, &UCInventoryComponent::UseItem);
 					inventoryWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
+					//inventoryWidget->OnChangeEquipItem.BindUObject(Inventory,&UCInventoryComponent::UseItem())
 
 					Inventory->OnAddItem.BindUObject(inventoryWidget, &UCWidget_Inventory::OnAddItem);
 				}
@@ -143,7 +146,8 @@ void ACPlayer::BeginPlay()
 					equipWidget->OnEquipAction.BindUObject(Equip, &UCEquipComponent::UnequipItem);
 					equipWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
 
-					Equip->OnUpdateIcon.BindUObject(equipWidget, &UCWidget_Equip::SetSlotIcon);
+					//Equip->OnUpdateIcon.BindUObject(equipWidget, &UCWidget_Equip::SetSlotIcon);
+					Equip->OnEquipWidget.BindUObject(equipWidget, &UCWidget_Equip::OnEquipWidget);
 				}
 			}
 			//SkillTree Delegate Bind
@@ -163,8 +167,7 @@ void ACPlayer::BeginPlay()
 		{
 			UCItem* basicWeapon = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()))->CreateItem(this, BaiscWeaponName);
 			Inventory->AddItem(basicWeapon);
-			basicWeapon->PickUpItem(this);
-			basicWeapon->UseItem();
+			Inventory->UseItem(basicWeapon);
 		}
 	}
 }

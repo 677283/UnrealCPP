@@ -30,6 +30,7 @@ public:
 	FORCEINLINE int32 GetAmount() { return Amount; }
 	FORCEINLINE class UTexture2D* GetIcon() override { return Icon; };
 	FORCEINLINE FString GetItemName() { return Name; }
+	FORCEINLINE EItemType GetItemType() { return ItemType; }
 
 public:
 	UFUNCTION()

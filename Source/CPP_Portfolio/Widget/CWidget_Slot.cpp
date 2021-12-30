@@ -86,8 +86,6 @@ void UCWidget_Slot::SwapData(UCWidget_Slot* InSlot)
 
 void UCWidget_Slot::SetIcon(class UTexture2D* InIcon)
 {
-	CLog::Log("SLOT IMAGE ENTER");
 	CheckNull(IconWidget);
-	CLog::Log("SLOT IMAGE OK");
 	IconWidget->SetBrushFromTexture(InIcon);
 }

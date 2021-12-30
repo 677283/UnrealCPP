@@ -6,6 +6,7 @@
 
 DECLARE_DELEGATE_TwoParams(FOnAddItem, int32, UObject*);
 DECLARE_DELEGATE_TwoParams(FInventoryOnUpdateIcon, int32, class UTexture2D*);
+DECLARE_DELEGATE_OneParam(FInventoryOnEquip, class UCEquipItem*);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CPP_PORTFOLIO_API UCInventoryComponent : public UActorComponent
@@ -29,14 +30,13 @@ public:
 	bool AddItem(class UCItem* InItem);
 	bool AddItem(int32 InIndex, class UCItem* InItem);
 	void UseItem(int32 InIndex);
+	void UseItem(class UCItem* InItem);
 	void SwapItem(UObject* InItem_1, UObject* InItem_2);
 	
 
 public:
-	UFUNCTION()
-		void OnEquip(class UCItem* InEquipItem, class UCItem* InUnequipItem);
-	UFUNCTION()
-		void OnUnequip(class UCItem* InEquipItem, class UCItem* InUnequipItem);
+	void OnEquip(class UCItem* InEquipItem, class UCItem* InUnequipItem);
+	bool OnUnequip(class UCItem* InUnequipItem);
 
 private:
 	int32 CheckSlot(class UCItem* InItem);
@@ -47,4 +47,5 @@ private:
 
 public:
 	FOnAddItem OnAddItem;
+	FInventoryOnEquip OnEquipInventory;
 };

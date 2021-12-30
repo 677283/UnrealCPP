@@ -4,6 +4,7 @@
 #include "Widget/CWidget_InventorySlot.h"
 #include "Widget/CWidget_InventoryDragAndDrop.h"
 #include "Widget/CWidget_Slot.h"
+#include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/CInventoryComponent.h"
 #include "GameFramework/Character.h"
@@ -107,7 +108,17 @@ void UCWidget_Inventory::InventoryDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot
 
 void UCWidget_Inventory::EquipDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 {
+	FString slotName = DownSlot->GetName();
 
+	if (slotName == "Weapon")
+	{
+		UCWeaponItem* weapon = Cast<UCWeaponItem>(UpSlot->GetData());
+
+		if (!weapon) return;
+
+		OnUseItem.ExecuteIfBound(weapon);
+
+	}
 }
 
 void UCWidget_Inventory::QuickSlotDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
