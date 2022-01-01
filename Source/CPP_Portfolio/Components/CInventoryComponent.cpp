@@ -90,7 +90,6 @@ void UCInventoryComponent::UseItem(class UCItem* InItem)
 
 void UCInventoryComponent::SwapItem(int32 InIndex_1, int32 InIndex_2)
 {
-	CLog::Log(FString::FromInt(InIndex_1) + " _ " + FString::FromInt(InIndex_2));
 	Inventory.Swap(InIndex_1, InIndex_2);
 }
 

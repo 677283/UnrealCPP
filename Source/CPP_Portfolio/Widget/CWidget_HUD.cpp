@@ -70,7 +70,7 @@ void UCWidget_HUD::ToggleWidget(FString InWidgetName)
 		{
 			UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(false);
 			UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetInputMode(FInputModeGameOnly());
-			ZOrder = 0;
+			ZOrder = 1;
 		}
 	}
 

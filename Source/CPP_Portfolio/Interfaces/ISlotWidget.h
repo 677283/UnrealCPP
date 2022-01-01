@@ -16,4 +16,5 @@ class CPP_PORTFOLIO_API IISlotWidget
 
 public:
 	virtual class UTexture2D* GetIcon() = 0;
+	virtual void ActiveSlot() = 0;
 };

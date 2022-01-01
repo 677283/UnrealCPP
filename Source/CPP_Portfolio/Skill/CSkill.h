@@ -42,6 +42,7 @@ public:
 	FORCEINLINE int32 GetSkillLevel() { return SkillLevel; }
 	FORCEINLINE void SkillLevelUp() { SkillLevel++; }
 	FORCEINLINE class UTexture2D* GetIcon() override { return Icon; }
+	FORCEINLINE virtual void ActiveSlot() override { DoSkill(); }
 
 protected:
 	void SetSkillType(ESkillType InSkillType) { Type = InSkillType; }

@@ -6,7 +6,7 @@
 
 UCItem::UCItem()
 {
-
+	OnItemUpdate.AddUObject
 }
 
 void UCItem::InitializeItem(FString InName, class ACDropActor* InDrop, EItemType InType, class UTexture2D* InIcon, int32 InMaxAmount)

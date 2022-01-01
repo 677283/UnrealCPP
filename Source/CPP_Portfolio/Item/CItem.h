@@ -6,6 +6,8 @@
 #include "Interfaces/ISlotWidget.h"
 #include "CItem.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnItemUpdate);
+
 UCLASS()
 class CPP_PORTFOLIO_API UCItem : public UObject, public IISlotWidget
 {
@@ -28,7 +30,8 @@ public:
 	FORCEINLINE ACharacter* GetOwner() { return OwnerCharacter; }
 	FORCEINLINE void SetAmount(int32 InAmount) { Amount = InAmount; }
 	FORCEINLINE int32 GetAmount() { return Amount; }
-	FORCEINLINE class UTexture2D* GetIcon() override { return Icon; };
+	FORCEINLINE virtual class UTexture2D* GetIcon() override { return Icon; };
+	FORCEINLINE virtual void ActiveSlot() override { UseItem(); }
 	FORCEINLINE FString GetItemName() { return Name; }
 	FORCEINLINE EItemType GetItemType() { return ItemType; }
 
@@ -46,4 +49,7 @@ protected:
 
 	int32 MaxAmount;
 	int32 Amount = 1;
+
+public:
+	FOnItemUpdate OnItemUpdate;
 };

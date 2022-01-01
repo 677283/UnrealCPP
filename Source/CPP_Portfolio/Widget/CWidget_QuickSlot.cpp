@@ -1,13 +1,46 @@
 #include "CWidget_QuickSlot.h"
 #include "Global.h"
-#include "Components/Image.h"
+#include "Widget/CWidget_Slot.h"
+#include "Blueprint/WidgetTree.h"
+#include "Interfaces/ISlotWidget.h"
+
+void UCWidget_QuickSlot::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	SetVisibility(ESlateVisibility::Visible);
+
+	TArray<UWidget*> widgets;
+
+	WidgetTree->GetAllWidgets(widgets);
+
+	for (UWidget* widget : widgets)
+	{
+		UCWidget_Slot* slot = Cast<UCWidget_Slot>(widget);
+		
+		if (!slot) continue;
+
+		Slots.Add(slot);
+		slot->OnDataCheck.BindUObject(this, &UCWidget_QuickSlot::OnDataCheck);
+	}
+}
 
 void UCWidget_QuickSlot::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-	UImage* gauge = Cast<UImage>(GetWidgetFromName("Gauge"));
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	
+}
 
-	CheckNull(gauge);
+void UCWidget_QuickSlot::ActiveSlot(int32 InIndex)
+{
+	IISlotWidget* slotData = Cast<IISlotWidget>(Slots[InIndex]->GetData());
+	
+	CheckNull(slotData);
 
-	gauge->GetDynamicMaterial()->SetScalarParameterValue("GaugePercent", 0.5f);
+	slotData->ActiveSlot();
+}
 
+void UCWidget_QuickSlot::OnDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot)
+{
+	UpSlot->SwapData(DownSlot);
 }

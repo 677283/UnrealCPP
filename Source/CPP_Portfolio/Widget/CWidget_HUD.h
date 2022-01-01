@@ -24,5 +24,5 @@ public:
 private:
 	class UPanelWidget* MainPanel;
 	TArray<class UWidget*> Widgets;
-	int32 ZOrder=0;
+	int32 ZOrder=1;
 };
