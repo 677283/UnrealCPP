@@ -15,6 +15,8 @@ void UCEquipItem::InitializeEquipItem(EEquipType InEquipType)
 
 void UCEquipItem::UseItem()
 {
+	Super::UseItem();
+
 	if (!bEquipping)
 		Equip();
 	else

@@ -42,28 +42,6 @@ UCSkill* UCSkillComponent::GetSkill(TSubclassOf<class UCSkill> InSkillClass)
 	return nullptr;
 }
 
-//void UCSkillComponent::WidgetToggle()
-//{
-//	if (SkillTreeWidget->IsVisible())
-//	{
-//		OwnerCharacter->GetController<APlayerController>()->SetShowMouseCursor(false);
-//		OwnerCharacter->GetController<APlayerController>()->SetInputMode(FInputModeGameOnly());
-//		SkillTreeWidget->SetVisibility(ESlateVisibility::Hidden);
-//	}
-//	else
-//	{
-//		OwnerCharacter->GetController<APlayerController>()->SetShowMouseCursor(true);
-//
-//		FInputModeGameAndUI mode;
-//		mode.SetHideCursorDuringCapture(false);
-//		mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-//		OwnerCharacter->GetController<APlayerController>()->SetInputMode(mode);
-//
-//		SkillTreeWidget->SetVisibility(ESlateVisibility::Visible);
-//		SkillTreeWidget->SetFocus();
-//	}
-//}
-
 int32 UCSkillComponent::LevelCheck(TSubclassOf<class UCSkill> InSkillClass)
 {
 	CheckNullResult(InSkillClass, -1);

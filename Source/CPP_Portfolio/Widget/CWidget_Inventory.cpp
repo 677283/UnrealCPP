@@ -139,3 +139,9 @@ void UCWidget_Inventory::OnAddItem(int32 InIndex, UObject* InItem)
 	CheckFalse(Slots.Num() > InIndex);
 	Slots[InIndex]->SetData(InItem);
 }
+
+void UCWidget_Inventory::OnSlotUpdate(int32 InIndex, UCItem* InItem)
+{
+	CheckFalse(Slots.Num() > InIndex);
+	//TODO 슬롯 업데이트
+}

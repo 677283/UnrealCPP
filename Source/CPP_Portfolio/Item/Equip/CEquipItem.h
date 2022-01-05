@@ -5,6 +5,8 @@
 #include "Item/CItemStructures.h"
 #include "CEquipItem.generated.h"
 
+DECLARE_DELEGATE_OneParam(FOnEquipItem, UCEquipItem*);
+
 UCLASS()
 class CPP_PORTFOLIO_API UCEquipItem : public UCItem
 {
@@ -32,4 +34,7 @@ private:
 
 protected:
 	bool bEquipping;
+
+public:
+	FOnEquipItem OnEquipItem;
 };

@@ -24,6 +24,13 @@ public:
 	void RegisterSlot(int32 InIndex, UObject* InObject);
 	void UseSlot(int32 InIndex);
 
+	void OnUpdateItem(class UCItem* InItem);
+	void OnDestroyItem(class UCItem* InItem);
+
 private:
 	TArray<UObject*> SlotList;
+	TArray<FDelegateHandle> DelegateHandles;
+
+public:
+	FOnSlotUpdate OnSlotUpdate;
 };

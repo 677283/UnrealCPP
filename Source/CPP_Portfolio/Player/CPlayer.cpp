@@ -15,6 +15,7 @@
 #include "Components/CStateComponent.h"
 #include "Components/CRidingComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
+#include "Components/CQuickSlotComponent.h"
 
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
@@ -43,6 +44,8 @@ ACPlayer::ACPlayer()
 		CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
 		CHelpers::CreateActorComponent<UCInventoryComponent>(this, &Inventory, "Inventory");
 		CHelpers::CreateComponent<USceneCaptureComponent2D>(this, &Capture, "Capture",GetRootComponent());
+		CHelpers::CreateActorComponent<UCQuickSlotComponent>(this, &QuickSlot, "QuickSlot");
+
 		UTextureRenderTarget2D* texture;
 		CHelpers::GetAsset(&texture, "TextureRenderTarget2D'/Game/__ProjectFile/Textures/EquipTargetTexutre.EquipTargetTexutre'");
 		Capture->TextureTarget = texture;
@@ -133,9 +136,11 @@ void ACPlayer::BeginPlay()
 					inventoryWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
 					inventoryWidget->OnUseItem.BindUObject(Inventory, &UCInventoryComponent::UseItem);
 					inventoryWidget->OnSwapItem.BindUObject(Inventory, &UCInventoryComponent::SwapItem);
+
 					inventoryWidget->OnUnequip_InvenWidget.BindUObject(Equip, &UCEquipComponent::UnequipItem);
 
 					Inventory->OnAddItem.BindUObject(inventoryWidget, &UCWidget_Inventory::OnAddItem);
+					Inventory->OnSlotUpdate.BindUObject(inventoryWidget, &UCWidget_Inventory::OnSlotUpdate);
 				}
 			}
 			//Equip Delegate Bind
@@ -222,6 +227,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Released, this, &ACPlayer::Sprint_Released, 2);*/
 }
 
+//액션 함수들
 void ACPlayer::Sprint_Pressed()
 {
 	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
@@ -342,8 +348,7 @@ void ACPlayer::OffRideWidget()
 }
 
 
-//////////////////////////////Control
-
+//축매핑 함수
 void ACPlayer::OnMoveForward(float AxisValue)
 {
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);

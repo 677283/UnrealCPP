@@ -23,6 +23,9 @@ private:
 		class UCInventoryComponent* Inventory;
 
 	UPROPERTY(VisibleDefaultsOnly)
+		class UCQuickSlotComponent* QuickSlot;
+
+	UPROPERTY(VisibleDefaultsOnly)
 		class USceneCaptureComponent2D* Capture;
 
 	UPROPERTY(EditDefaultsOnly, NoClear, Category = "Widget")

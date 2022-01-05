@@ -36,6 +36,7 @@ private:
 
 public:
 	void OnAddItem(int32 InIndex, UObject* InItem);
+	void OnSlotUpdate(int32 InIndex, class UCItem* InItem);
 
 private:
 	TArray<class UCWidget_Slot*> Slots;

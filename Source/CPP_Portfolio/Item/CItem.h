@@ -6,7 +6,8 @@
 #include "Interfaces/ISlotWidget.h"
 #include "CItem.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnItemUpdate);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnUpdateItem, UCItem*);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnDestroyItem, UCItem*);
 
 UCLASS()
 class CPP_PORTFOLIO_API UCItem : public UObject, public IISlotWidget
@@ -18,7 +19,7 @@ public:
 public:
 	void InitializeItem(FString InName, class ACDropActor* InDrop, EItemType InType, class UTexture2D* InIcon, int32 InMaxAmount);
 	
-	virtual void UseItem() {}
+	virtual void UseItem();
 	virtual void DestroyItem();
 
 	virtual void DropItem(FVector InDropPosition);
@@ -51,5 +52,6 @@ protected:
 	int32 Amount = 1;
 
 public:
-	FOnItemUpdate OnItemUpdate;
+	FOnUpdateItem OnUpdateItem;
+	FOnDestroyItem OnDestroyItem;
 };

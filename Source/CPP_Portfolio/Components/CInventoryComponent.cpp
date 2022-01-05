@@ -19,33 +19,59 @@ void UCInventoryComponent::BeginPlay()
 	Super::BeginPlay();
 
 	Inventory.SetNum(InventorySize);
+	UpdateDelegateHandles.SetNum(InventorySize);
+	DestroyDelegateHandles.SetNum(InventorySize);
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 	
 }
 
-bool UCInventoryComponent::AddItem(class UCItem* InItem)
+//아이템창 비울때도 AddItem을 이용
+bool UCInventoryComponent::AddItem(UCItem* InItem)
 {
 	int32 index = CheckSlot(InItem);
 	CheckTrueResult(index == -1, false);
+
+	if (!!Inventory[index])
+	{
+		Inventory[index]->OnUpdateItem.Remove(UpdateDelegateHandles[index]);
+		Inventory[index]->OnDestroyItem.Remove(DestroyDelegateHandles[index]);
+	}
 
 	Inventory[index] = InItem;
 
 	OnAddItem.ExecuteIfBound(index, InItem);
 	
 	if (!!InItem)
+	{
 		InItem->PickUpItem(OwnerCharacter);
+		UpdateDelegateHandles[index] = InItem->OnUpdateItem.AddUObject(this, &UCInventoryComponent::OnUpdateItem);
+		DestroyDelegateHandles[index] = InItem->OnDestroyItem.AddUObject(this, &UCInventoryComponent::OnDestroyItem);
+	}
 
 	return true;
 }
 
-bool UCInventoryComponent::AddItem(int32 InIndex, class UCItem* InItem)
+bool UCInventoryComponent::AddItem(int32 InIndex, UCItem* InItem)
 {
+	if (!!Inventory[InIndex])
+	{
+		Inventory[InIndex]->OnUpdateItem.Remove(UpdateDelegateHandles[InIndex]);
+		Inventory[InIndex]->OnDestroyItem.Remove(DestroyDelegateHandles[InIndex]);
+	}
+
 	Inventory[InIndex] = InItem;
 
 	OnAddItem.ExecuteIfBound(InIndex, InItem);
 
 	if (!!InItem)
 		InItem->PickUpItem(OwnerCharacter);
+
+	if (!!InItem)
+	{
+		InItem->PickUpItem(OwnerCharacter);
+		UpdateDelegateHandles[InIndex] = InItem->OnUpdateItem.AddUObject(this, &UCInventoryComponent::OnUpdateItem);
+		DestroyDelegateHandles[InIndex] = InItem->OnDestroyItem.AddUObject(this, &UCInventoryComponent::OnDestroyItem);
+	}
 
 	return true;
 }
@@ -63,15 +89,9 @@ void UCInventoryComponent::UseItem(int32 InIndex)
 		OnEquipInventory.ExecuteIfBound(equipItem);
 	}
 
-	if (!Inventory[InIndex])
-	{
-		AddItem(InIndex, nullptr);
-
-	}
-
 }
 
-void UCInventoryComponent::UseItem(class UCItem* InItem)
+void UCInventoryComponent::UseItem(UCItem* InItem)
 {
 	int32 index = Inventory.Find(InItem);
 	CheckTrue(index == INDEX_NONE);
@@ -84,8 +104,6 @@ void UCInventoryComponent::UseItem(class UCItem* InItem)
 		OnEquipInventory.ExecuteIfBound(equipItem);
 	}
 
-	if (!Inventory[index])
-		AddItem(index, nullptr);
 }
 
 void UCInventoryComponent::SwapItem(int32 InIndex_1, int32 InIndex_2)
@@ -99,12 +117,8 @@ void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
 
 	CheckTrue(index == INDEX_NONE);
 
-
 	if (!!InUnequipItem)
-	{
-		CLog::Log(index);
 		Cast<UCEquipItem>(InUnequipItem)->Unequip();
-	}
 
 	AddItem(index, InUnequipItem);
 }
@@ -114,6 +128,25 @@ bool UCInventoryComponent::OnUnequip(UCItem* InUnequipItem)
 	CheckFalseResult(AddItem(InUnequipItem), false);
 	Cast<UCEquipItem>(InUnequipItem)->Unequip();
 	return true;
+}
+
+void UCInventoryComponent::OnUpdateItem(UCItem * InItem)
+{
+	int32 index = Inventory.Find(InItem);
+
+	CheckTrue(index == INDEX_NONE);
+
+	OnSlotUpdate.ExecuteIfBound(index, InItem);
+}
+
+void UCInventoryComponent::OnDestroyItem(UCItem* InItem)
+{
+	int32 index = Inventory.Find(InItem);
+
+	CheckTrue(index == INDEX_NONE);
+
+	OnSlotUpdate.ExecuteIfBound(index, nullptr);
+	Inventory[index] = nullptr;
 }
 
 int32 UCInventoryComponent::CheckSlot(UCItem* InItem)

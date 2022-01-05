@@ -5,9 +5,8 @@
 #include "CInventoryComponent.generated.h"
 
 DECLARE_DELEGATE_TwoParams(FOnAddItem, int32, UObject*);
-DECLARE_DELEGATE_TwoParams(FInventoryOnUpdateIcon, int32, class UTexture2D*);
 DECLARE_DELEGATE_OneParam(FInventoryOnEquip, class UCEquipItem*);
-DECLARE_DELEGATE_TwoParams(FOnSlotUpdate, int32, UObject*);
+DECLARE_DELEGATE_TwoParams(FOnSlotUpdate, int32, class UCItem*);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CPP_PORTFOLIO_API UCInventoryComponent : public UActorComponent
@@ -39,11 +38,17 @@ public:
 	void OnEquip(class UCItem* InEquipItem, class UCItem* InUnequipItem);
 	bool OnUnequip(class UCItem* InUnequipItem);
 
+	void OnUpdateItem(class UCItem* InItem);
+	void OnDestroyItem(class UCItem* InItem);
+
+
 private:
 	int32 CheckSlot(class UCItem* InItem);
 
 private:
 	TArray<class UCItem*> Inventory;
+	TArray<FDelegateHandle> UpdateDelegateHandles;
+	TArray<FDelegateHandle> DestroyDelegateHandles;
 	class ACharacter* OwnerCharacter;
 
 public:

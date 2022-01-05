@@ -6,7 +6,6 @@
 
 UCItem::UCItem()
 {
-	OnItemUpdate.AddUObject
 }
 
 void UCItem::InitializeItem(FString InName, class ACDropActor* InDrop, EItemType InType, class UTexture2D* InIcon, int32 InMaxAmount)
@@ -18,10 +17,25 @@ void UCItem::InitializeItem(FString InName, class ACDropActor* InDrop, EItemType
 	MaxAmount = InMaxAmount;
 }
 
+void UCItem::UseItem()
+{
+	if (OnUpdateItem.IsBound())
+		OnUpdateItem.Broadcast(this);
+
+	if (Amount < 1)
+		DestroyItem();
+}
+
 void UCItem::DestroyItem()
 {
 	DropActor->Destroy();
+	
+	if (OnDestroyItem.IsBound())
+		OnDestroyItem.Broadcast(this);
+	
+	
 	ConditionalBeginDestroy();
+
 }
 
 void UCItem::DropItem(FVector InDropPosition)
