@@ -5,6 +5,7 @@
 #include "Blueprint/WidgetTree.h"
 #include "GameFramework/Character.h"
 #include "Components/CSkillComponent.h"
+#include "Skill/CSkill.h"
 
 void UCWidget_SkillTree_Tab::NativeConstruct()
 {
@@ -19,7 +20,6 @@ void UCWidget_SkillTree_Tab::NativeConstruct()
 		UCWidget_Slot_SkillTree* slot = Cast<UCWidget_Slot_SkillTree>(widget);
 
 		if (!slot) continue;
-
 		Slots.Add(slot);
 		slot->OnSlotDoubleClick.BindUObject(this, &UCWidget_SkillTree_Tab::OnSlotDoubleClick);
 	}
@@ -92,18 +92,21 @@ void UCWidget_SkillTree_Tab::SkillTreeDrawLine(FPaintContext InContext)
 void UCWidget_SkillTree_Tab::OnSlotDoubleClick(class UCWidget_Slot* InSlot)
 {
 	CheckFalse(SkillComponent->GetSkillPoint() > 0);
-	CheckFalse(bActive);
+	//CheckFalse(bActive);
 
-	TSubclassOf<UCSkill> skillClass = InSlot->GetData()->StaticClass();
+	UCSkill* skill = Cast<UCSkill>(InSlot->GetData());
+	CheckNull(skill);
 
-	if (SkillComponent->LevelCheck(skillClass) == -1)
+	//CLog::Log(SkillComponent->LevelCheck(skill->StaticClass()));
+
+	if (SkillComponent->LevelCheck(skill->GetClass()) == -1)
 	{
-		UCSkill* skill = NewObject<UCSkill>(this, skillClass);
 		SkillComponent->AddSkill(skill);
+		SkillComponent->SkillLevelUp(skill->GetClass());
 	}
 	else
 	{
-		CheckNull(SkillComponent->GetSkill(skillClass));
-		SkillComponent->SkillLevelUp(skillClass);
+		CheckNull(SkillComponent->GetSkill(skill->GetClass()));
+		SkillComponent->SkillLevelUp(skill->GetClass());
 	}
 }

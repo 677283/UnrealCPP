@@ -19,7 +19,7 @@ void UCWidget_TitleBar::NativeConstruct()
 	{
 		UCWidget_TitleBar_Button* button = Cast<UCWidget_TitleBar_Button>(widget);
 		if (!!button)
-			button->OnMouseDwon.BindUObject(this, &UCWidget_TitleBar::OnMouseDown);
+			button->OnMouseDwon.BindUObject(this, &UCWidget_TitleBar::OnTitleBarButtonDown);
 	}
 
 }
@@ -94,7 +94,7 @@ void UCWidget_TitleBar::SetMove(class UUserWidget* InWidget)
 	MoveSlot = Cast<UCanvasPanelSlot>(InWidget->Slot);
 }
 
-void UCWidget_TitleBar::OnMouseDown()
+void UCWidget_TitleBar::OnTitleBarButtonDown()
 {
 	Flag = false;
 

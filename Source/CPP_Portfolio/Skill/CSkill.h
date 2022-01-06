@@ -50,7 +50,7 @@ protected:
 
 protected:
 	class ACharacter* OwnerCharacter;
-	int32 SkillLevel;
+	int32 SkillLevel = 0;
 	FTimerHandle CooldownHandle;
 	float CooldownStack;
 

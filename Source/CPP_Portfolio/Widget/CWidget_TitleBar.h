@@ -19,7 +19,7 @@ public:
 	void SetMove(class UUserWidget* InWidget);
 
 private:
-	void OnMouseDown();
+	void OnTitleBarButtonDown();
 
 private:
 	class UUserWidget* MoveWidget;

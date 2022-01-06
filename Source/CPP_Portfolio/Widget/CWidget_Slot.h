@@ -45,11 +45,9 @@ public:
 	FORCEINLINE UObject* GetData() { return SlotData; }
 	FORCEINLINE ESlotType GetSlotType() { return Type; }
 
-private:
+protected:
 	static UCWidget_Slot* SelectSlot;
 	static class UCWidget_DragAndDrop* DragAndDrop;
-
-protected:
 	UObject* SlotData;
 	class UImage* IconWidget;
 

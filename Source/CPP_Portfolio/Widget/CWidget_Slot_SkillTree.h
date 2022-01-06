@@ -27,10 +27,13 @@ private:
 		TSubclassOf<class UCSkill> Skill;
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		class UTexture2D* SkillIcon;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TArray<FSkillTreeData> NeedSkillInfo;
 
 protected:
 	virtual void NativeConstruct() override;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 public:
 	FORCEINLINE TArray<FSkillTreeData> GetNeedSkillInfo() { return NeedSkillInfo; }
