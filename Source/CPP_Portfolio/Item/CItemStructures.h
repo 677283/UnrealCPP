@@ -19,7 +19,7 @@ enum class EEquipType : uint8
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	Dual, Max,
+	Dual, Bow, Max,
 };
 
 USTRUCT(BlueprintType)

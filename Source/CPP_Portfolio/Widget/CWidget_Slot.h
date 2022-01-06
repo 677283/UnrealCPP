@@ -49,7 +49,7 @@ private:
 	static UCWidget_Slot* SelectSlot;
 	static class UCWidget_DragAndDrop* DragAndDrop;
 
-private:
+protected:
 	UObject* SlotData;
 	class UImage* IconWidget;
 

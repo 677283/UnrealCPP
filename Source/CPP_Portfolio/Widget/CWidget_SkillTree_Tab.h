@@ -16,7 +16,12 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable)
 		void SkillTreeDrawLine(FPaintContext InContext);
-private:
 
-	TArray<class UCWidget_SkillTree_Slot*> Slots;
+private:
+	void OnSlotDoubleClick(class UCWidget_Slot* InSlot);
+
+private:
+	TArray<class UCWidget_Slot_SkillTree*> Slots;
+	class UCSkillComponent* SkillComponent;
+	bool bActive;
 };

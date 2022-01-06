@@ -1,8 +1,10 @@
 #include "CWidget_SkillTree_Tab.h"
 #include "Global.h"
-#include "Widget/CWidget_SkillTree_Slot.h"
+#include "CWidget_Slot_SkillTree.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/WidgetTree.h"
+#include "GameFramework/Character.h"
+#include "Components/CSkillComponent.h"
 
 void UCWidget_SkillTree_Tab::NativeConstruct()
 {
@@ -14,19 +16,23 @@ void UCWidget_SkillTree_Tab::NativeConstruct()
 
 	for (UWidget* widget : widgets)
 	{
-		UCWidget_SkillTree_Slot* slot = Cast<UCWidget_SkillTree_Slot>(widget);
+		UCWidget_Slot_SkillTree* slot = Cast<UCWidget_Slot_SkillTree>(widget);
 
 		if (!slot) continue;
 
 		Slots.Add(slot);
+		slot->OnSlotDoubleClick.BindUObject(this, &UCWidget_SkillTree_Tab::OnSlotDoubleClick);
 	}
+
+	SkillComponent = CHelpers::GetComponent<UCSkillComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
 }
 
 int32 UCWidget_SkillTree_Tab::NativePaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
 	int32 returnInt = Super::NativePaint(Args, AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
 	FPaintContext context = FPaintContext(AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
-	for (UCWidget_SkillTree_Slot* slot : Slots)
+	for (UCWidget_Slot_SkillTree* slot : Slots)
 	{
 		TArray<FSkillTreeData> datas = slot->GetNeedSkillInfo();
 
@@ -57,7 +63,7 @@ int32 UCWidget_SkillTree_Tab::NativePaint(const FPaintArgs& Args, const FGeometr
 void UCWidget_SkillTree_Tab::SkillTreeDrawLine(FPaintContext InContext)
 {
 //	if (!InContext) return;
-	for (UCWidget_SkillTree_Slot* slot : Slots)
+	for (UCWidget_Slot_SkillTree* slot : Slots)
 	{
 		TArray<FSkillTreeData> datas = slot->GetNeedSkillInfo();
 
@@ -81,4 +87,23 @@ void UCWidget_SkillTree_Tab::SkillTreeDrawLine(FPaintContext InContext)
 		}
 	}
 
+}
+
+void UCWidget_SkillTree_Tab::OnSlotDoubleClick(class UCWidget_Slot* InSlot)
+{
+	CheckFalse(SkillComponent->GetSkillPoint() > 0);
+	CheckFalse(bActive);
+
+	TSubclassOf<UCSkill> skillClass = InSlot->GetData()->StaticClass();
+
+	if (SkillComponent->LevelCheck(skillClass) == -1)
+	{
+		UCSkill* skill = NewObject<UCSkill>(this, skillClass);
+		SkillComponent->AddSkill(skill);
+	}
+	else
+	{
+		CheckNull(SkillComponent->GetSkill(skillClass));
+		SkillComponent->SkillLevelUp(skillClass);
+	}
 }
