@@ -21,6 +21,9 @@ public:
 private:
 	void OnDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
 
+	void InventoryDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
+	void SkillTreeDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
+
 private:
 	TArray<class UCWidget_Slot*> Slots;
 };

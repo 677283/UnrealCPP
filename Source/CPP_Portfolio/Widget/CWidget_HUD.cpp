@@ -7,6 +7,7 @@
 #define INVENTORY 0
 #define EQUIP 1
 #define SKILLTREE 2
+#define QUICKSLOT 3
 
 void UCWidget_HUD::NativeConstruct()
 {
@@ -17,6 +18,7 @@ void UCWidget_HUD::NativeConstruct()
 	Widgets.Add(GetWidgetFromName("Inventory"));
 	Widgets.Add(GetWidgetFromName("Equip"));
 	Widgets.Add(GetWidgetFromName("SkillTree"));
+	Widgets.Add(GetWidgetFromName("QuickSlot"));
 
 	//Cast<UCanvasPanelSlot>(Widgets[0]->Slot)->SetZOrder()
 }
@@ -38,12 +40,13 @@ void UCWidget_HUD::ToggleWidget(FString InWidgetName)
 	{
 		for (UWidget* widget : Widgets)
 		{
-			if (widget->IsVisible())
+			if (widget->IsVisible() && widget->GetName() != "QuickSlot")
 			{
 				setting = false;
 				break;
 			}
 		}
+
 		Widgets[index]->SetVisibility(ESlateVisibility::Visible);
 		SetZOrder(Widgets[index]);
 		if (setting)
@@ -60,7 +63,7 @@ void UCWidget_HUD::ToggleWidget(FString InWidgetName)
 		Widgets[index]->SetVisibility(ESlateVisibility::Hidden);
 		for (UWidget* widget : Widgets)
 		{
-			if (widget->IsVisible())
+			if (widget->IsVisible() && widget->GetName() != "QuickSlot")
 			{
 				setting = false;
 				break;
@@ -85,6 +88,8 @@ int32 UCWidget_HUD::FindIndex(FString InName)
 		return EQUIP;
 	else if (InName == "SkillTree")
 		return SKILLTREE;
+	else if (InName == "QuickSlot")
+		return QUICKSLOT;
 
 	return -1;
 }

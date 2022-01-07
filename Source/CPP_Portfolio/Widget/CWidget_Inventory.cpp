@@ -98,6 +98,7 @@ void UCWidget_Inventory::OnDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownS
 			break;
 	}
 }
+
 void UCWidget_Inventory::InventoryDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 {
 	CheckNull(DownSlot->GetData());

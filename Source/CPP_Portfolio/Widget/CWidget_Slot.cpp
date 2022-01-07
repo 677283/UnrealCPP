@@ -42,6 +42,7 @@ FReply UCWidget_Slot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
 
 	SelectSlot = this;
 	DragAndDrop->SetActive(true);
+
 	IISlotWidget* data = Cast<IISlotWidget>(SlotData);
 	if (!!data)
 		DragAndDrop->SetIcon(data->GetIcon());
@@ -77,15 +78,6 @@ FReply UCWidget_Slot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry
 
 void UCWidget_Slot::SetData(UObject* InData)
 {
-	if (!InData)
-	{
-		SlotData = nullptr;
-		if (!!IconWidget)
-			IconWidget->SetBrushFromTexture(nullptr);
-		
-		return;
-	}
-	
 	SlotData = InData;
 	UTexture2D* icon = nullptr;
 	IISlotWidget* data = Cast<IISlotWidget>(InData);
@@ -93,9 +85,7 @@ void UCWidget_Slot::SetData(UObject* InData)
 	if (!!data)
 		icon = data->GetIcon();
 
-	if (!!IconWidget)
-		IconWidget->SetBrushFromTexture(icon);
-	
+	SetIcon(icon);
 }
 
 void UCWidget_Slot::SwapData(UCWidget_Slot* InSlot)

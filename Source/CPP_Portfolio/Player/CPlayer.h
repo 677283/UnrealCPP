@@ -92,6 +92,7 @@ public:
 private:
 	class UCWidget_PickUp* PickUpWidget;
 	class UCWidget_OnRide* RideWidget;
+	class UCWidget_QuickSlot* QuickSlotWidget;
 	class UCWidget_HUD* HUD;
 	class UCharacterMovementComponent* Movement;
 

@@ -41,7 +41,7 @@ protected:
 public:
 	void SetData(UObject* InData);
 	void SwapData(UCWidget_Slot* InSlot);
-	void SetIcon(class UTexture2D* InIcon);
+	virtual void SetIcon(class UTexture2D* InIcon);
 	FORCEINLINE UObject* GetData() { return SlotData; }
 	FORCEINLINE ESlotType GetSlotType() { return Type; }
 

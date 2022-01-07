@@ -28,6 +28,7 @@
 #include "Widget/CWidget_Inventory.h"
 #include "Widget/CWidget_Equip.h"
 #include "Widget/CWidget_SkillTree.h"
+#include "Widget/CWidget_QuickSlot.h"
 #include "Widget/CWidget_Damage.h"
 #include "Widget/CWidget_OnRide.h"
 #include "Widget/CWidget_SkillTree_Tab.h"
@@ -163,6 +164,12 @@ void ACPlayer::BeginPlay()
 					skillTreeWidget->OnZUpdate.BindUObject(HUD, &UCWidget_HUD::SetZOrder);
 				}
 			}
+
+			//QuickSlot Delegate Bind
+			{
+				QuickSlotWidget = Cast<UCWidget_QuickSlot>(HUD->GetWidget("QuickSlot"));
+
+			}
 		}
 	}
 
@@ -252,9 +259,11 @@ void ACPlayer::BasicAttack(FKey InKey)
 
 void ACPlayer::Skill_1()
 {
-	CheckNull(Skill);
-	CheckNull(Skill->GetSkill("Throw"));
-	Skill->GetSkill("Throw")->DoSkill();
+	//QuickSlot->Active
+	QuickSlotWidget->ActiveSlot(0);
+	//CheckNull(Skill);
+	//CheckNull(Skill->GetSkill("Throw"));
+	//Skill->GetSkill("Throw")->DoSkill();
 }
 
 void ACPlayer::Skill_2()

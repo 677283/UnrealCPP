@@ -43,6 +43,17 @@ void UCWidget_DragAndDrop::SetActive(bool InActive)
 
 	if (bIsActive)
 	{
+		float x, y;
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
+		FVector2D pos(x, y);
+		FVector2D size = Icon->GetCachedGeometry().GetDrawSize();
+
+		pos.X -= size.X / 2.0f;
+		pos.Y -= size.Y / 2.0f;
+
+		//pos = pos / UWidgetLayoutLibrary::GetViewportScale(GetWorld());
+
+		SetPositionInViewport(pos);
 		SetVisibility(ESlateVisibility::HitTestInvisible);
 	}
 	else

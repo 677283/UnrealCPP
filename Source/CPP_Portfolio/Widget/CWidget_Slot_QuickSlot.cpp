@@ -17,9 +17,17 @@ void UCWidget_Slot_QuickSlot::NativeConstruct()
 	Mat = UMaterialInstanceDynamic::Create(mat, this);
 
 	IconWidget->SetBrushFromMaterial(Mat);
-
+	Mat->GetTextureParameterValue(FHashedMaterialParameterInfo("Tex"), BaseTexture);
+	
 	/*UTexture2D* texture;
 	CHelpers::GetAssetDynamic(&texture, "Texture2D'/Game/__ProjectFile/Textures/SkillIcon/Icons8_31.Icons8_31'");
 	Mat->SetTextureParameterValue("Tex", texture);*/
 }
 
+void UCWidget_Slot_QuickSlot::SetIcon(UTexture2D* InIcon)
+{
+	if (!!InIcon)
+		Mat->SetTextureParameterValue("Tex", InIcon);
+	else
+		Mat->SetTextureParameterValue("Tex", BaseTexture);
+}
