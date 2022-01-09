@@ -15,7 +15,7 @@ UCItem* UCGameInstance::CreateItem(ACharacter* InOwner, FString InItemName)
 	
 	if (!asset)
 	{
-		CLog::Log("AssetNULL");
+		CLog::Log("DEV ERROR : AssetNULL");
 		return NULL;
 	}
 	return asset->CreateItem(InOwner, NULL);

@@ -16,7 +16,8 @@ public class CPP_Portfolio : ModuleRules
             "InputCore",
             "UMG",
             "SlateCore",
-            "NavigationSystem"
+            "Niagara",
+            "NavigationSystem",
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });

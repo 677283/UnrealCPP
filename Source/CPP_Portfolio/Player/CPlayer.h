@@ -23,9 +23,6 @@ private:
 		class UCInventoryComponent* Inventory;
 
 	UPROPERTY(VisibleDefaultsOnly)
-		class UCQuickSlotComponent* QuickSlot;
-
-	UPROPERTY(VisibleDefaultsOnly)
 		class USceneCaptureComponent2D* Capture;
 
 	UPROPERTY(EditDefaultsOnly, NoClear, Category = "Widget")
@@ -46,6 +43,9 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 		float AttackRotatorSpeed = 1;
+
+	UPROPERTY(EditDefaultsOnly)
+		class UNiagaraSystem* DashEffect;
 
 public:
 	ACPlayer();
@@ -76,10 +76,11 @@ private:
 	void SkillTreeToggle();
 	void EquipToggle();
 	
-	void WidgetToggleSetting();
+	//void WidgetToggleSetting();
 	void OnDebug();
 	void OnRiding();
 	void OnJump();
+	void OnDash();
 
 public:
 	void OnPickUpWidget(class UCItem* InItem);
@@ -88,6 +89,7 @@ public:
 	void OffRideWidget();
 	
 	FORCEINLINE class UCWidget_HUD* GetHUD() { return HUD; }
+	FORCEINLINE void OffDash() { bDash = false; }
 
 private:
 	class UCWidget_PickUp* PickUpWidget;
@@ -99,5 +101,8 @@ private:
 	class UCItem* CheckItem;
 	class ACHorse* CheckHorse;
 
+private:
+	class UAnimMontage* DashMontage;
+	bool bDash;
 };
 

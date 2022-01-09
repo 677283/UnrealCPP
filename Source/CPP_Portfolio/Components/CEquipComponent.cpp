@@ -25,7 +25,7 @@ void UCEquipComponent::BeginPlay()
 void UCEquipComponent::EquipItem(UCEquipItem* InItem)
 {
 	CheckNull(InItem);
-	CLog::Log("EQUIPCOMP OK");
+
 	switch (InItem->GetEquipType())
 	{
 	case EEquipType::Weapon:

@@ -47,22 +47,6 @@ void UCWidget_Inventory::NativeConstruct()
 
 }
 
-void UCWidget_Inventory::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-	Super::NativeTick(MyGeometry, InDeltaTime);
-	CheckFalse(bPressed);
-
-	//float x, y;
-	//UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(x, y);
-	//FVector2D pos(x, y);
-	//FVector2D size = DragAndDrop->GetCachedGeometry().GetDrawSize();
-	//
-	//
-	//pos.X -= size.X / 2.0f;
-	//pos.Y -= size.Y / 2.0f;
-	//DragAndDrop->SetPositionInViewport(pos);
-}
-
 FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);

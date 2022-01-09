@@ -28,6 +28,12 @@ public:
 	}
 
 	template<typename T>
+	static UClass* GetClassDynamic(FString InPath)
+	{
+		return StaticLoadClass(T::StaticClass(), NULL, *InPath);
+	}
+
+	template<typename T>
 	static void CreateComponent(AActor* InActor, T** OutComponent, FName InName, USceneComponent* InParent = NULL)
 	{
 		*OutComponent = InActor->CreateDefaultSubobject<T>(InName);

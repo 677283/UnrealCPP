@@ -16,12 +16,10 @@ void UCWidget_Slot::NativeConstruct()
 
 	if (!DragAndDrop)
 	{
-		if (!!DragAndDropClass)
-		{
-			DragAndDrop = CreateWidget<UCWidget_DragAndDrop, APlayerController>(GetOwningPlayer(), DragAndDropClass, "DragAndDrop");
-			DragAndDrop->SetVisibility(ESlateVisibility::Hidden);
-			DragAndDrop->AddToViewport(444);
-		}
+		DragAndDropClass = CHelpers::GetClassDynamic<UCWidget_DragAndDrop>("WidgetBlueprint'/Game/__ProjectFile/Widgets/WB_DragAndDrop.WB_DragAndDrop_C'");
+		DragAndDrop = CreateWidget<UCWidget_DragAndDrop, APlayerController>(GetOwningPlayer(), DragAndDropClass, "DragAndDrop");
+		DragAndDrop->SetVisibility(ESlateVisibility::Hidden);
+		DragAndDrop->AddToViewport(444);
 	}
 }
 
@@ -37,16 +35,26 @@ FReply UCWidget_Slot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
 {
 	FReply reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
-	UGameViewportClient* Viewport = GEngine->GameViewport;
-	Viewport->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
+	if (InMouseEvent.GetEffectingButton() == FKey("RightMouseButton"))
+	{
+		//CLog::Log("Right Test");
+		OnSlotRightClick.ExecuteIfBound(this);
+	}
+	else
+	{
+		if (!!SlotData)
+		{
+			UGameViewportClient* Viewport = GEngine->GameViewport;
+			Viewport->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
 
-	SelectSlot = this;
-	DragAndDrop->SetActive(true);
+			SelectSlot = this;
+			DragAndDrop->SetActive(true);
 
-	IISlotWidget* data = Cast<IISlotWidget>(SlotData);
-	if (!!data)
-		DragAndDrop->SetIcon(data->GetIcon());
-
+			IISlotWidget* data = Cast<IISlotWidget>(SlotData);
+			if (!!data)
+				DragAndDrop->SetIcon(data->GetIcon());
+		}
+	}
 	return reply;
 }
 

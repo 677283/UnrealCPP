@@ -37,6 +37,9 @@
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
+
 ACPlayer::ACPlayer()
 {
 	//Create Component
@@ -45,7 +48,6 @@ ACPlayer::ACPlayer()
 		CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
 		CHelpers::CreateActorComponent<UCInventoryComponent>(this, &Inventory, "Inventory");
 		CHelpers::CreateComponent<USceneCaptureComponent2D>(this, &Capture, "Capture",GetRootComponent());
-		CHelpers::CreateActorComponent<UCQuickSlotComponent>(this, &QuickSlot, "QuickSlot");
 
 		UTextureRenderTarget2D* texture;
 		CHelpers::GetAsset(&texture, "TextureRenderTarget2D'/Game/__ProjectFile/Textures/EquipTargetTexutre.EquipTargetTexutre'");
@@ -99,6 +101,7 @@ ACPlayer::ACPlayer()
 		Movement = CHelpers::GetComponent<UCharacterMovementComponent>(this);
 	}
 
+	CHelpers::GetAsset(&DashMontage, "AnimMontage'/Game/AdventureAnimset/Animations/ExtremeLocomotion/Anim_Dash_Montage.Anim_Dash_Montage'");
 
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -165,10 +168,9 @@ void ACPlayer::BeginPlay()
 				}
 			}
 
-			//QuickSlot Delegate Bind
+			//QuickSlot
 			{
-				QuickSlotWidget = Cast<UCWidget_QuickSlot>(HUD->GetWidget("QuickSlot"));
-
+				QuickSlotWidget = Cast<UCWidget_QuickSlot>(HUD->GetWidgetFromName("QuickSlot"));
 			}
 		}
 	}
@@ -182,6 +184,8 @@ void ACPlayer::BeginPlay()
 			Inventory->UseItem(basicWeapon);
 		}
 	}
+
+	JumpMaxCount = 2;
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -228,6 +232,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("OnDebug", EInputEvent::IE_Pressed, this, &ACPlayer::OnDebug);
 	PlayerInputComponent->BindAction("Riding", EInputEvent::IE_Pressed, this, &ACPlayer::OnRiding);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
+	PlayerInputComponent->BindAction("Dash", EInputEvent::IE_DoubleClick, this, &ACPlayer::OnDash);
 
 	//델리게이트를 이용해서 키 바인딩에 데이터 보내는 방법. 델리게이트 만들어준뒤 Template 이용
 	/*PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Pressed, this, &ACPlayer::Sprint_Pressed, 1);
@@ -259,11 +264,7 @@ void ACPlayer::BasicAttack(FKey InKey)
 
 void ACPlayer::Skill_1()
 {
-	//QuickSlot->Active
 	QuickSlotWidget->ActiveSlot(0);
-	//CheckNull(Skill);
-	//CheckNull(Skill->GetSkill("Throw"));
-	//Skill->GetSkill("Throw")->DoSkill();
 }
 
 void ACPlayer::Skill_2()
@@ -313,12 +314,25 @@ void ACPlayer::OnRiding()
 void ACPlayer::OnJump()
 {
 	Jump();
-	if (!bSecondJump && Movement->IsFalling())
-	{
-		bSecondJump = true;
-		Movement->Velocity = FVector::ZeroVector;
-		LaunchCharacter(FVector::UpVector * SecondJumpPower, false, false);
-	}
+}
+
+void ACPlayer::OnDash()
+{
+	//Todo Dash
+	//CLog::Log("DASH TEST");
+
+	CheckTrue(bDash);
+
+	FRotator rotation = GetController()->GetControlRotation();
+	rotation.Pitch = 0;
+	rotation.Roll = 0;
+
+	
+
+	SetActorRotation(rotation);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), DashEffect, GetActorLocation(), GetActorRotation());
+	PlayAnimMontage(DashMontage);
+	bDash = true;
 }
 
 void ACPlayer::OnPickUpWidget(UCItem* InItem)

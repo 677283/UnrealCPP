@@ -12,6 +12,7 @@ enum class ESlotType : uint8
 
 DECLARE_DELEGATE_TwoParams(FSlotOnDataCheck, UCWidget_Slot*, UCWidget_Slot*);
 DECLARE_DELEGATE_OneParam(FOnSlotDoubleClick, UCWidget_Slot*);
+DECLARE_DELEGATE_OneParam(FOnSlotRightClick, UCWidget_Slot*);
 
 UCLASS()
 class CPP_PORTFOLIO_API UCWidget_Slot : public UUserWidget
@@ -22,9 +23,6 @@ private:
 	UPROPERTY(EditAnywhere)
 		TArray<TSubclassOf<UObject>> SlotDataClasses;
 	
-	UPROPERTY(EditAnywhere, NoClear)
-		TSubclassOf<class UCWidget_DragAndDrop> DragAndDropClass;
-
 	UPROPERTY(EditAnywhere)
 		FString IconWidgetName;
 
@@ -54,5 +52,9 @@ protected:
 public:
 	FSlotOnDataCheck OnDataCheck;
 	FOnSlotDoubleClick OnSlotDoubleClick;
+	FOnSlotRightClick OnSlotRightClick;
+
+private:
+	TSubclassOf<class UCWidget_DragAndDrop> DragAndDropClass;
 
 };

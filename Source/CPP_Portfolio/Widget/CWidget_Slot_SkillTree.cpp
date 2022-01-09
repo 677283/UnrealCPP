@@ -11,8 +11,11 @@ void UCWidget_Slot_SkillTree::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	SlotData = NewObject<UCSkill>(this, Skill);
+	UCSkill* skill = NewObject<UCSkill>(this, Skill);
+	SlotData = skill;
 
+	skill->BeginPlay(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	
 }
 
 FReply UCWidget_Slot_SkillTree::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -22,9 +25,7 @@ FReply UCWidget_Slot_SkillTree::NativeOnMouseButtonDown(const FGeometry& InGeome
 	UCSkill* skill = Cast<UCSkill>(SlotData);
 	
 	CheckTrueResult(skill->GetSkillLevel() > 0, reply);
-
-	CLog::Log("SKILL SLOT OKOKOK");
-	
+		
 	SelectSlot = nullptr;
 	DragAndDrop->SetActive(false);
 

@@ -23,6 +23,7 @@ void UCWidget_QuickSlot::NativeConstruct()
 
 		Slots.Add(slot);
 		slot->OnDataCheck.BindUObject(this, &UCWidget_QuickSlot::OnDataCheck);
+		slot->OnSlotRightClick.BindUObject(this, &UCWidget_QuickSlot::OnSlotRightClick);
 	}
 }
 
@@ -59,6 +60,11 @@ void UCWidget_QuickSlot::OnDataCheck(class UCWidget_Slot* UpSlot, class UCWidget
 		SkillTreeDataCheck(UpSlot, DownSlot);
 		break;
 	}
+}
+
+void UCWidget_QuickSlot::OnSlotRightClick(class UCWidget_Slot* InSlot)
+{
+	InSlot->SetData(nullptr);
 }
 
 void UCWidget_QuickSlot::InventoryDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot)

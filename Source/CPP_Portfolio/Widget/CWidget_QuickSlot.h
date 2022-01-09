@@ -20,6 +20,7 @@ public:
 
 private:
 	void OnDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
+	void OnSlotRightClick(class UCWidget_Slot* InSlot);
 
 	void InventoryDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
 	void SkillTreeDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot);
