@@ -9,6 +9,7 @@
 #include "Components/PanelWidget.h"
 
 #include "Components/CanvasPanelSlot.h"
+
 UCEquipComponent::UCEquipComponent()
 {
 
@@ -29,14 +30,26 @@ void UCEquipComponent::EquipItem(UCEquipItem* InItem)
 	switch (InItem->GetEquipType())
 	{
 	case EEquipType::Weapon:
-		OnEquip.ExecuteIfBound(InItem, Weapon);
+		if (!!Weapon && !SubWeapon)
+		{
 
-		OnEquipWidget.ExecuteIfBound("Weapon", InItem);
+		}
+		else
+		{
+			OnEquip.ExecuteIfBound(InItem, Weapon);
 
-		Weapon = Cast<UCWeaponItem>(InItem);
+			OnEquipWidget.ExecuteIfBound("Weapon", InItem);
+
+			Weapon = Cast<UCWeaponItem>(InItem);
+		}
 		
 		break;
 	}
+}
+
+void UCEquipComponent::EquipSubWeapon(UCEquipItem * InItem)
+{
+
 }
 
 void UCEquipComponent::UnequipItem(FString InName)
@@ -54,7 +67,6 @@ void UCEquipComponent::UnequipItem(FString InName)
 			}
 		}
 	}
-
 }
 
 bool UCEquipComponent::IsHandsOn()

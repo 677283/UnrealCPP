@@ -2,7 +2,6 @@
 #include "Global.h"
 #include "Components/Image.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
-//#include "Blueprint/WidgetTree.h"
 
 void UCWidget_DragAndDrop::NativeConstruct()
 {

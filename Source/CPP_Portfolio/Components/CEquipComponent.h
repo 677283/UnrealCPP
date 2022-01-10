@@ -21,6 +21,7 @@ protected:
 	
 public:
 	void EquipItem(class UCEquipItem* InItem);
+	void EquipSubWeapon(class UCEquipItem* InItem);
 	void UnequipItem(FString InName);
 	FORCEINLINE class UCWeaponItem* GetWeapon() { return Weapon; }
 	bool IsHandsOn();
@@ -29,6 +30,9 @@ private:
 	class ACharacter* OwnerCharacter;
 	UPROPERTY()
 	class UCWeaponItem* Weapon;
+	UPROPERTY()
+	class UCWeaponItem* SubWeapon;
+	
 	class UCWidget_Equip* EquipWidget;
 
 public:

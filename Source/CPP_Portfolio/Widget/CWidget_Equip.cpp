@@ -50,6 +50,7 @@ void UCWidget_Equip::InventoryDataCheck(class UCWidget_Slot* UpSlot, class UCWid
 			OnEquip_EquipWidget.ExecuteIfBound(weapon);
 		}
 	}
+	//else if
 }
 
 void UCWidget_Equip::OnSlotDoubleClick(UCWidget_Slot* InSlot)

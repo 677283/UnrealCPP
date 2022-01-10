@@ -320,19 +320,17 @@ void ACPlayer::OnDash()
 {
 	//Todo Dash
 	//CLog::Log("DASH TEST");
+	CheckFalse(DashSkill->GetSkillLevel() > 0);
+	DashSkill->DoSkill();
 
-	CheckTrue(bDash);
-
-	FRotator rotation = GetController()->GetControlRotation();
-	rotation.Pitch = 0;
-	rotation.Roll = 0;
-
-	
-
-	SetActorRotation(rotation);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), DashEffect, GetActorLocation(), GetActorRotation());
-	PlayAnimMontage(DashMontage);
-	bDash = true;
+	//FRotator rotation = GetController()->GetControlRotation();
+	//rotation.Pitch = 0;
+	//rotation.Roll = 0;
+	//
+	//SetActorRotation(rotation);
+	//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), DashEffect, GetActorLocation(), GetActorRotation());
+	//PlayAnimMontage(DashMontage);
+	//bDash = true;
 }
 
 void ACPlayer::OnPickUpWidget(UCItem* InItem)
