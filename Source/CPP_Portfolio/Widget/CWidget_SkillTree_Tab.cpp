@@ -22,6 +22,7 @@ void UCWidget_SkillTree_Tab::NativeConstruct()
 		if (!slot) continue;
 		Slots.Add(slot);
 		slot->OnSlotDoubleClick.BindUObject(this, &UCWidget_SkillTree_Tab::OnSlotDoubleClick);
+		SkillComponent->AddSkill(Cast<UCSkill>(slot->GetData()));
 	}
 
 	SkillComponent = CHelpers::GetComponent<UCSkillComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
@@ -97,16 +98,7 @@ void UCWidget_SkillTree_Tab::OnSlotDoubleClick(class UCWidget_Slot* InSlot)
 	UCSkill* skill = Cast<UCSkill>(InSlot->GetData());
 	CheckNull(skill);
 
-	//CLog::Log(SkillComponent->LevelCheck(skill->StaticClass()));
+	CheckNull(SkillComponent->GetSkill(skill->GetClass()));
+	SkillComponent->SkillLevelUp(skill->GetClass());
 
-	if (SkillComponent->LevelCheck(skill->GetClass()) == -1)
-	{
-		SkillComponent->AddSkill(skill);
-		SkillComponent->SkillLevelUp(skill->GetClass());
-	}
-	else
-	{
-		CheckNull(SkillComponent->GetSkill(skill->GetClass()));
-		SkillComponent->SkillLevelUp(skill->GetClass());
-	}
 }
