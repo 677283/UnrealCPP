@@ -76,8 +76,6 @@ void UCWidget_HUD::ToggleWidget(FString InWidgetName)
 			ZOrder = 1;
 		}
 	}
-
-	
 }
 
 int32 UCWidget_HUD::FindIndex(FString InName)

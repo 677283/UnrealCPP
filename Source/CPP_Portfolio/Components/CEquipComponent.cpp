@@ -90,7 +90,7 @@ void UCEquipComponent::UnequipItem(FString InName)
 			if (OnUnequip.Execute(Weapon))
 			{
 				Weapon = nullptr;
-				OnEquipWidget.ExecuteIfBound(0, nullptr);
+				OnEquipWidget.ExecuteIfBound(WEAPON, nullptr);
 			}
 		}
 	}
@@ -103,7 +103,7 @@ void UCEquipComponent::UnequipItem(FString InName)
 			if (OnUnequip.Execute(SubWeapon))
 			{
 				SubWeapon = nullptr;
-				OnEquipWidget.ExecuteIfBound(1, nullptr);
+				OnEquipWidget.ExecuteIfBound(SUBWEAPON, nullptr);
 			}
 		}
 	}
@@ -115,7 +115,8 @@ void UCEquipComponent::SwapWeapon()
 	UCWeaponItem* temp = SubWeapon;
 	Weapon->Unequip();
 	SubWeapon->Equip();
-	SubWeapon->GetEquipment()->Begin_OnHands();
+	if (Weapon->IsHandsOn())
+		SubWeapon->GetEquipment()->Begin_OnHands();
 	SubWeapon = Weapon;
 	Weapon = temp;
 }

@@ -6,7 +6,6 @@
 
 DECLARE_DELEGATE_TwoParams(FOnSwapItem, int32, int32);
 DECLARE_DELEGATE_OneParam(FOnUseItem, class UCItem*);
-DECLARE_DELEGATE_OneParam(FOnChangeEquipItem, class UCItem*);
 DECLARE_DELEGATE_OneParam(FOnUnequip_InvenWidget, FString);
 
 UCLASS()
@@ -20,10 +19,6 @@ private:
 
 protected:
 	virtual void NativeConstruct() override;
-	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
-
-public:
-	void SetSlotIcon(int32 InIndex, class UTexture2D* InIcon);
 
 private:
 	void OnSlotDoubleClick(class UCWidget_Slot* InSlot);
@@ -40,13 +35,9 @@ public:
 private:
 	TArray<class UCWidget_Slot*> Slots;
 	class UCWidget_InventoryDragAndDrop* DragAndDrop;
-	int32 PressedIndex;
-	bool bPressed=false;
-	bool bHovered = false;
 
 public:
 	FOnSwapItem OnSwapItem;
 	FOnUseItem OnUseItem;
-	FOnChangeEquipItem OnChangeEquipItem;
 	FOnUnequip_InvenWidget OnUnequip_InvenWidget;
 };

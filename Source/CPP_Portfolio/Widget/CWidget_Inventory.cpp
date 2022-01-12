@@ -39,28 +39,7 @@ void UCWidget_Inventory::NativeConstruct()
 			}
 		}
 	}
-
-	/*APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	DragAndDrop = CreateWidget<UCWidget_InventoryDragAndDrop, APlayerController>(controller, DragAndDropClass, "DragAndDrop");
-	DragAndDrop->AddToViewport(44);
-	DragAndDrop->SetVisibility(ESlateVisibility::Hidden);*/
-
 }
-
-FReply UCWidget_Inventory::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
-{
-	FReply reply = Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
-	CheckFalseResult(bPressed, reply);
-	/*{
-		int32 sizeX, sizeY;
-		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(sizeX, sizeY);
-		DragAndDrop->SetPositionInViewport(FVector2D(sizeX, sizeY));
-	}*/
-	bPressed = false;
-
-	return reply;
-}
-
 void UCWidget_Inventory::OnSlotDoubleClick(UCWidget_Slot* InSlot)
 {
 	OnUseItem.ExecuteIfBound(Cast<UCItem>(InSlot->GetData()));
@@ -93,25 +72,7 @@ void UCWidget_Inventory::InventoryDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot
 
 void UCWidget_Inventory::EquipDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 {
-	FString slotName = DownSlot->GetName();
-	if (slotName == "Weapon")
-	{
-		if (!UpSlot->GetData())
-		{
-			OnUnequip_InvenWidget.ExecuteIfBound("Weapon");
-		}
-		else 
-		{
-			UCWeaponItem* weapon = Cast<UCWeaponItem>(UpSlot->GetData());
-
-			if (!weapon) return;
-
-			OnUseItem.ExecuteIfBound(weapon);
-
-		}
-
-
-	}
+	OnUnequip_InvenWidget.ExecuteIfBound(DownSlot->GetName());
 }
 
 void UCWidget_Inventory::QuickSlotDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)

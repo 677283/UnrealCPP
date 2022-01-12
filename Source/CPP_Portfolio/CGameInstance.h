@@ -18,4 +18,9 @@ private:
 
 public:
 	class UCItem* CreateItem(class ACharacter* InOwner, FString InItemName);
+	FORCEINLINE void SetHUD(class UCWidget_HUD* InHUD) { HUD = InHUD; }
+	FORCEINLINE class UCWidget_HUD* GetHUD() { return HUD; }
+
+private:
+	UCWidget_HUD* HUD;
 };

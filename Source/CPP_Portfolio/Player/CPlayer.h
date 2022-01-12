@@ -84,6 +84,7 @@ private:
 
 public:
 	void SwapWeapon();
+	void SwapWeaponNotify();
 	void OnPickUpWidget(class UCItem* InItem);
 	void OffPickUpWidget();
 	void OnRideWidget(class ACHorse* InHorse);

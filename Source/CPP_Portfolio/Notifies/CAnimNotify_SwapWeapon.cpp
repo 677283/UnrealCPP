@@ -18,5 +18,5 @@ void UCAnimNotify_SwapWeapon::Notify(USkeletalMeshComponent * MeshComp, UAnimSeq
 
 	CheckNull(player);
 
-	player->SwapWeapon();
+	player->SwapWeaponNotify();
 }

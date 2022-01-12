@@ -5,6 +5,8 @@
 #include "Blueprint/WidgetTree.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Widget/CWidget_TitleBar_Button.h"
+#include "CGameInstance.h"
+#include "Widget/CWidget_HUD.h"
 
 void UCWidget_TitleBar::NativeConstruct()
 {
@@ -98,5 +100,7 @@ void UCWidget_TitleBar::OnTitleBarButtonDown()
 {
 	Flag = false;
 
-	MoveWidget->SetVisibility(ESlateVisibility::Hidden);
+	//MoveWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	Cast<UCGameInstance>(GetGameInstance())->GetHUD()->ToggleWidget(MoveWidget->GetName());
 }

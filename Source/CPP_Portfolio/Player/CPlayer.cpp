@@ -131,7 +131,9 @@ void ACPlayer::BeginPlay()
 		if (!!HUDClass)
 		{
 			HUD = CreateWidget<UCWidget_HUD, APlayerController>(GetController<APlayerController>(), HUDClass);
+			Cast<UCGameInstance>(GetGameInstance())->SetHUD(HUD);
 			HUD->AddToViewport();
+
 			//Inventory Delegate Bind
 			{
 				UCWidget_Inventory* inventoryWidget = Cast<UCWidget_Inventory>(HUD->GetWidget("Inventory"));
@@ -232,6 +234,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Riding", EInputEvent::IE_Pressed, this, &ACPlayer::OnRiding);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
 	PlayerInputComponent->BindAction("Dash", EInputEvent::IE_DoubleClick, this, &ACPlayer::OnDash);
+	PlayerInputComponent->BindAction("SwapWeapon", EInputEvent::IE_Pressed, this, &ACPlayer::SwapWeapon);
 
 	//델리게이트를 이용해서 키 바인딩에 데이터 보내는 방법. 델리게이트 만들어준뒤 Template 이용
 	/*PlayerInputComponent->BindAction<FCustomInputDelegate>("Sprint", EInputEvent::IE_Pressed, this, &ACPlayer::Sprint_Pressed, 1);
@@ -268,7 +271,7 @@ void ACPlayer::Skill_1()
 
 void ACPlayer::Skill_2()
 {
-	Equip->SwapWeapon();
+	QuickSlotWidget->ActiveSlot(1);
 }
 
 void ACPlayer::PickUp()
@@ -281,6 +284,12 @@ void ACPlayer::PickUp()
 }
 
 void ACPlayer::SwapWeapon()
+{
+	CheckFalse(State->IsStateIdle());
+	Equip->SwapWeapon();
+}
+
+void ACPlayer::SwapWeaponNotify()
 {
 	Equip->SwapWeapon();
 }
@@ -320,19 +329,8 @@ void ACPlayer::OnJump()
 
 void ACPlayer::OnDash()
 {
-	//Todo Dash
-	//CLog::Log("DASH TEST");
 	CheckFalse(DashSkill->GetSkillLevel() > 0);
 	DashSkill->DoSkill();
-
-	//FRotator rotation = GetController()->GetControlRotation();
-	//rotation.Pitch = 0;
-	//rotation.Roll = 0;
-	//
-	//SetActorRotation(rotation);
-	//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), DashEffect, GetActorLocation(), GetActorRotation());
-	//PlayAnimMontage(DashMontage);
-	//bDash = true;
 }
 
 void ACPlayer::OnPickUpWidget(UCItem* InItem)
