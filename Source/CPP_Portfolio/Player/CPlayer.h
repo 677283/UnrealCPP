@@ -83,6 +83,7 @@ private:
 	void OnDash();
 
 public:
+	void SwapWeapon();
 	void OnPickUpWidget(class UCItem* InItem);
 	void OffPickUpWidget();
 	void OnRideWidget(class ACHorse* InHorse);

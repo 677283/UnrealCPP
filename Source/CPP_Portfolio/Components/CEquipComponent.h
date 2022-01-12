@@ -6,7 +6,7 @@
 
 DECLARE_DELEGATE_TwoParams(FOnEquip_EquipComponent, class UCItem*, class UCItem*);
 DECLARE_DELEGATE_RetVal_OneParam(bool, FOnUnequip_EquipComponent, class UCItem*);
-DECLARE_DELEGATE_TwoParams(FOnEquipWidget, FString, class UObject*);
+DECLARE_DELEGATE_TwoParams(FOnEquipWidget, int32, class UObject*);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CPP_PORTFOLIO_API UCEquipComponent : public UActorComponent
@@ -21,8 +21,9 @@ protected:
 	
 public:
 	void EquipItem(class UCEquipItem* InItem);
-	void EquipSubWeapon(class UCEquipItem* InItem);
+	void EquipItem(int32 InIndex, class UCEquipItem* InItem);
 	void UnequipItem(FString InName);
+	void SwapWeapon();
 	FORCEINLINE class UCWeaponItem* GetWeapon() { return Weapon; }
 	bool IsHandsOn();
 
@@ -32,7 +33,6 @@ private:
 	class UCWeaponItem* Weapon;
 	UPROPERTY()
 	class UCWeaponItem* SubWeapon;
-	
 	class UCWidget_Equip* EquipWidget;
 
 public:

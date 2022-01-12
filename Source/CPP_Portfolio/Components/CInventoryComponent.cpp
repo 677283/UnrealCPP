@@ -81,12 +81,16 @@ void UCInventoryComponent::UseItem(int32 InIndex)
 	CheckFalse(InIndex > -1 && InIndex < Inventory.Num());
 	CheckNull(Inventory[InIndex]);
 
-	Inventory[InIndex]->UseItem();
+	
 
 	UCEquipItem* equipItem = Cast<UCEquipItem>(Inventory[InIndex]);
 	if (!!equipItem)
 	{
 		OnEquipInventory.ExecuteIfBound(equipItem);
+	}
+	else
+	{
+		Inventory[InIndex]->UseItem();
 	}
 
 }
@@ -96,12 +100,14 @@ void UCInventoryComponent::UseItem(UCItem* InItem)
 	int32 index = Inventory.Find(InItem);
 	CheckTrue(index == INDEX_NONE);
 
-	Inventory[index]->UseItem();
-
 	UCEquipItem* equipItem = Cast<UCEquipItem>(Inventory[index]);
 	if (!!equipItem)
 	{
 		OnEquipInventory.ExecuteIfBound(equipItem);
+	}
+	else
+	{
+		Inventory[index]->UseItem();
 	}
 
 }
@@ -117,8 +123,8 @@ void UCInventoryComponent::OnEquip(UCItem* InEquipItem, UCItem* InUnequipItem)
 
 	CheckTrue(index == INDEX_NONE);
 
-	if (!!InUnequipItem)
-		Cast<UCEquipItem>(InUnequipItem)->Unequip();
+	/*if (!!InUnequipItem)
+		Cast<UCEquipItem>(InUnequipItem)->Unequip();*/
 
 	AddItem(index, InUnequipItem);
 }

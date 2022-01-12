@@ -206,7 +206,6 @@ void ACPlayer::Tick(float DeltaTime)
 	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, L"EStateType", true);
 	if (!!enumPtr)
 		CLog::Print(enumPtr->GetNameStringByIndex((int32)State->GetState()), 4, 0);
-	
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -269,9 +268,7 @@ void ACPlayer::Skill_1()
 
 void ACPlayer::Skill_2()
 {
-	CheckNull(Skill);
-	CheckNull(Skill->GetSkill("Slash"));
-	Skill->GetSkill("Slash")->DoSkill();
+	Equip->SwapWeapon();
 }
 
 void ACPlayer::PickUp()
@@ -281,6 +278,11 @@ void ACPlayer::PickUp()
 	CheckFalse(Inventory->AddItem(CheckItem));
 
 	CheckItem = NULL;
+}
+
+void ACPlayer::SwapWeapon()
+{
+	Equip->SwapWeapon();
 }
 
 void ACPlayer::InventoryToggle()

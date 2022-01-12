@@ -46,4 +46,6 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	UCWeaponItem* weapon = Equip->GetWeapon();
 	if (!!weapon)
 		weapon->IsHandsOn() ? WeaponType = weapon->GetWeaponType() : WeaponType = EWeaponType::Max;
+	else
+		WeaponType = EWeaponType::Max;
 }

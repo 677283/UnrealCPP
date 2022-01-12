@@ -6,7 +6,6 @@
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Blueprint/WidgetTree.h"
 
-
 void UCWidget_Equip::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -20,7 +19,7 @@ void UCWidget_Equip::NativeConstruct()
 		UCWidget_Slot* slot = Cast<UCWidget_Slot>(widget);
 		if (!slot) continue;
 
-		Slots.Add(slot->GetName(), slot);
+		Slots.Add(slot);
 		slot->OnDataCheck.BindUObject(this, &UCWidget_Equip::OnDataCheck);
 		slot->OnSlotDoubleClick.BindUObject(this, &UCWidget_Equip::OnSlotDoubleClick);
 	}
@@ -47,10 +46,9 @@ void UCWidget_Equip::InventoryDataCheck(class UCWidget_Slot* UpSlot, class UCWid
 		if (!!weapon)
 		{
 			weapon->UseItem();
-			OnEquip_EquipWidget.ExecuteIfBound(weapon);
+			OnEquip_EquipWidget.ExecuteIfBound(Slots.Find(UpSlot),weapon);
 		}
 	}
-	//else if
 }
 
 void UCWidget_Equip::OnSlotDoubleClick(UCWidget_Slot* InSlot)
@@ -58,7 +56,7 @@ void UCWidget_Equip::OnSlotDoubleClick(UCWidget_Slot* InSlot)
 	OnUnequip_EuipWidget.ExecuteIfBound(InSlot->GetName());
 }
 
-void UCWidget_Equip::OnEquipWidget(FString InSlotName, UObject* InItem)
+void UCWidget_Equip::OnEquipWidget(int32 InIndex, UObject* InItem)
 {
-	(*Slots.Find(InSlotName))->SetData(InItem);
+	Slots[InIndex]->SetData(InItem);
 }

@@ -15,6 +15,8 @@ void UCWidget_SkillTree_Tab::NativeConstruct()
 
 	WidgetTree->GetAllWidgets(widgets);
 
+	SkillComponent = CHelpers::GetComponent<UCSkillComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	
 	for (UWidget* widget : widgets)
 	{
 		UCWidget_Slot_SkillTree* slot = Cast<UCWidget_Slot_SkillTree>(widget);
@@ -25,7 +27,6 @@ void UCWidget_SkillTree_Tab::NativeConstruct()
 		SkillComponent->AddSkill(Cast<UCSkill>(slot->GetData()));
 	}
 
-	SkillComponent = CHelpers::GetComponent<UCSkillComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 }
 
