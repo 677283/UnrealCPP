@@ -12,10 +12,13 @@ public:
 	ACAIController();
 
 private:
-	/*UPROPERTY(VisibleDefaultsOnly)
-		class UAIPerceptionComponent* Perception;*/
+	UPROPERTY(VisibleDefaultsOnly)
+		class UAIPerceptionComponent* Perception;
+
+public:
+	virtual void Tick(float DeltaTime) override;
 
 private:
-	/*class ACCharacter* OwnerCharacter;
-	class UAISenseConfig_Sight* Sight;*/
+	class ACCharacter* OwnerCharacter;
+	class UAISenseConfig_Sight* Sight;
 };

@@ -13,10 +13,10 @@ public:
 	ACEnemy_AI();
 
 private:
-	//UPROPERTY(EditAnywhere)
-	//	class UBehaviorTree* BehaviorTree;
+	UPROPERTY(EditAnywhere)
+		class UBehaviorTree* BehaviorTree;
 
 public:
-	//FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
+	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
 
 };

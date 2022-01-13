@@ -5,6 +5,7 @@
 #include "GameFramework/MovementComponent.h"
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Horse/CHorse.h"
+#include "Player/CPlayer.h"
 
 #define LEFT 0
 #define RIGHT 1
@@ -80,6 +81,7 @@ void UCRidingComponent::OnRide(ACHorse* InHorse)
 
 	GetOwner()->AttachToActor(RidingHorse,FAttachmentTransformRules::KeepRelativeTransform);
 	GetOwner()->SetActorRelativeTransform(FTransform());
+	Cast<ACPlayer>(GetOwner())->SetCanMove(false);
 	bRiding = true;
 }
 
@@ -104,6 +106,7 @@ void UCRidingComponent::OffRide()
 	RidingHorse->GetController()->Possess(OwnerCharacter);
 	RidingHorse = nullptr;
 	bRiding = false;
+	Cast<ACPlayer>(GetOwner())->SetCanMove(true);
 }
 
 void UCRidingComponent::BeginOffRide()

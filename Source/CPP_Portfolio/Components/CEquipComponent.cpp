@@ -64,8 +64,9 @@ void UCEquipComponent::EquipItem(int32 InIndex, UCEquipItem * InItem)
 		case WEAPON:
 			OnEquip.ExecuteIfBound(InItem, Weapon);
 			InItem->UseItem();
-			OnEquipWidget.ExecuteIfBound(SUBWEAPON, InItem);
-			Weapon->Unequip();
+			OnEquipWidget.ExecuteIfBound(WEAPON, InItem);
+			if (!!Weapon)
+				Weapon->Unequip();
 			Weapon = Cast<UCWeaponItem>(InItem);
 			break;
 		
@@ -119,6 +120,9 @@ void UCEquipComponent::SwapWeapon()
 		SubWeapon->GetEquipment()->Begin_OnHands();
 	SubWeapon = Weapon;
 	Weapon = temp;
+
+	OnEquipWidget.ExecuteIfBound(WEAPON, Weapon);
+	OnEquipWidget.ExecuteIfBound(SUBWEAPON, SubWeapon);
 }
 
 bool UCEquipComponent::IsHandsOn()

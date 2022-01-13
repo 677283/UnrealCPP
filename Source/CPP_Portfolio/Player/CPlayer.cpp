@@ -372,6 +372,7 @@ void ACPlayer::OffRideWidget()
 //축매핑 함수
 void ACPlayer::OnMoveForward(float AxisValue)
 {
+	CheckFalse(bCanMove);
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetForwardVector().GetSafeNormal2D();
 
@@ -379,6 +380,7 @@ void ACPlayer::OnMoveForward(float AxisValue)
 }
 void ACPlayer::OnMoveRight(float AxisValue)
 {
+	CheckFalse(bCanMove);
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetRightVector().GetSafeNormal2D();
 

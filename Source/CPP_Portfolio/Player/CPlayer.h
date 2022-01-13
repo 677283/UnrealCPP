@@ -93,6 +93,7 @@ public:
 	FORCEINLINE class UCWidget_HUD* GetHUD() { return HUD; }
 	FORCEINLINE void OffDash() { bDash = false; }
 	FORCEINLINE void SetDash(class UCSkill* InDash) { DashSkill = InDash; }
+	FORCEINLINE void SetCanMove(bool canMove) { bCanMove = canMove; }
 
 private:
 	class UCWidget_PickUp* PickUpWidget;
@@ -107,6 +108,7 @@ private:
 private:
 	class UCSkill* DashSkill;
 	class UAnimMontage* DashMontage;
+	bool bCanMove=true;
 	bool bDash;
 };
 

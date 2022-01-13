@@ -40,14 +40,11 @@ void UCWidget_Equip::OnDataCheck(UCWidget_Slot* UpSlot, UCWidget_Slot* DownSlot)
 
 void UCWidget_Equip::InventoryDataCheck(class UCWidget_Slot* UpSlot, class UCWidget_Slot* DownSlot)
 {
-	if (UpSlot->GetName() == "Weapon")
+	if (UpSlot->GetName() == "Weapon" || UpSlot->GetName() == "SubWeapon")
 	{
 		UCWeaponItem* weapon = Cast<UCWeaponItem>(DownSlot->GetData());
 		if (!!weapon)
-		{
-			weapon->UseItem();
 			OnEquip_EquipWidget.ExecuteIfBound(Slots.Find(UpSlot),weapon);
-		}
 	}
 }
 
