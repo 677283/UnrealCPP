@@ -16,7 +16,11 @@ private:
 	UPROPERTY(EditAnywhere)
 		class UBehaviorTree* BehaviorTree;
 
+	UPROPERTY(EditDefaultsOnly)
+		uint8 TeamID;
+
 public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
+	FORCEINLINE uint8 GetTeamID() { return TeamID; }
 
 };

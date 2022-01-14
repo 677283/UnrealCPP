@@ -63,8 +63,10 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 
 	UCWidget_Damage* damage = CreateWidget<UCWidget_Damage, APlayerController>(pc, DamageWidget);
 	int32 damageCount = (int32)Damage;
+
 	damage->SetWorldPos(GetMesh()->GetSocketLocation("head"), FString::FromInt(damageCount));
 	damage->AddToViewport();
+
 	return Damage;
 }
 
