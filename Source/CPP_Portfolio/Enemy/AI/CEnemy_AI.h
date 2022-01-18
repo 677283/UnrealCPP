@@ -13,11 +13,20 @@ public:
 	ACEnemy_AI();
 
 private:
+	UPROPERTY(VisibleDefaultsOnly)
+		class UTextRenderComponent* Text;
+
 	UPROPERTY(EditAnywhere)
 		class UBehaviorTree* BehaviorTree;
 
 	UPROPERTY(EditDefaultsOnly)
 		uint8 TeamID;
+
+public:
+	virtual void Tick(float DeltaTime) override;
+
+public:
+	void SetDetected(bool InDetected);
 
 public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }

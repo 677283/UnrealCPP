@@ -2,13 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "Character/CCharacter.h"
+#include "GenericTeamAgentInterface.h"
 #include "CPlayer.generated.h"
 
 //BindAction 데이터 보내기용 델리게이트
 //DECLARE_DELEGATE_OneParam(FCustomInputDelegate, const int);
 
 UCLASS()
-class CPP_PORTFOLIO_API ACPlayer : public ACCharacter
+class CPP_PORTFOLIO_API ACPlayer : public ACCharacter , public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -46,6 +47,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 		class UNiagaraSystem* DashEffect;
+	
+	UPROPERTY(EditDefaultsOnly)
+		uint8 TeamID = 44;
 
 public:
 	ACPlayer();
@@ -57,6 +61,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual FGenericTeamId GetGenericTeamId() const override;
 
 private:
 	void OnMoveForward(float AxisValue);

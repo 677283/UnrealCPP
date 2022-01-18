@@ -38,8 +38,8 @@ void ACAIController::Tick(float DeltaTime)
 
 	FVector center = OwnerEnemy->GetActorLocation();
 	center.Z -= AdjustCircleHeight;
-	DrawDebugCircle(GetWorld(), center, Sight->SightRadius, 300, FColor::Green, false, -1, 0, 0, FVector::RightVector, FVector::UpVector);
-	DrawDebugCircle(GetWorld(), center, MeleeActionRange, 300, FColor::Green, false, -1, 0, 0, FVector::RightVector, FVector::UpVector);
+	DrawDebugCircle(GetWorld(), center, Sight->SightRadius, 300, FColor::Green, false, -1, 0, 0, FVector::RightVector, FVector::ForwardVector);
+	DrawDebugCircle(GetWorld(), center, MeleeActionRange, 300, FColor::Red, false, -1, 0, 0, FVector::RightVector, FVector::ForwardVector);
 
 }
 
@@ -75,5 +75,25 @@ void ACAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdateActors)
 
 	Perception->GetCurrentlyPerceivedActors(NULL, actors);
 
+	//CLog::Log("Detected : " + FString::FromInt(actors.Num()));
 	
+	//CLog::Log("Detected func : " + FString::FromInt(UpdateActors.Num()));
+
+	bool flag = false;
+	for (AActor* actor : actors)
+	{
+		ACharacter* character = Cast<ACharacter>(actor);
+
+		if (!!character)
+		{
+			flag = true;
+
+			character
+		}
+	}
+
+	if (flag)
+		OwnerEnemy->SetDetected(true);
+	else
+		OwnerEnemy->SetDetected(false);
 }
