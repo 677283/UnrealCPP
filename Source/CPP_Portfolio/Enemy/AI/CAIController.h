@@ -42,9 +42,10 @@ private:
 
 public:
 	FORCEINLINE float GetMeleeActionRange() { return MeleeActionRange; }
-
+	FORCEINLINE class ACharacter* GetTarget() { return Target; }
 private:
 	class ACEnemy_AI* OwnerEnemy;
 	class UAISenseConfig_Sight* Sight;
+	class ACharacter* Target;
 
 };

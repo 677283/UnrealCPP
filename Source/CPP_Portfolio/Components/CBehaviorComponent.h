@@ -8,7 +8,7 @@
 UENUM(BlueprintType)
 enum class EBehaviorType : uint8
 {
-	Wait, Approach, Action, Patrol, Hitted, Avoid,
+	Wait, Approach, Action, Patrol, Hitted, Avoid, Alert
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBehaviorTypeChanged, EBehaviorType, InPrevType, EBehaviorType, InNewType);

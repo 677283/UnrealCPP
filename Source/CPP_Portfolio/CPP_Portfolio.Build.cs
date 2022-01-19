@@ -18,6 +18,7 @@ public class CPP_Portfolio : ModuleRules
             "SlateCore",
             "Niagara",
             "NavigationSystem",
+            "GameplayTasks"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });

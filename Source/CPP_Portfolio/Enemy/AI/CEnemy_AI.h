@@ -27,6 +27,8 @@ public:
 
 public:
 	void SetDetected(bool InDetected);
+	void MoveForward(float AxisValue);
+	void MoveRight(float AxisValue);
 
 public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
