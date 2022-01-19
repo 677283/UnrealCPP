@@ -12,7 +12,7 @@ UCBTTaskNode_SetSpeed::UCBTTaskNode_SetSpeed()
 
 EBTNodeResult::Type UCBTTaskNode_SetSpeed::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	Super::ExecuteTske(OwnerComp, NodeMemory);
+	Super::ExecuteTask(OwnerComp, NodeMemory);
 
 	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
 	UCBehaviorComponent* behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);

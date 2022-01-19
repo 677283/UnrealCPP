@@ -8,6 +8,7 @@
 UCBTService_Melee::UCBTService_Melee()
 {
 	NodeName = "Melee";
+	
 }
 
 void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)

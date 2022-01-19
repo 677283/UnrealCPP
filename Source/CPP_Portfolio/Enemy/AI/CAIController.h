@@ -19,6 +19,18 @@ private:
 		class UCBehaviorComponent* Behavior;
 
 	UPROPERTY(EditDefaultsOnly)
+		float SightRadius = 600;
+
+	UPROPERTY(EditDefaultsOnly)
+		float LoseSightRadius = 800;
+
+	UPROPERTY(EditDefaultsOnly)
+		float PeripheralVisionAngleDegrees = 180;
+	
+	UPROPERTY(EditDefaultsOnly)
+		float MaxAgeSeconds = 2;
+
+	UPROPERTY(EditDefaultsOnly)
 		float MeleeActionRange = 150;
 
 	UPROPERTY(EditAnywhere)
@@ -42,10 +54,8 @@ private:
 
 public:
 	FORCEINLINE float GetMeleeActionRange() { return MeleeActionRange; }
-	FORCEINLINE class ACharacter* GetTarget() { return Target; }
 private:
 	class ACEnemy_AI* OwnerEnemy;
 	class UAISenseConfig_Sight* Sight;
-	class ACharacter* Target;
 
 };

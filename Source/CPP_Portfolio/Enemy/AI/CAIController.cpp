@@ -16,10 +16,10 @@ ACAIController::ACAIController()
 	CHelpers::CreateActorComponent<UCBehaviorComponent>(this, &Behavior, "Behavior");
 
 	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
-	Sight->SightRadius = 600;
-	Sight->LoseSightRadius = 800;
-	Sight->PeripheralVisionAngleDegrees = 180;
-	Sight->SetMaxAge(2);
+	Sight->SightRadius = SightRadius;
+	Sight->LoseSightRadius = LoseSightRadius;
+	Sight->PeripheralVisionAngleDegrees = PeripheralVisionAngleDegrees;
+	Sight->SetMaxAge(MaxAgeSeconds);
 
 	Sight->DetectionByAffiliation.bDetectEnemies = true;
 	Sight->DetectionByAffiliation.bDetectFriendlies = false;
@@ -75,24 +75,17 @@ void ACAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdateActors)
 
 	Perception->GetCurrentlyPerceivedActors(NULL, actors);
 
-	//CLog::Log("Detected : " + FString::FromInt(actors.Num()));
-	
-	//CLog::Log("Detected func : " + FString::FromInt(UpdateActors.Num()));
-
-	bool flag = false;
 	for (AActor* actor : actors)
 	{
 		ACharacter* character = Cast<ACharacter>(actor);
 
 		if (!!character)
 		{
-			flag = true;
+			Blackboard->SetValueAsObject("Target", character);
 
+			return;
 		}
 	}
 
-	if (flag)
-		OwnerEnemy->SetDetected(true);
-	else
-		OwnerEnemy->SetDetected(false);
+	Blackboard->SetValueAsObject("Target", nullptr);
 }

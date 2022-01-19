@@ -3,10 +3,12 @@
 #include "Enemy/AI/CAIController.h"
 #include "GameFramework/Character.h"
 #include "Enemy/AI/CEnemy_AI.h"
+#include "Components/CBehaviorComponent.h"
 
 UCBTTaskNode_Approach::UCBTTaskNode_Approach()
 {
 	NodeName = "Approach";
+	bNotifyTick = true;
 }
 
 EBTNodeResult::Type UCBTTaskNode_Approach::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -22,18 +24,23 @@ void UCBTTaskNode_Approach::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 
 	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
 	ACEnemy_AI* character = Cast<ACEnemy_AI>(controller->GetPawn());
-	
-	
+	UCBehaviorComponent* behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);
+
+
 	//FVector targetDir = controller->GetTarget()->GetActorLocation() - character->GetActorLocation();
 	//targetDir.Z = 0;
-	ACharacter* target = controller->GetTarget();
-	FRotator targetDir = UKismetMathLibrary::FindLookAtRotation(target->GetActorLocation(), character->GetActorLocation());
+
+	ACharacter* target = behavior->GetTargetCharacter();
+
+	CheckNull(target);
+
+	FRotator targetDir = UKismetMathLibrary::FindLookAtRotation(character->GetActorLocation(), target->GetActorLocation());
 	targetDir.Pitch = 0;
 	targetDir.Roll = 0;
 
-	character->SetActorRotation(UKismetMathLibrary::RInterpTo(character->GetActorRotation(), targetDir, DeltaSeconds, 0.5f));
+	character->SetActorRotation(UKismetMathLibrary::RInterpTo(character->GetActorRotation(), targetDir, DeltaSeconds, 10));
 	character->MoveForward(1);
 
-	if ((target->GetActorLocation() - character->GetActorLocation()).Size() < 50)
+	if ((target->GetActorLocation() - character->GetActorLocation()).Size() < 250)
 		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Succeeded);
 }

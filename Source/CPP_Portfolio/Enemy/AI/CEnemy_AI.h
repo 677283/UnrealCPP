@@ -4,6 +4,8 @@
 #include "Enemy/CEnemy.h"
 #include "CEnemy_AI.generated.h"
 
+#define ENEMY_BASIC_TEAMID 4;
+
 UCLASS()
 class CPP_PORTFOLIO_API ACEnemy_AI : public ACEnemy
 {
@@ -13,20 +15,16 @@ public:
 	ACEnemy_AI();
 
 private:
-	UPROPERTY(VisibleDefaultsOnly)
-		class UTextRenderComponent* Text;
-
 	UPROPERTY(EditAnywhere)
 		class UBehaviorTree* BehaviorTree;
 
 	UPROPERTY(EditDefaultsOnly)
-		uint8 TeamID;
+		uint8 TeamID = ENEMY_BASIC_TEAMID;
 
 public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	void SetDetected(bool InDetected);
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 
