@@ -12,9 +12,9 @@ ACEnemy_AI::ACEnemy_AI()
 void ACEnemy_AI::SetDetected(bool InDetected)
 {
 	if (InDetected)
-		Text->SetText("!");
+		Text->SetText(L"!");
 	else
-		Text->SetText("?");
+		Text->SetText(L"?");
 }
 
 void ACEnemy_AI::Tick(float DeltaTime)

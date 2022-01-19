@@ -88,7 +88,6 @@ void ACAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdateActors)
 		{
 			flag = true;
 
-			character
 		}
 	}
 
