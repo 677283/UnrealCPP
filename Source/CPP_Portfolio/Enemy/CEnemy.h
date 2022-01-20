@@ -11,4 +11,7 @@ class CPP_PORTFOLIO_API ACEnemy : public ACCharacter
 	
 public:
 	ACEnemy();
+
+public:
+	void Attack();
 };

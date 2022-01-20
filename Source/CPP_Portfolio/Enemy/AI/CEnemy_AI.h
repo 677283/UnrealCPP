@@ -31,5 +31,8 @@ public:
 public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
 	FORCEINLINE uint8 GetTeamID() { return TeamID; }
+	FORCEINLINE bool CanAttack() { return bCanAttack; }
 
+private:
+	bool bCanAttack = true;
 };

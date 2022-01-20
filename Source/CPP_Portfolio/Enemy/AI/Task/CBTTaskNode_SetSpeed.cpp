@@ -18,7 +18,6 @@ EBTNodeResult::Type UCBTTaskNode_SetSpeed::ExecuteTask(UBehaviorTreeComponent& O
 	UCBehaviorComponent* behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);
 
 	ACharacter* character = Cast<ACharacter>(controller->GetPawn());
-
 	UCharacterMovementComponent* movement = CHelpers::GetComponent<UCharacterMovementComponent>(character);
 
 	//movement->MaxWalkSpeed = 

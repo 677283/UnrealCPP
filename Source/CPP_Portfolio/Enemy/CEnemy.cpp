@@ -1,5 +1,7 @@
 #include "CEnemy.h"
 #include "Global.h"
+#include "Components/CEquipComponent.h"
+#include "Item/Equip/Weapon/CWeaponItem.h"
 
 ACEnemy::ACEnemy()
 {
@@ -12,4 +14,10 @@ ACEnemy::ACEnemy()
 	GetMesh()->SetAnimInstanceClass(animInstance);
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -85));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
+}
+
+void ACEnemy::Attack()
+{
+	//FKey key("LeftMouseButton");
+	Equip->GetWeapon()->Do_Action(this, FKey("LeftMouseButton"));
 }
