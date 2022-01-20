@@ -30,16 +30,18 @@ void UCBTTaskNode_Guard::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * No
 	ACEnemy_AI* character = Cast<ACEnemy_AI>(controller->GetPawn());
 	UCBehaviorComponent* behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);
 
+
 	if (behavior->GetTargetCharacter() == nullptr)
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Succeeded);
 		return;
 	}
-	//else if (!character->CanAttack())
-	//{
-	//	FinishLatentTask(OwnerComp, EBTNodeResult::Type::Succeeded);
-	//	return;
-	//}
+	else if (character->CanAttack())
+	{
+		CLog::Log("WTF");
+		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Succeeded);
+		return;
+	}
 
 	ACharacter* target = behavior->GetTargetCharacter();
 

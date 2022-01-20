@@ -81,8 +81,6 @@ void UCInventoryComponent::UseItem(int32 InIndex)
 	CheckFalse(InIndex > -1 && InIndex < Inventory.Num());
 	CheckNull(Inventory[InIndex]);
 
-	
-
 	UCEquipItem* equipItem = Cast<UCEquipItem>(Inventory[InIndex]);
 	if (!!equipItem)
 	{

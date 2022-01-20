@@ -19,7 +19,16 @@ private:
 		class UBehaviorTree* BehaviorTree;
 
 	UPROPERTY(EditDefaultsOnly)
+		FString WeaponName;
+
+	UPROPERTY(EditDefaultsOnly)
+		float AttackRange = 50;
+
+	UPROPERTY(EditDefaultsOnly)
 		uint8 TeamID = ENEMY_BASIC_TEAMID;
+
+protected:
+	virtual void BeginPlay() override;
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -28,11 +37,14 @@ public:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 
+	void Attack();
 public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
 	FORCEINLINE uint8 GetTeamID() { return TeamID; }
 	FORCEINLINE bool CanAttack() { return bCanAttack; }
+	FORCEINLINE float GetAttackRange() { return AttackRange; }
 
 private:
 	bool bCanAttack = true;
+	class UCWeaponItem* Weapon;
 };

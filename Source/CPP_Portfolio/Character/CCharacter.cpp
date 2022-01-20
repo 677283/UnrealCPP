@@ -48,7 +48,7 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 	float life = Status->SetLife(-Damage);
 	if (life > 0)
 	{
-		CLog::Log("Hitted");
+		CLog::Log(GetName() + " : Hitted");
 		StopAnimMontage();
 		if (!!damageEvent->HitMontage)
 			PlayAnimMontage(damageEvent->HitMontage, damageEvent->PlayRatio);

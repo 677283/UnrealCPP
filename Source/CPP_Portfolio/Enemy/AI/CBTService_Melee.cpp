@@ -48,14 +48,13 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	}
 
 	float distance = ai->GetDistanceTo(target);
-	if (distance < controller->GetMeleeActionRange())
+	if (ai->CanAttack())
 	{
 		behavior->SetActionMode();
 
 		return;
 	}
-
-	if (distance < controller->GetSightRadius())
+	else
 	{
 		behavior->SetApproachMode();
 

@@ -7,7 +7,9 @@
 void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 {
 	Super::DoAction(InKey);
+	CLog::Log("Test0");
 	CheckFalse(*bHands);
+	CLog::Log("Test1");
 
 	if (bComboEnable)
 	{
@@ -15,11 +17,13 @@ void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 		bOnCombo = true;
 		return;
 	}
-
 	CheckFalse(State->IsStateIdle());
 
 	if (InKey == EKeys::LeftMouseButton)
+	{
+		CLog::Log("Test2");
 		ComboKey.Append("L");
+	}
 	else
 		ComboKey.Append("R");
 
