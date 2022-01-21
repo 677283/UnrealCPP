@@ -7,7 +7,9 @@
 void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 {
 	Super::DoAction(InKey);
+	CLog::Log("Test0");
 	CheckFalse(*bHands);
+	CLog::Log("Test1");
 
 	if (bComboEnable)
 	{
@@ -19,6 +21,7 @@ void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 
 	if (InKey == EKeys::LeftMouseButton)
 	{
+		CLog::Log("Test2");
 		ComboKey.Append("L");
 	}
 	else
@@ -33,7 +36,6 @@ void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 	}
 
 	OwnerCharacter->PlayAnimMontage(ComboList.Find(ComboKey)->Montage);
-	AttackCnt++;
 	State->SetStateAction();
 }
 
@@ -56,7 +58,6 @@ void UCDoAction_DoubleCombo::BeginDoAction()
 	HittedCharacters.Empty();
 	OwnerCharacter->StopAnimMontage();
 	OwnerCharacter->PlayAnimMontage(data->Montage);
-	AttackCnt++;
 }
 
 void UCDoAction_DoubleCombo::EndDoAction()
@@ -66,6 +67,7 @@ void UCDoAction_DoubleCombo::EndDoAction()
 	ComboKey = "";
 	bOnCombo = false;
 	HittedCharacters.Empty();
+
 	State->SetStateIdle();
 }
 

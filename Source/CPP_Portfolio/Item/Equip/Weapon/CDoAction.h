@@ -26,8 +26,6 @@ public:
 	FORCEINLINE void OnCombo() { bComboEnable = true; }
 	FORCEINLINE void OffCombo() { bComboEnable = false; }
 	FORCEINLINE void InitHands(const bool* InHands) { bHands = InHands; }
-	FORCEINLINE int32 GetAttackCnt() { return AttackCnt; }
-	FORCEINLINE void InitializeCount() { AttackCnt = 0; }
 
 public:
 	UFUNCTION()
@@ -43,7 +41,6 @@ protected:
 	bool bOnCombo;
 	const bool* bHands;
 	TArray<class ACharacter*> HittedCharacters;
-	int32 AttackCnt = 0;
 
 public:
 	FOnDoActionBeginOverlap OnDoActionBeginOverlap;

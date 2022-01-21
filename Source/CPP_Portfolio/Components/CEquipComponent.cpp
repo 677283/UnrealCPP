@@ -23,6 +23,7 @@ void UCEquipComponent::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
+	
 }
 
 void UCEquipComponent::EquipItem(UCEquipItem* InItem)

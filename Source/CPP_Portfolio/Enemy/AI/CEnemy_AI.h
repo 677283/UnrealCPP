@@ -15,9 +15,6 @@ public:
 	ACEnemy_AI();
 
 private:
-	UPROPERTY(VisibleDefaultsOnly)
-		class UTextRenderComponent* Text;
-
 	UPROPERTY(EditAnywhere)
 		class UBehaviorTree* BehaviorTree;
 
@@ -26,9 +23,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 		float AttackRange = 50;
-
-	UPROPERTY(EditDefaultsOnly)
-		float AttackDelay = 5;
 
 	UPROPERTY(EditDefaultsOnly)
 		uint8 TeamID = ENEMY_BASIC_TEAMID;
@@ -43,8 +37,6 @@ public:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 
-	void EquipWeapon();
-	void UnequipWeapon();
 	void Attack();
 public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
@@ -55,7 +47,4 @@ public:
 private:
 	bool bCanAttack = true;
 	class UCWeaponItem* Weapon;
-	float RemineTime = 0;
-	float StackAttackTime = 0;
-	int32 MaxAttackCnt = 2;
 };
