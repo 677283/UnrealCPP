@@ -20,6 +20,8 @@ public:
 public:
 	virtual void OnEquipActorBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter) override;
 
+public:
+	
 private:
 	FString ComboKey;
 	FKey LastKey;

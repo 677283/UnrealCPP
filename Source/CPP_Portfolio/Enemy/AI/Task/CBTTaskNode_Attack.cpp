@@ -13,9 +13,9 @@ UCBTTaskNode_Attack::UCBTTaskNode_Attack()
 EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-
+/*
 	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
-	ACEnemy_AI* character = Cast<ACEnemy_AI>(controller->GetPawn());
+	ACEnemy_AI* character = Cast<ACEnemy_AI>(controller->GetPawn());*/
 	
 	return EBTNodeResult::Type::InProgress;
 }
@@ -40,10 +40,7 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * N
 	character->SetActorRotation(UKismetMathLibrary::RInterpTo(character->GetActorRotation(), targetDir, DeltaSeconds, 10));
 
 	float distance = character->GetDistanceTo(target);
-
-	CLog::Log(distance);
-	CLog::Log(character->GetAttackRange());
-
+	
 	if (distance > character->GetAttackRange())
 		character->MoveForward(1);
 	else
