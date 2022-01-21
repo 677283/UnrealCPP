@@ -3,9 +3,7 @@
 
 void UCSkill::BeginPlay(ACharacter* InOwner)
 {
-	CLog::Log("Skill BEGIN");
 	OwnerCharacter = InOwner;
-	
 }
 
 void UCSkill::DoSkill()

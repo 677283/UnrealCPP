@@ -26,6 +26,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 		float AttackRange = 50;
+	
+	UPROPERTY(EditDefaultsOnly)
+		float GuardRangeMax = 500;
+
+	UPROPERTY(EditDefaultsOnly)
+		float GuardRangeMin = 300;
 
 	UPROPERTY(EditDefaultsOnly)
 		float AttackDelay = 5;
@@ -51,6 +57,8 @@ public:
 	FORCEINLINE uint8 GetTeamID() { return TeamID; }
 	FORCEINLINE bool CanAttack() { return bCanAttack; }
 	FORCEINLINE float GetAttackRange() { return AttackRange; }
+	FORCEINLINE float GetGuardRangeMax() { return GuardRangeMax; }
+	FORCEINLINE float GetGuardRangeMin() { return GuardRangeMin; }
 
 private:
 	bool bCanAttack = true;

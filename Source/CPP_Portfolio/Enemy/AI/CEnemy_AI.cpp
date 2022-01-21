@@ -87,7 +87,7 @@ void ACEnemy_AI::Attack()
 	Equip->GetWeapon()->GetDoAction()->InitializeCount();
 	
 	MaxAttackCnt = UKismetMathLibrary::RandomIntegerInRange(1, 4);
-	CLog::Log(MaxAttackCnt);
+	
 	bCanAttack = false;
 
 	RemineTime = AttackDelay;

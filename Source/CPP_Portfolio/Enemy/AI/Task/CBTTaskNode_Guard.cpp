@@ -38,7 +38,6 @@ void UCBTTaskNode_Guard::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * No
 	}
 	else if (character->CanAttack())
 	{
-		CLog::Log("WTF");
 		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Succeeded);
 		return;
 	}
@@ -57,13 +56,13 @@ void UCBTTaskNode_Guard::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * No
 
 
 	float dir = OwnerComp.GetBlackboardComponent()->GetValueAsFloat("GuardDirection");
-	if (distance > 400)
+	if (distance > character->GetGuardRangeMax())
 	{
 		character->MoveForward(1);
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("bInGuard", true);
 		OwnerComp.GetBlackboardComponent()->SetValueAsFloat("GuardDirection", GetRandomGuardDirection());
 	}
-	else if (distance < 200)
+	else if (distance < character->GetGuardRangeMin())
 	{
 		character->MoveForward(-1);
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("bInGuard", false);
@@ -75,7 +74,9 @@ void UCBTTaskNode_Guard::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * No
 		character->MoveRight(dir);
 	}
 	else
+	{
 		character->MoveRight(dir);
+	}
 }
 
 float UCBTTaskNode_Guard::GetRandomGuardDirection()
