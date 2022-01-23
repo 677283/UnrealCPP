@@ -32,7 +32,6 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	if (target == NULL)
 	{
 		//TODO: ÆÐÆ®·Ñ
-
 		behavior->SetWaitMode();
 		return;
 	}

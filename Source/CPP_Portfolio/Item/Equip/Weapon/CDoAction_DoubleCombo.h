@@ -4,7 +4,7 @@
 #include "Item/Equip/Weapon/CDoAction.h"
 #include "CDoAction_DoubleCombo.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable)
 class CPP_PORTFOLIO_API UCDoAction_DoubleCombo : public UCDoAction
 {
 	GENERATED_BODY()
@@ -19,9 +19,7 @@ public:
 
 public:
 	virtual void OnEquipActorBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter) override;
-
-public:
-	
+		
 private:
 	FString ComboKey;
 	FKey LastKey;

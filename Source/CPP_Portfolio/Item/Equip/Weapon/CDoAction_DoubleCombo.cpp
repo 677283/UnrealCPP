@@ -6,7 +6,8 @@
 
 void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 {
-	Super::DoAction(InKey);
+	//Super::DoAction(InKey);
+
 	CheckFalse(*bHands);
 
 	if (bComboEnable)
@@ -39,7 +40,7 @@ void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 
 void UCDoAction_DoubleCombo::BeginDoAction()
 {
-	Super::BeginDoAction();
+	//Super::BeginDoAction();
 	
 	CheckFalse(bOnCombo);
 
@@ -61,7 +62,7 @@ void UCDoAction_DoubleCombo::BeginDoAction()
 
 void UCDoAction_DoubleCombo::EndDoAction()
 {
-	Super::EndDoAction();
+	//Super::EndDoAction();
 
 	ComboKey = "";
 	bOnCombo = false;

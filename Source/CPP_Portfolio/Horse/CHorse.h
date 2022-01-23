@@ -19,6 +19,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* Camera;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCPushingComponent* Pushing;
+
 	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* BrakeMontage;
 

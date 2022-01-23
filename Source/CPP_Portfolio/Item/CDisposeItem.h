@@ -13,7 +13,7 @@ public:
 	ACDisposeItem();
 
 private:
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 		FString CreateItemName;
 
 protected:

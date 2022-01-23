@@ -54,7 +54,6 @@ void UCBTTaskNode_Guard::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * No
 
 	character->SetActorRotation(UKismetMathLibrary::RInterpTo(character->GetActorRotation(), targetDir, DeltaSeconds, 10));
 
-
 	float dir = OwnerComp.GetBlackboardComponent()->GetValueAsFloat("GuardDirection");
 	if (distance > character->GetGuardRangeMax())
 	{
