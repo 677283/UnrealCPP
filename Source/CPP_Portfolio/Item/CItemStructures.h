@@ -3,6 +3,10 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "CItemStructures.generated.h"
+enum HitType
+{
+	Basic, Normal, Fly, PowerLaunch
+};
 
 UENUM(BlueprintType)
 enum class EItemType : uint8
@@ -32,10 +36,12 @@ public:
 		FVector LuanchDirect;
 	UPROPERTY(EditDefaultsOnly)
 		float LuanchPower;
-	UPROPERTY(EditDefaultsOnly)
-		class UAnimMontage* HitMontage;
+	//UPROPERTY(EditDefaultsOnly)
+	//	class UAnimMontage* HitMontage;
 	UPROPERTY(EditDefaultsOnly)
 		float PlayRatio;
+	UPROPERTY(EditDefaultsOnly)
+		int32 AttackLevel;
 };
 
 USTRUCT(BlueprintType)

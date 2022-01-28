@@ -16,6 +16,7 @@
 #include "Components/CRidingComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Components/CQuickSlotComponent.h"
+#include "Components/CParryingComponent.h"
 
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
@@ -48,6 +49,7 @@ ACPlayer::ACPlayer()
 		CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
 		CHelpers::CreateActorComponent<UCInventoryComponent>(this, &Inventory, "Inventory");
 		CHelpers::CreateComponent<USceneCaptureComponent2D>(this, &Capture, "Capture",GetRootComponent());
+		CHelpers::CreateComponent<UCParryingComponent>(this, &Parrying, "Parrying", GetRootComponent());
 
 		UTextureRenderTarget2D* texture;
 		CHelpers::GetAsset(&texture, "TextureRenderTarget2D'/Game/__ProjectFile/Textures/EquipTargetTexutre.EquipTargetTexutre'");

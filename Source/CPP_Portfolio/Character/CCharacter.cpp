@@ -45,11 +45,30 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 	Damage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	const FCustomDamageEvent* damageEvent = (FCustomDamageEvent *)&DamageEvent;
 	
+
 	float life = Status->SetLife(-Damage);
+	
+	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	if (!!DamageWidget)
+	{
+		UCWidget_Damage* damage = CreateWidget<UCWidget_Damage, APlayerController>(pc, DamageWidget);
+		int32 damageCount = (int32)Damage;
+		damage->SetWorldPos(GetMesh()->GetSocketLocation("head"), FString::FromInt(damageCount));
+		damage->AddToViewport();
+	}
+
+	if (damageEvent->AttackLevel <= EndureLevel) return Damage;
+
+	State->SetStateHitted();
 	if (life > 0)
 	{
 		CLog::Log(GetName() + " : Hitted");
 		StopAnimMontage();
+		UAnimMontage* hitMontage = *(HitMontages.Find(damageEvent->AttackLevel));
+		if (hitMontage == nullptr)
+			hitMontage = *(HitMontages.Find(0));
+
 		/*if (!!damageEvent->HitMontage)
 			PlayAnimMontage(damageEvent->HitMontage, damageEvent->PlayRatio);
 		else
@@ -60,15 +79,7 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 		//TODO Death
 	}
 
-	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-	if (!!DamageWidget)
-	{
-		UCWidget_Damage* damage = CreateWidget<UCWidget_Damage, APlayerController>(pc, DamageWidget);
-		int32 damageCount = (int32)Damage;
-		damage->SetWorldPos(GetMesh()->GetSocketLocation("head"), FString::FromInt(damageCount));
-		damage->AddToViewport();
-	}
 
 	return Damage;
 }

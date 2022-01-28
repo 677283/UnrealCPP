@@ -111,7 +111,8 @@ void UCEquipComponent::UnequipItem(FString InName)
 
 void UCEquipComponent::SwapWeapon()
 {
-	CheckFalse(!!Weapon && !!SubWeapon);
+	CheckFalse(!!Weapon || !!SubWeapon);
+
 	UCWeaponItem* temp = SubWeapon;
 	Weapon->Unequip();
 	SubWeapon->Equip();

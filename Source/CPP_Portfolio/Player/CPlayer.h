@@ -23,6 +23,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class UCInventoryComponent* Inventory;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
+		class UCParryingComponent* Parrying;
+
 	UPROPERTY(VisibleDefaultsOnly)
 		class USceneCaptureComponent2D* Capture;
 
@@ -34,7 +37,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, NoClear, Category = "Widget")
 		TSubclassOf<class UCWidget_HUD> HUDClass;
-
 
 	UPROPERTY(EditDefaultsOnly, Category = "BasicItem")
 		FString BaiscWeaponName;

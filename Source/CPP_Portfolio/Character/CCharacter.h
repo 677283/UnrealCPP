@@ -36,13 +36,16 @@ protected:
 		class UCSkillComponent* Skill;
 
 	UPROPERTY(EditDefaultsOnly)
-		class UAnimMontage* DefaultHitMontage;
+		TMap<int32, class UAnimMontage*> HitMontages;
 
 	UPROPERTY(EditDefaultsOnly)
 		float DefaultHitMontagePlayRitio = 1;
 
 	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* BrakeMontage;
+	
+	UPROPERTY(EditDefaultsOnly)
+		int32 EndureLevel;
 
 protected:
 	UPROPERTY(VisibleInstanceOnly)
