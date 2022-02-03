@@ -20,6 +20,7 @@ public:
 	virtual void DoAction(FKey InKey) {}
 	virtual void BeginDoAction() {}
 	virtual void EndDoAction() {}
+	virtual void ResetDoAction() {}
 
 	void SetOwnerCharacter(class ACharacter* InOwner);
 

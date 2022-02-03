@@ -31,7 +31,7 @@ bool UCSkill_Active::WeaponCheck()
 		if (NeedWeaponTypes.Num() > 0)
 		{
 			int32 typeSum = 0;
-			int32 weaponType = (int32)Equip->GetWeapon()->GetWeaponType();
+			int32 weaponType = (int32)(Equip->GetWeapon()->GetWeaponType());
 
 			
 			for (EWeaponType type : NeedWeaponTypes)

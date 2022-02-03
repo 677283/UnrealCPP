@@ -6,7 +6,7 @@
 
 void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 {
-	//Super::DoAction(InKey);
+	Super::DoAction(InKey);
 
 	CheckFalse(*bHands);
 
@@ -40,20 +40,25 @@ void UCDoAction_DoubleCombo::DoAction(FKey InKey)
 
 void UCDoAction_DoubleCombo::BeginDoAction()
 {
-	//Super::BeginDoAction();
+	Super::BeginDoAction();
 	
 	CheckFalse(bOnCombo);
 
 	bOnCombo = false;
 
+	FDoActionData* data;
 	if (LastKey == EKeys::LeftMouseButton)
+	{
+		data = ComboList.Find(ComboKey + "L");
+		CheckNull(data);
 		ComboKey.Append("L");
+	}
 	else
+	{
+		data = ComboList.Find(ComboKey + "R");
+		CheckNull(data);
 		ComboKey.Append("R");
-
-	FDoActionData* data = ComboList.Find(ComboKey);
-	
-	CheckNull(data);
+	}
 	HittedCharacters.Empty();
 	OwnerCharacter->StopAnimMontage();
 	OwnerCharacter->PlayAnimMontage(data->Montage);
@@ -62,12 +67,21 @@ void UCDoAction_DoubleCombo::BeginDoAction()
 
 void UCDoAction_DoubleCombo::EndDoAction()
 {
-	//Super::EndDoAction();
+	Super::EndDoAction();
 
 	ComboKey = "";
 	bOnCombo = false;
 	HittedCharacters.Empty();
 	State->SetStateIdle();
+}
+
+void UCDoAction_DoubleCombo::ResetDoAction()
+{
+	Super::ResetDoAction();
+
+	ComboKey = "";
+	bOnCombo = false;
+	HittedCharacters.Empty();
 }
 
 void UCDoAction_DoubleCombo::OnEquipActorBeginOverlap(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter)
@@ -82,6 +96,8 @@ void UCDoAction_DoubleCombo::OnEquipActorBeginOverlap(ACharacter* InAttacker, AA
 
 	HittedCharacters.AddUnique(InOtherCharacter);
 	FDoActionData* data = ComboList.Find(ComboKey);
+	if (data == nullptr)
+		return;
 	if (OnDoActionBeginOverlap.IsBound())
 		OnDoActionBeginOverlap.Broadcast(InAttacker, InAttackCauser, InOtherCharacter, data->AddDamage, data->DamageEvent);
 }

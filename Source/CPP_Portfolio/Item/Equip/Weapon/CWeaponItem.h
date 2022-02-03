@@ -36,6 +36,7 @@ public:
 	void EndOnHands();
 	void OffHands();
 	void ToggleHands();
+	void ResetWeapon();
 
 	virtual void DropItem(FVector InDropPosition) override;
 	virtual void PickUpItem(class ACharacter* InOwner) override;

@@ -278,7 +278,9 @@ void ACPlayer::Skill_1()
 
 void ACPlayer::Skill_2()
 {
-	QuickSlotWidget->ActiveSlot(1);
+	//QuickSlotWidget->ActiveSlot(1);
+	CheckNull(Parrying);
+	Parrying->DoParry();
 }
 
 void ACPlayer::PickUp()

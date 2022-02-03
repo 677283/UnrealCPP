@@ -26,7 +26,7 @@ public:
 	FORCEINLINE void SetStateEquip() { State = EStateType::Equip;  }
 	FORCEINLINE void SetStateAction() { State = EStateType::Action;  }
 	FORCEINLINE void SetStateSkill() { State = EStateType::Skill;  }
-	FORCEINLINE void SetStateHitted() { State = EStateType::Hitted; }
+	void SetStateHitted();
 	FORCEINLINE void SetStateDead() { State = EStateType::Dead; }
 	FORCEINLINE void SetStateMount() { State = EStateType::Mount; }
 

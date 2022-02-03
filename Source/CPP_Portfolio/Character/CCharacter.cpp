@@ -58,7 +58,7 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 		damage->AddToViewport();
 	}
 
-	if (damageEvent->AttackLevel <= EndureLevel) return Damage;
+	if (damageEvent->AttackLevel < EndureLevel) return Damage;
 
 	State->SetStateHitted();
 	if (life > 0)

@@ -103,6 +103,12 @@ void UCWeaponItem::ToggleHands()
 	Equipment->ToggleHands();
 }
 
+void UCWeaponItem::ResetWeapon()
+{
+	DoAction->ResetDoAction();
+
+}
+
 void UCWeaponItem::OnDoActionBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackerCauser, class ACharacter* InOtherCharacter, float InActionDamage, FCustomDamageEvent InDamageEvent)
 {
 	SendDamage(InAttacker, InAttackerCauser, InOtherCharacter, InActionDamage, InDamageEvent);

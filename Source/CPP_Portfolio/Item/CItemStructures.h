@@ -3,10 +3,10 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "CItemStructures.generated.h"
-enum HitType
-{
-	Basic, Normal, Fly, PowerLaunch
-};
+//enum HitType
+//{
+//	Basic, Normal, Fly, PowerLaunch
+//};
 
 UENUM(BlueprintType)
 enum class EItemType : uint8
