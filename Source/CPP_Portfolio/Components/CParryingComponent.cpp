@@ -40,6 +40,9 @@ void UCParryingComponent::DoParry()
 			return;
 	}
 	
+	state->SetStateAction();
+	OwnerCharacter->PlayAnimMontage(ParryingMontage);
+
 	TArray<AActor*> actors;
 	
 	GetOverlappingActors(actors, ACEquipActor::StaticClass());
@@ -58,9 +61,6 @@ void UCParryingComponent::DoParry()
 		if (actor->GetOwner() == OwnerCharacter)
 			actors.Remove(actor);
 	}
-
-	state->SetStateAction();
-	OwnerCharacter->PlayAnimMontage(ParryingMontage);
 	
 	for (AActor* actor : actors)
 		actor->GetOwner()->TakeDamage(0, DamageEvent, GetOwner()->GetInstigatorController(), GetOwner());
