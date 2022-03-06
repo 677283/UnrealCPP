@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Item/CItem.h"
 #include "CInventoryComponent.generated.h"
 
 DECLARE_DELEGATE_TwoParams(FOnAddItem, int32, UObject*);

@@ -24,6 +24,7 @@
 
 #include "Horse/CHorse.h"
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
+#include "Skill/Passive/Rope/CSkill_Passive_Rope.h"
 
 #include "Widget/CWidget_PickUp.h"
 #include "Widget/CWidget_Inventory.h"
@@ -189,7 +190,9 @@ void ACPlayer::BeginPlay()
 		}
 	}
 
-	JumpMaxCount = 2;
+	//TEST
+	Rope = NewObject<UCSkill_Passive_Rope>(this, testclass);
+	Skill->AddSkill(Rope);
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -246,6 +249,11 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 FGenericTeamId ACPlayer::GetGenericTeamId() const
 {
 	return FGenericTeamId(TeamID);
+}
+
+float ACPlayer::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	return 0.0f;
 }
 
 //액션 함수들
@@ -333,7 +341,10 @@ void ACPlayer::OnRiding()
 
 void ACPlayer::OnJump()
 {
-	Jump();
+	//Jump();
+	Rope->DoSkill();
+	/*Movement->SetMovementMode(EMovementMode::MOVE_Flying);
+	PlayAnimMontage(testMontage);*/
 }
 
 void ACPlayer::OnDash()
@@ -377,7 +388,6 @@ void ACPlayer::OffRideWidget()
 	CheckHorse = NULL;
 }
 
-
 //축매핑 함수
 void ACPlayer::OnMoveForward(float AxisValue)
 {
@@ -387,6 +397,7 @@ void ACPlayer::OnMoveForward(float AxisValue)
 
 	AddMovementInput(direction, AxisValue);
 }
+
 void ACPlayer::OnMoveRight(float AxisValue)
 {
 	CheckFalse(bCanMove);
@@ -395,10 +406,12 @@ void ACPlayer::OnMoveRight(float AxisValue)
 
 	AddMovementInput(direction, AxisValue);
 }
+
 void ACPlayer::OnHorizontalLook(float AxisValue)
 {
 	AddControllerYawInput(AxisValue);
 }
+
 void ACPlayer::OnVerticalLook(float AxisValue)
 {
 	CheckTrue(UKismetMathLibrary::NearlyEqual_FloatFloat(AxisValue, 0));

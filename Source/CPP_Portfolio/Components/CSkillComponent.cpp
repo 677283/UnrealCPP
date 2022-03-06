@@ -14,7 +14,6 @@ void UCSkillComponent::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-
 }
 
 void UCSkillComponent::AddSkill(class UCSkill* InSkill)

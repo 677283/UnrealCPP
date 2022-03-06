@@ -1,7 +1,8 @@
 #include "CEquipActor.h"
 #include "Global.h"
 #include "Components/ShapeComponent.h"
-#include "GameFramework/Character.h"
+//#include "GameFramework/Character.h"
+#include "Character/CCharacter.h"
 
 ACEquipActor::ACEquipActor()
 {
@@ -40,8 +41,12 @@ void ACEquipActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCompon
 	//class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter
 
 	CheckTrue(OtherActor == OwnerCharacter);
+	ACCharacter* otherCharacter = Cast<ACCharacter>(OtherActor);
+	ACCharacter* ownerCharacter = Cast<ACCharacter>(OwnerCharacter);
+	
+	CheckTrue(otherCharacter->GetTeamID() == ownerCharacter->GetTeamID());
 
-	ACharacter* otherCharacter = Cast<ACharacter>(OtherActor);
+	//ACharacter* otherCharacter = Cast<ACharacter>(OtherActor);
 	if (OnEquipActorBeginOverlap.IsBound())
 		OnEquipActorBeginOverlap.Broadcast(OwnerCharacter, this, otherCharacter);
 }
@@ -91,6 +96,6 @@ void ACEquipActor::Equip()
 
 void ACEquipActor::Unequip()
 {
-	CLog::Log("ACTOR UNEQUIP");
+	//CLog::Log("ACTOR UNEQUIP");
 	Mesh->SetVisibility(false);
 }

@@ -28,35 +28,36 @@ void ACTestActor::BeginPlay()
 	AllName.Remove("Armature");
 	AllName.Remove("Bone");
 
+	Poseable->SetBoneLocationByName(AllName[5], Poseable->GetBoneLocation(AllName[5]) * 3, EBoneSpaces::ComponentSpace);
 }
 
 void ACTestActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector subDir;
+	//FVector subDir;
 
-	Direction = Rotate.RotateVector(Direction);
+	//Direction = Rotate.RotateVector(Direction);
 
-	subDir = Direction;
+	//subDir = Direction;
 
-	Poseable->SetBoneLocationByName("Bone", Direction * Length, EBoneSpaces::ComponentSpace);
+	//Poseable->SetBoneLocationByName("Bone", Direction * Length, EBoneSpaces::ComponentSpace);
 
-	float subGap = Gap;
+	//float subGap = Gap;
 
-	for (FName name : AllName)
-	{
-		subDir = SubRotate.RotateVector(subDir);
-		
-		FVector pos = subDir * Length;
+	//for (FName name : AllName)
+	//{
+	//	subDir = SubRotate.RotateVector(subDir);
+	//	
+	//	FVector pos = subDir * Length;
 
-		pos.Y -= subGap;
+	//	pos.Y -= subGap;
 
-		subGap += Gap;
+	//	subGap += Gap;
 
-		Poseable->SetBoneLocationByName(name, pos, EBoneSpaces::ComponentSpace);
+	//	Poseable->SetBoneLocationByName(name, pos, EBoneSpaces::ComponentSpace);
 
-	}
+	//}
 
 }
 

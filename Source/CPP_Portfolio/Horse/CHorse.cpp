@@ -30,7 +30,6 @@ ACHorse::ACHorse()
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->SocketOffset = FVector(0, 60, 0);
 
-	
 }
 
 void ACHorse::BeginPlay()
@@ -38,7 +37,7 @@ void ACHorse::BeginPlay()
 	Super::BeginPlay();
 	
 	USphereComponent* collision = CHelpers::GetComponent<USphereComponent>(this);
-
+	CLog::Log(collision->GetName());
 	collision->OnComponentBeginOverlap.AddDynamic(this, &ACHorse::OnComponentBeginOverlap);
 	collision->OnComponentEndOverlap.AddDynamic(this, &ACHorse::OnComponentEndOverlap);
 }

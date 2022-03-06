@@ -47,6 +47,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 		int32 EndureLevel;
 
+	UPROPERTY(EditDefaultsOnly)
+		uint8 TeamID = 44;
 protected:
 	UPROPERTY(VisibleInstanceOnly)
 		bool CanMove = true;
@@ -82,6 +84,7 @@ public:
 
 public:
 	FORCEINLINE bool IsSecondJump() { return bSecondJump; }
+	FORCEINLINE uint8 GetTeamID() { return TeamID; }
 
 protected:
 	bool bSecondJump;

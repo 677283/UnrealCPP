@@ -37,7 +37,6 @@ FReply UCWidget_Slot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
 
 	if (InMouseEvent.GetEffectingButton() == FKey("RightMouseButton"))
 	{
-		//CLog::Log("Right Test");
 		OnSlotRightClick.ExecuteIfBound(this);
 	}
 	else

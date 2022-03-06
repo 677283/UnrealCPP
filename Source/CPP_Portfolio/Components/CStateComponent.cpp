@@ -22,5 +22,8 @@ void UCStateComponent::SetStateHitted()
 
 	UCEquipComponent* equip = CHelpers::GetComponent<UCEquipComponent>(GetOwner());
 
+	CheckNull(equip);
+	CheckNull(equip->GetWeapon());
+
 	equip->GetWeapon()->ResetWeapon();
 }

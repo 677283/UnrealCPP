@@ -9,7 +9,7 @@ void UCSkill_Passive::BeginPlay(class ACharacter* InOwner)
 {
 	Super::BeginPlay(InOwner);
 
-	DoSkill();
+	//DoSkill();
 }
 
 void UCSkill_Passive::DoSkill()

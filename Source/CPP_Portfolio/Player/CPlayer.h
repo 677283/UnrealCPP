@@ -49,9 +49,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 		class UNiagaraSystem* DashEffect;
-	
+
 	UPROPERTY(EditDefaultsOnly)
-		uint8 TeamID = 44;
+		class UAnimMontage* testMontage;
+
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCSkill_Passive_Rope> testclass;
 
 public:
 	ACPlayer();
@@ -65,6 +68,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual FGenericTeamId GetGenericTeamId() const override;
+
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 private:
 	void OnMoveForward(float AxisValue);
@@ -118,5 +123,7 @@ private:
 	class UAnimMontage* DashMontage;
 	bool bCanMove=true;
 	bool bDash;
+
+	class UCSkill* Rope;
 };
 

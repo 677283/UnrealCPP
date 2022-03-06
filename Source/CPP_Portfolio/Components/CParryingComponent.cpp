@@ -9,7 +9,7 @@
 
 UCParryingComponent::UCParryingComponent()
 {
-
+	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void UCParryingComponent::BeginPlay()
@@ -17,6 +17,8 @@ void UCParryingComponent::BeginPlay()
 	Super::BeginPlay();
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 	SetCollisionProfileName("Parrying");
+	SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	OnComponentBeginOverlap.AddDynamic(this, &UCParryingComponent::OnBeginOverlap);
 }
 
 void UCParryingComponent::DoParry()
@@ -43,31 +45,41 @@ void UCParryingComponent::DoParry()
 	state->SetStateAction();
 	OwnerCharacter->PlayAnimMontage(ParryingMontage);
 
-	TArray<AActor*> actors;
-	
-	GetOverlappingActors(actors, ACEquipActor::StaticClass());
-
-	if (actors.Num() < 1) return;
-
-	for (AActor* actor : actors)
-	{
-		ACEquipActor* weapon = Cast<ACEquipActor>(actor);
-		if (weapon == nullptr)
-		{
-			actors.Remove(actor);
-			continue;
-		}
-
-		if (actor->GetOwner() == OwnerCharacter)
-			actors.Remove(actor);
-	}
-	
-	for (AActor* actor : actors)
-		actor->GetOwner()->TakeDamage(0, DamageEvent, GetOwner()->GetInstigatorController(), GetOwner());
 }
 
 void UCParryingComponent::EndDoParry()
 {
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(GetOwner());
 	state->SetStateIdle();
+}
+
+void UCParryingComponent::OnCollision()
+{
+	SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+void UCParryingComponent::OffCollision()
+{
+	SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void UCParryingComponent::OnBeginOverlap(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	CLog::Log("parryingEnter");
+	ACEquipActor* weapon = Cast<ACEquipActor>(OtherActor);
+	CheckNull(weapon);
+	CheckTrue(OtherActor->GetOwner() == OwnerCharacter);
+	
+
+	FVector ownerForwardVector = OwnerCharacter->GetActorForwardVector();
+	FVector actorLookVector = OtherActor->GetOwner()->GetActorLocation() - OwnerCharacter->GetActorLocation();
+	actorLookVector.Normalize();
+	float dot = UKismetMathLibrary::Dot_VectorVector(ownerForwardVector, actorLookVector);
+
+	CLog::Log(dot);
+
+	CheckTrue(dot < 0.3f);
+
+	OtherActor->GetOwner()->TakeDamage(0, DamageEvent, GetOwner()->GetInstigatorController(), GetOwner());
+	
 }

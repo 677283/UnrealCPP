@@ -36,9 +36,6 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		float AttackDelay = 5;
 
-	UPROPERTY(EditDefaultsOnly)
-		uint8 TeamID = ENEMY_BASIC_TEAMID;
-
 protected:
 	virtual void BeginPlay() override;
 
@@ -54,7 +51,7 @@ public:
 	void Attack();
 public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
-	FORCEINLINE uint8 GetTeamID() { return TeamID; }
+	//FORCEINLINE uint8 GetTeamID() { return TeamID; }
 	FORCEINLINE bool CanAttack() { return bCanAttack; }
 	FORCEINLINE float GetAttackRange() { return AttackRange; }
 	FORCEINLINE float GetGuardRangeMax() { return GuardRangeMax; }
