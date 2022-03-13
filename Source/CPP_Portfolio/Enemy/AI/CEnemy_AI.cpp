@@ -21,9 +21,15 @@ void ACEnemy_AI::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Weapon = Cast<UCWeaponItem>(Cast<UCGameInstance>(GetGameInstance())->CreateItem(this, WeaponName));
-	Weapon->PickUpItem(this);
-	Equip->EquipItem(Weapon);
+	if (!WeaponName.IsEmpty())
+	{
+		Weapon = Cast<UCWeaponItem>(Cast<UCGameInstance>(GetGameInstance())->CreateItem(this, WeaponName));
+		if (!!Weapon)
+		{
+			Weapon->PickUpItem(this);
+			Equip->EquipItem(Weapon);
+		}
+	}
 	State->SetStateIdle();
 }
 

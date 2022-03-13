@@ -82,7 +82,7 @@ void ACAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdateActors)
 		if (!!character)
 		{
 			Blackboard->SetValueAsObject("Target", character);
-			OwnerEnemy->EquipWeapon();
+			//OwnerEnemy->EquipWeapon();
 			return;
 		}
 	}

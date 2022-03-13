@@ -1,5 +1,6 @@
 #include "CEnemy.h"
 #include "Global.h"
+#include "Components/CapsuleComponent.h"
 
 ACEnemy::ACEnemy()
 {
@@ -12,4 +13,11 @@ ACEnemy::ACEnemy()
 	GetMesh()->SetAnimInstanceClass(animInstance);
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -85));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
+
+	UCapsuleComponent* capsule = Cast<UCapsuleComponent>(GetRootComponent());
+	
+	if (!!capsule)
+	{
+		capsule->SetCollisionProfileName("Enemy");
+	}
 }

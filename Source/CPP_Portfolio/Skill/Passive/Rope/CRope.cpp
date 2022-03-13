@@ -7,7 +7,8 @@ ACRope::ACRope()
 	PrimaryActorTick.bCanEverTick = true;
 
 	CHelpers::CreateComponent<UParticleSystemComponent>(this, &Particle, "Particle", GetRootComponent());
-
+	Particle->SetVisibility(false);
+	SetActorTickEnabled(false);
 }
 
 void ACRope::BeginPlay()
@@ -19,7 +20,7 @@ void ACRope::BeginPlay()
 void ACRope::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 	Power += DeltaTime * 5000;
 	Particle->SetBeamTargetPoint(0, GetActorLocation() + Target * Power, 0);
 	if (Power > 1000)

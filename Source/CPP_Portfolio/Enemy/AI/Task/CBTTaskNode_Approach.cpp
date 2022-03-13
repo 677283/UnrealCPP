@@ -26,10 +26,6 @@ void UCBTTaskNode_Approach::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 	ACEnemy_AI* character = Cast<ACEnemy_AI>(controller->GetPawn());
 	UCBehaviorComponent* behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);
 
-
-	//FVector targetDir = controller->GetTarget()->GetActorLocation() - character->GetActorLocation();
-	//targetDir.Z = 0;
-
 	ACharacter* target = behavior->GetTargetCharacter();
 
 	CheckNull(target);
