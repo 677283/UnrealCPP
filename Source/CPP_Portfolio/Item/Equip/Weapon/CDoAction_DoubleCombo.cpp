@@ -79,6 +79,7 @@ void UCDoAction_DoubleCombo::ResetDoAction()
 {
 	Super::ResetDoAction();
 
+	AttackCnt = 0;
 	ComboKey = "";
 	bOnCombo = false;
 	HittedCharacters.Empty();

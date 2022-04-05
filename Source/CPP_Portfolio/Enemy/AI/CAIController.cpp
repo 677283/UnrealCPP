@@ -38,9 +38,10 @@ void ACAIController::Tick(float DeltaTime)
 
 	FVector center = OwnerEnemy->GetActorLocation();
 	center.Z -= AdjustCircleHeight;
+	
+	//TODO:드로우지우기
 	DrawDebugCircle(GetWorld(), center, Sight->SightRadius, 300, FColor::Green, false, -1, 0, 0, FVector::RightVector, FVector::ForwardVector);
 	DrawDebugCircle(GetWorld(), center, MeleeActionRange, 300, FColor::Red, false, -1, 0, 0, FVector::RightVector, FVector::ForwardVector);
-
 }
 
 void ACAIController::OnPossess(APawn* InPawn)
@@ -87,6 +88,6 @@ void ACAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdateActors)
 		}
 	}
 
-	OwnerEnemy->UnequipWeapon();
+	//OwnerEnemy->UnequipWeapon();
 	Blackboard->SetValueAsObject("Target", nullptr);
 }

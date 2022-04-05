@@ -13,16 +13,12 @@ UCBTTaskNode_Attack::UCBTTaskNode_Attack()
 EBTNodeResult::Type UCBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-/*
-	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
-	ACEnemy_AI* character = Cast<ACEnemy_AI>(controller->GetPawn());*/
 	
 	return EBTNodeResult::Type::InProgress;
 }
 
 void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory, float DeltaSeconds)
 {
-
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
 	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
@@ -41,10 +37,8 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * N
 
 	float distance = character->GetDistanceTo(target);
 	
-	if (distance > character->GetAttackRange())
-		character->MoveForward(1);
-	else
-		character->Attack();
+	if (distance < character->GetAttackRange())
+		character->LeftAttack();
 
 	if (character->CanAttack() == false)
 		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Succeeded);

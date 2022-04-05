@@ -1,9 +1,10 @@
 #include "CBTService_Boss.h"
 #include "Global.h"
 #include "CAIController.h"
-#include "CEnemy_AI.h"
+#include "CEnemy_AI_Boss.h"
 #include "Components/CBehaviorComponent.h"
 #include "Components/CStateComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UCBTService_Boss::UCBTService_Boss()
 {
@@ -13,10 +14,11 @@ UCBTService_Boss::UCBTService_Boss()
 void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
+
 	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
 	UCBehaviorComponent* behavior = CHelpers::GetComponent <UCBehaviorComponent>(controller);
 
-	ACEnemy_AI* ai = Cast<ACEnemy_AI>(controller->GetPawn());
+	ACEnemy_AI_Boss* ai = Cast<ACEnemy_AI_Boss>(controller->GetPawn());
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(ai);
 
 	if (state->IsStateHitted())
@@ -25,34 +27,16 @@ void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		return;
 	}
 
-	ACharacter* target = behavior->GetTargetCharacter();
+	int pattern = OwnerComp.GetBlackboardComponent()->GetValueAsInt("Pattern");
+	
+	//OwnerComp.GetBlackboardComponent()->SetValueAsObject("Target", UGameplayStatics::GetPlayerCharacter(ai->GetWorld(),0));
 
-	if (target == NULL)
+	if (pattern == 0)
 	{
-		behavior->SetWaitMode();
+		//TODO : 패턴 선택.
+		pattern = UKismetMathLibrary::RandomInteger(3) + 1;
+		
+		OwnerComp.GetBlackboardComponent()->SetValueAsInt("Pattern", pattern);
 		return;
 	}
-	else
-	{
-		UCStateComponent* targetState = CHelpers::GetComponent<UCStateComponent>(target);
-		if (targetState->IsStateDead())
-		{
-			behavior->SetWaitMode();
-			return;
-		}
-	}
-
-	float distance = ai->GetDistanceTo(target);
-	behavior->SetApproachMode();
-	return;
-
-	/*if (ai->CanAttack())
-	{
-		return;
-	}
-	else
-	{
-		behavior->SetApproachMode();
-		return;
-	}*/
 }

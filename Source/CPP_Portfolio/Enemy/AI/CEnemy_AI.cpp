@@ -80,14 +80,14 @@ void ACEnemy_AI::UnequipWeapon()
 	Equip->GetWeapon()->OffHands();
 }
 
-void ACEnemy_AI::Attack()
+void ACEnemy_AI::LeftAttack()
 {
 	if (Equip->GetWeapon() != nullptr)
 	{
 		Equip->GetWeapon()->Do_Action(this, FKey("LeftMouseButton"));
 	}
 	
-	if (Equip->GetWeapon()->GetDoAction()->GetAttackCnt() < MaxAttackCnt)
+	/*if (Equip->GetWeapon()->GetDoAction()->GetAttackCnt() < MaxAttackCnt)
 		return;
 
 	Equip->GetWeapon()->GetDoAction()->InitializeCount();
@@ -106,7 +106,5 @@ void ACEnemy_AI::Attack()
 		FTimerDelegate::CreateLambda([=]() { bCanAttack = true; }),
 		AttackDelay,
 		false
-	);
-
-
+	);*/
 }

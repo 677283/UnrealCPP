@@ -16,21 +16,21 @@ class CPP_PORTFOLIO_API ACCharacter : public ACharacter
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class UCPushingComponent* Pushing;
 
 protected:
-	UPROPERTY(VisibleDefaultsOnly)
-		class UCEquipComponent* Equip;
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
+		class UCRidingComponent* Riding;
 
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class UCStateComponent* State;
 
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class UCStatusComponent* Status;
-
-	UPROPERTY(VisibleDefaultsOnly)
-		class UCRidingComponent* Riding;
+	
+	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
+		class UCEquipComponent* Equip;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 		class UCSkillComponent* Skill;
@@ -39,17 +39,17 @@ protected:
 		TMap<int32, class UAnimMontage*> HitMontages;
 
 	UPROPERTY(EditDefaultsOnly)
-		float DefaultHitMontagePlayRitio = 1;
-
-	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* BrakeMontage;
 	
 	UPROPERTY(EditDefaultsOnly)
 		int32 EndureLevel;
 
 	UPROPERTY(EditDefaultsOnly)
+		float EndureTime;
+
+	UPROPERTY(EditDefaultsOnly)
 		uint8 TeamID = 44;
-protected:
+
 	UPROPERTY(VisibleInstanceOnly)
 		bool CanMove = true;
 	
@@ -88,4 +88,5 @@ public:
 
 protected:
 	bool bSecondJump;
+	float EndureGauge;
 };

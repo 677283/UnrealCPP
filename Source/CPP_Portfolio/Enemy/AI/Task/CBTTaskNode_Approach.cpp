@@ -33,7 +33,6 @@ void UCBTTaskNode_Approach::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 	FRotator targetDir = UKismetMathLibrary::FindLookAtRotation(character->GetActorLocation(), target->GetActorLocation());
 	targetDir.Pitch = 0;
 	targetDir.Roll = 0;
-
 	character->SetActorRotation(UKismetMathLibrary::RInterpTo(character->GetActorRotation(), targetDir, DeltaSeconds, 10));
 	character->MoveForward(1);
 

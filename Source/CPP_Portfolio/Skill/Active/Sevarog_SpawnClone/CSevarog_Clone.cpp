@@ -1,0 +1,34 @@
+#include "CSevarog_Clone.h"
+#include "Global.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
+ACSevarog_Clone::ACSevarog_Clone()
+{
+	PrimaryActorTick.bCanEverTick = true;
+
+}
+
+void ACSevarog_Clone::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (!!SpawnParticle)
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, GetActorLocation(), FRotator(), true);
+	if (!!Montage)
+		GetMesh()->PlayAnimation(Montage, false);
+}
+
+void ACSevarog_Clone::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	AddMovementInput(GetActorForwardVector());
+}
+
+void ACSevarog_Clone::DestroyClone()
+{
+	if (!!DestroyParticle)
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DestroyParticle, GetActorLocation(), FRotator(), true);
+	Destroy();
+}
+

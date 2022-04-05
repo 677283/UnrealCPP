@@ -87,8 +87,8 @@ void UCBehaviorComponent::ChangeType(EBehaviorType InType)
 	
 	Blackboard->SetValueAsEnum(BehaviorKey, (uint8)InType);
 
-	if (OnBehaviorTypeChanged.IsBound())
-		OnBehaviorTypeChanged.Broadcast(type, InType);
+	//if (OnBehaviorTypeChanged.IsBound())
+	//	OnBehaviorTypeChanged.Broadcast(type, InType);
 }
 
 EBehaviorType UCBehaviorComponent::GetType()

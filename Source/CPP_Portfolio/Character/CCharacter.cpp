@@ -44,7 +44,6 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 {
 	Damage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	const FCustomDamageEvent* damageEvent = (FCustomDamageEvent *)&DamageEvent;
-	
 
 	float life = Status->SetLife(-Damage);
 	
@@ -78,8 +77,6 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 	{
 		//TODO Death
 	}
-
-
 
 	return Damage;
 }

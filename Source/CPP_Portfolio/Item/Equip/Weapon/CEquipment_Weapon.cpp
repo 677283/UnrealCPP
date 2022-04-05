@@ -31,6 +31,12 @@ void UCEquipment_Weapon::Unequip()
 void UCEquipment_Weapon::OnHands()
 {
 	CheckFalse(State->IsStateIdle());
+	if (!EquipMontage)
+	{
+		Begin_OnHands();
+		End_OnHands();
+		return;
+	}
 	State->SetStateEquip();
 	OwnerCharacter->PlayAnimMontage(EquipMontage, EquipPlayRatio);
 }

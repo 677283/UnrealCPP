@@ -48,7 +48,7 @@ public:
 
 	void EquipWeapon();
 	void UnequipWeapon();
-	void Attack();
+	void LeftAttack();
 public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
 	//FORCEINLINE uint8 GetTeamID() { return TeamID; }
@@ -57,9 +57,10 @@ public:
 	FORCEINLINE float GetGuardRangeMax() { return GuardRangeMax; }
 	FORCEINLINE float GetGuardRangeMin() { return GuardRangeMin; }
 
+protected:
+	class UCWeaponItem* Weapon;
 private:
 	bool bCanAttack = true;
-	class UCWeaponItem* Weapon;
 	float RemineTime = 0;
 	float StackAttackTime = 0;
 	int32 MaxAttackCnt = 2;
