@@ -14,11 +14,15 @@ private:
 		class UParticleSystem* Particle;
 
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<AActor> Subgate_Projectile;
+		TSubclassOf<class ACSubjugate_Actor> Subgate_Projectile;
 
 public:
 	virtual void BeginPlay(class ACharacter* InOwner) override;
 	virtual void DoSkill() override;
 	virtual void BeginDoSkill() override;
 	virtual void EndDoSkill() override;
+
+private:
+	void Pattern_0();
+	void Pattern_1();
 };

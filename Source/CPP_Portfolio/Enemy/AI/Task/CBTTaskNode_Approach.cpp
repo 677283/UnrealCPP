@@ -3,6 +3,7 @@
 #include "Enemy/AI/CAIController.h"
 #include "GameFramework/Character.h"
 #include "Enemy/AI/CEnemy_AI.h"
+#include "Enemy/AI/CEnemy_AI_Boss.h"
 #include "Components/CBehaviorComponent.h"
 
 UCBTTaskNode_Approach::UCBTTaskNode_Approach()
@@ -26,7 +27,13 @@ void UCBTTaskNode_Approach::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 	ACEnemy_AI* character = Cast<ACEnemy_AI>(controller->GetPawn());
 	UCBehaviorComponent* behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);
 
-	ACharacter* target = behavior->GetTargetCharacter();
+	ACEnemy_AI_Boss* boss = Cast<ACEnemy_AI_Boss>(character);
+	
+	ACharacter* target;
+	if(!!boss)
+		target = UGameplayStatics::GetPlayerCharacter(boss->GetWorld(), 0);
+	else
+		target = behavior->GetTargetCharacter();
 
 	CheckNull(target);
 

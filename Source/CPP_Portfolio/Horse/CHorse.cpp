@@ -66,7 +66,6 @@ void ACHorse::OnMoveForward(float AxisValue)
 		bMoveForward = false;
 	else
 		bMoveForward = true;
-
 	if (GetVelocity().Size2D() > 800 && !bMoveForward && !bMoveRight)
 	{
 		PlayAnimMontage(BrakeMontage);

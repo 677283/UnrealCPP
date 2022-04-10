@@ -20,12 +20,15 @@ private:
 		class UParticleSystem* Effect;
 
 	UPROPERTY(EditDefaultsOnly)
-		float CastTime = 0.0f;
+		float CastTime = 0.1f;
 
 private:
 	void CastSubjugate();
 
 protected:
 	virtual void BeginPlay() override;
+
+public:
+	void Cast(float delay);
 
 };

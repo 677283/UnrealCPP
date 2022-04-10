@@ -37,26 +37,37 @@ private:
 		float Mana = 0;
 		float CurrentMana;
 
-
 	UPROPERTY(EditDefaultsOnly)
 		float Critical = 0;
+
+	UPROPERTY(EditDefaultsOnly)
+		float EndureTime = 0;
 
 protected:
 	virtual void BeginPlay() override;
 
 public:
+	bool GetCriticalChance();
+	float SetLife(float InValue);
+	void Hitted();
+	void CheckEndureTimer();
+
 	FORCEINLINE float GetStrength() { return Strength; }
 	FORCEINLINE float GetDexterity() { return Dexterity; }
 	FORCEINLINE float GetVitality() { return Vitality; }
 	FORCEINLINE float GetEnergy() { return Energy; }
-
-	bool GetCriticalChance();
-	float SetLife(float InValue);
+	FORCEINLINE void  OnSuperArmor() { bSuperAmor = true; }
+	FORCEINLINE void  OffSuperArmor() { bSuperAmor = false; }
+	FORCEINLINE bool  IsHitable() { return bHitable && !bSuperAmor; }
 	
 private:
-	TArray<class CSkill*> AddSkills;
-	TArray<class CItemAsset*> AddItems;
+	TArray<class CSkill*> BuffSkills;
+	TArray<class CItemAsset*> BuffItems;
 
 public:
 	FOnDeath OnDeath;
+	bool bHitable = true;
+	bool bSuperAmor = false;
+	float CheckEndureTime = 0.0f;
+	FTimerHandle EndureTimerHandle;
 };

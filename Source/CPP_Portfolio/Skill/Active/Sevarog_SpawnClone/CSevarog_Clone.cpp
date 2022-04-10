@@ -16,12 +16,16 @@ void ACSevarog_Clone::BeginPlay()
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, GetActorLocation(), FRotator(), true);
 	if (!!Montage)
 		GetMesh()->PlayAnimation(Montage, false);
+	SpawnDefaultController();
 }
 
 void ACSevarog_Clone::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	//FVector pos = GetActorLocation();
+	//pos += GetActorForwardVector() * 300 * DeltaTime;
+	//SetActorLocation(pos);
 	AddMovementInput(GetActorForwardVector());
 }
 

@@ -57,27 +57,33 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 		damage->AddToViewport();
 	}
 
-	if (damageEvent->AttackLevel < EndureLevel) return Damage;
+	//if (damageEvent->AttackLevel < EndureLevel) return Damage;
 
-	State->SetStateHitted();
 	if (life > 0)
 	{
-		CLog::Log(GetName() + " : Hitted");
-		StopAnimMontage();
 		UAnimMontage* hitMontage = *(HitMontages.Find(damageEvent->AttackLevel));
-		if (hitMontage == nullptr)
-			hitMontage = *(HitMontages.Find(0));
-
-		/*if (!!damageEvent->HitMontage)
-			PlayAnimMontage(damageEvent->HitMontage, damageEvent->PlayRatio);
-		else
-			PlayAnimMontage(DefaultHitMontage, DefaultHitMontagePlayRitio);*/
+		
+		switch (damageEvent->AttackLevel)
+		{
+		case 0:
+			if (!Status->IsHitable()) break;
+		case 1:
+		case 2:
+			Status->Hitted();
+			State->SetStateHitted();
+			if (!!hitMontage)
+				PlayAnimMontage(hitMontage);
+			FVector launchDir = GetActorForwardVector();
+			launchDir = damageEvent->LaunchDirectAngle.RotateVector(launchDir);
+			LaunchCharacter(launchDir * damageEvent->LaunchPower, false, false);
+			break;
+		}
 	}
-	else 
+	else
 	{
-		//TODO Death
+		//TODO : DEATH
 	}
-
+	
 	return Damage;
 }
 

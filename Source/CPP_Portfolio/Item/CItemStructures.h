@@ -33,15 +33,19 @@ struct FCustomDamageEvent : public FDamageEvent
 
 public:
 	UPROPERTY(EditDefaultsOnly)
-		FVector LuanchDirect;
+		FQuat LaunchDirectAngle = FQuat(0, 180, 0, 0);
 	UPROPERTY(EditDefaultsOnly)
-		float LuanchPower;
-	//UPROPERTY(EditDefaultsOnly)
-	//	class UAnimMontage* HitMontage;
+		float LaunchPower = 100;
 	UPROPERTY(EditDefaultsOnly)
-		float PlayRatio;
+		float PlayRatio = 1.0f;
 	UPROPERTY(EditDefaultsOnly)
-		int32 AttackLevel;
+		int32 AttackLevel = 0;
+	/*
+		AttackLevel
+		1 : Basic Attack
+		2 : Strong Attack
+		3 : Airbone Attack
+	*/
 };
 
 USTRUCT(BlueprintType)

@@ -18,6 +18,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCSkill_Active_Subjugate> SubjugateClass;
 	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCSkill_Active_SpawnClone> SpawnCloneClass;
+	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* DashMontage;
 	UPROPERTY(EditDefaultsOnly)
 		float DissolveP;
@@ -33,6 +35,7 @@ public:
 	void CastSubjugate();
 	UFUNCTION(BlueprintCallable)
 	void Dash();
+	void EndDash();
 	void ChangeMat(bool flag);
 	void DisTimer();
 
@@ -42,8 +45,9 @@ public:
 private:
 	UPROPERTY()
 		TArray<class UMaterialInterface*> OriMaterials;
-	bool bIsPattern = false;
+	bool bIsPattern = true;
 	class UCSkill_Active_Subjugate* Subjugate;
+	class UCSkill_Active_SpawnClone* SpawnClone;
 	
 	FTimerHandle DisHandle;
 	

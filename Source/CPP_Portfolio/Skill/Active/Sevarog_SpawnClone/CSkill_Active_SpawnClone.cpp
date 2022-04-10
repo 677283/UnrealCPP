@@ -12,6 +12,8 @@ void UCSkill_Active_SpawnClone::BeginPlay(ACharacter * InOwner)
 void UCSkill_Active_SpawnClone::DoSkill()
 {
 	Super::DoSkill();
+
+	OwnerCharacter->PlayAnimMontage(Montage);
 	State->SetStateSkill();
 }
 
@@ -21,7 +23,7 @@ void UCSkill_Active_SpawnClone::BeginDoSkill()
 
 	SpawnCountCheck = SpawnCount;
 
-	OwnerCharacter->GetOwner()->GetWorldTimerManager().SetTimer(SpawnCloneTimerHandle, this, &UCSkill_Active_SpawnClone::SpawnCloneTimer, 1, true);
+	OwnerCharacter->GetOwner()->GetWorldTimerManager().SetTimer(SpawnCloneTimerHandle, this, &UCSkill_Active_SpawnClone::SpawnCloneTimer, 1, true, 2);
 }
 
 void UCSkill_Active_SpawnClone::EndDoSkill()
@@ -38,11 +40,11 @@ void UCSkill_Active_SpawnClone::SpawnCloneTimer()
 
 	FVector spawnPos = targetPos;
 	FVector dir(1, 0, 0);
-	dir.RotateAngleAxis(UKismetMathLibrary::RandomFloatInRange(0, 360), FVector(0, 0, 1));
-
+	dir = dir.RotateAngleAxis(UKismetMathLibrary::RandomFloatInRange(0, 360), FVector(0, 0, 1));
 	spawnPos += dir * SpawnRange;
 	FRotator rot = UKismetMathLibrary::FindLookAtRotation(spawnPos, targetPos);
-	OwnerCharacter->GetWorld()->SpawnActor<ACEnemy_AI>(CloneClass, spawnPos, rot);
+	spawnPos.Z = OwnerCharacter->GetActorLocation().Z;
+	OwnerCharacter->GetWorld()->SpawnActor<AActor>(CloneClass, spawnPos, rot);
 
 	if (SpawnCountCheck == 0)
 	{

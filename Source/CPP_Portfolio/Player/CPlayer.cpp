@@ -178,6 +178,8 @@ void ACPlayer::BeginPlay()
 				QuickSlotWidget = Cast<UCWidget_QuickSlot>(HUD->GetWidgetFromName("QuickSlot"));
 			}
 		}
+
+		
 	}
 
 	//Basic Item Create
@@ -341,8 +343,8 @@ void ACPlayer::OnRiding()
 
 void ACPlayer::OnJump()
 {
-	//Jump();
-	Rope->DoSkill();
+	Jump();
+	//Rope->DoSkill();
 	/*Movement->SetMovementMode(EMovementMode::MOVE_Flying);
 	PlayAnimMontage(testMontage);*/
 }

@@ -23,7 +23,7 @@ private:
 		class UParticleSystem* DestroyParticle;
 
 	UPROPERTY(EditDefaultsOnly)
-		class UAnimMontage* Montage;
+		class UAnimSequence* Montage;
 
 protected:
 	virtual void BeginPlay() override;

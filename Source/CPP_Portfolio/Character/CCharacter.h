@@ -40,12 +40,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* BrakeMontage;
-	
-	UPROPERTY(EditDefaultsOnly)
-		int32 EndureLevel;
-
-	UPROPERTY(EditDefaultsOnly)
-		float EndureTime;
 
 	UPROPERTY(EditDefaultsOnly)
 		uint8 TeamID = 44;
@@ -88,5 +82,4 @@ public:
 
 protected:
 	bool bSecondJump;
-	float EndureGauge;
 };

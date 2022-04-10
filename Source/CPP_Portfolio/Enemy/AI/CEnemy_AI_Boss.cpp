@@ -4,6 +4,7 @@
 #include "Item/Equip/Weapon/CEquipment_Weapon.h"
 #include "Item/Equip/Weapon/CWeaponItem.h"
 #include "Skill/Active/Sevarog_Subjugate/CSkill_Active_Subjugate.h"
+#include "Skill/Active/Sevarog_SpawnClone/CSkill_Active_SpawnClone.h"
 #include "Materials/MaterialInstanceConstant.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "NiagaraSystem.h"
@@ -17,6 +18,8 @@ void ACEnemy_AI_Boss::BeginPlay()
 	OriMaterials = GetMesh()->GetMaterials();
 	Subjugate = NewObject<UCSkill_Active_Subjugate>(this,SubjugateClass);
 	Skill->AddSkill(Subjugate);
+	SpawnClone = NewObject<UCSkill_Active_SpawnClone>(this, SpawnCloneClass);
+	Skill->AddSkill(SpawnClone);
 
 	DisMatDynamic = UMaterialInstanceDynamic::Create(DisMatConst, DisMatDynamic);
 }
@@ -32,8 +35,13 @@ void ACEnemy_AI_Boss::CastSubjugate()
 
 void ACEnemy_AI_Boss::Dash()
 {
-	PlayAnimMontage(DashMontage);
+	SpawnClone->DoSkill();
 	ChangeMat(false);
+}
+
+void ACEnemy_AI_Boss::EndDash()
+{
+	ChangeMat(true);
 }
 
 void ACEnemy_AI_Boss::ChangeMat(bool flag)

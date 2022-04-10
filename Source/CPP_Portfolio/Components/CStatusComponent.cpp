@@ -34,5 +34,22 @@ float UCStatusComponent::SetLife(float InValue)
 		CurrentLife = Life;
 
 	return CurrentLife;
-	
+}
+
+void UCStatusComponent::Hitted()
+{
+	bHitable = false;
+	CheckEndureTime = EndureTime;
+	GetOwner()->GetWorld()->GetTimerManager().SetTimer(EndureTimerHandle,this,&UCStatusComponent::CheckEndureTimer, GetOwner()->GetWorld()->DeltaTimeSeconds, true);
+}
+
+void UCStatusComponent::CheckEndureTimer()
+{
+	CheckEndureTime -= GetOwner()->GetWorld()->DeltaTimeSeconds;
+
+	if (CheckEndureTime)
+	{
+		bHitable = true;
+		GetOwner()->GetWorld()->GetTimerManager().ClearTimer(EndureTimerHandle);
+	}
 }
