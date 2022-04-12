@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Components/CStateComponent.h"
 #include "Enemy/AI/CEnemy_AI.h"
+#include "Enemy/AI/CEnemy_AI_Boss.h"
 
 void UCSkill_Active_SpawnClone::BeginPlay(ACharacter * InOwner)
 {
@@ -29,6 +30,9 @@ void UCSkill_Active_SpawnClone::BeginDoSkill()
 void UCSkill_Active_SpawnClone::EndDoSkill()
 {
 	Super::EndDoSkill();
+	ACEnemy_AI_Boss* boss = Cast<ACEnemy_AI_Boss>(OwnerCharacter);
+	boss->ChangeMat(true);
+	boss->FinishPattern();
 
 	State->SetStateIdle();
 }
@@ -48,6 +52,7 @@ void UCSkill_Active_SpawnClone::SpawnCloneTimer()
 
 	if (SpawnCountCheck == 0)
 	{
+		EndDoSkill();
 		OwnerCharacter->GetWorld()->GetTimerManager().ClearTimer(SpawnCloneTimerHandle);
 	}
 }

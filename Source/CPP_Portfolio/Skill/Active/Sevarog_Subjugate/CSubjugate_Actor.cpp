@@ -9,8 +9,9 @@ ACSubjugate_Actor::ACSubjugate_Actor()
 void ACSubjugate_Actor::BeginPlay()
 {
 	Super::BeginPlay();
-
-
+	FVector pos = GetActorLocation();
+	pos.Z = 20;
+	SetActorLocation(pos);
 }
 
 void ACSubjugate_Actor::CastSubjugate()
@@ -29,7 +30,10 @@ void ACSubjugate_Actor::Cast(float delay)
 		param.Owner = this;
 
 		if (!!MagicCircle)
-			GetWorld()->SpawnActor<AActor>(MagicCircle, transform, param);
+		{
+			AActor* circle = GetWorld()->SpawnActor<AActor>(MagicCircle, transform, param);
+			circle->SetLifeSpan(CastTime);
+		}
 
 		FTimerHandle handle;
 		GetWorldTimerManager().SetTimer(handle, this, &ACSubjugate_Actor::CastSubjugate, CastTime, false);

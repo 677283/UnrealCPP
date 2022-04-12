@@ -13,6 +13,8 @@ class CPP_PORTFOLIO_API UCSkill_Passive_Dash : public UCSkill_Passive
 
 private:
 	UPROPERTY(EditDefaultsOnly)
+		float DashDisatnce = 100;
+	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* DashMontage;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -36,4 +38,5 @@ private:
 
 private:
 	FOnEffect OnEffect;
+	class ACameraActor* SubCam;
 };

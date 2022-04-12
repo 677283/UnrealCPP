@@ -14,7 +14,10 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		float LifeTime;
+		float LifeTime = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly)
+		class UParticleSystem* AttachParticle;
 
 	UPROPERTY(EditDefaultsOnly)
 		class UParticleSystem* SpawnParticle;
@@ -27,11 +30,10 @@ private:
 
 protected:
 	virtual void BeginPlay() override;
-	
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
+
 public:
 	virtual void Tick(float DeltaTime) override;
 
-public:
-	void DestroyClone();
 
 };

@@ -44,7 +44,7 @@ void UCSkill_Active_Subjugate::EndDoSkill()
 
 void UCSkill_Active_Subjugate::Pattern_0()
 {
-	float distance = 200;
+	float distance = 400;
 	FVector center = OwnerCharacter->GetActorForwardVector(), left, right;
 
 	left = FRotator(0, -45, 0).RotateVector(center);
@@ -59,6 +59,7 @@ void UCSkill_Active_Subjugate::Pattern_0()
 		transformC.SetLocation(OwnerCharacter->GetActorLocation() + center	* distance * (5 - cnt));
 		transformL.SetLocation(OwnerCharacter->GetActorLocation() + left	* distance * (5 - cnt));
 		transformR.SetLocation(OwnerCharacter->GetActorLocation() + right	* distance * (5 - cnt));
+		
 		OwnerCharacter->GetWorld()->SpawnActor<ACSubjugate_Actor>(Subgate_Projectile, transformC)->Cast(0.3f * (5-cnt));
 		OwnerCharacter->GetWorld()->SpawnActor<ACSubjugate_Actor>(Subgate_Projectile, transformL)->Cast(0.3f * (5-cnt));
 		OwnerCharacter->GetWorld()->SpawnActor<ACSubjugate_Actor>(Subgate_Projectile, transformR)->Cast(0.3f * (5-cnt));

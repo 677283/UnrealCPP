@@ -20,7 +20,7 @@ private:
 		class UParticleSystem* Effect;
 
 	UPROPERTY(EditDefaultsOnly)
-		float CastTime = 0.1f;
+		float CastTime = 1.0f;
 
 private:
 	void CastSubjugate();
