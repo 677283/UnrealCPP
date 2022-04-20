@@ -27,7 +27,8 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * N
 
 	ACharacter* target = behavior->GetTargetCharacter();
 
-	CheckNull(target);
+	if (!target)
+		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Succeeded);
 
 	FRotator targetDir = UKismetMathLibrary::FindLookAtRotation(character->GetActorLocation(), target->GetActorLocation());
 	targetDir.Pitch = 0;
@@ -39,6 +40,7 @@ void UCBTTaskNode_Attack::TickTask(UBehaviorTreeComponent & OwnerComp, uint8 * N
 	
 	if (distance < character->GetAttackRange())
 		character->LeftAttack();
+
 
 	if (character->CanAttack() == false)
 		FinishLatentTask(OwnerComp, EBTNodeResult::Type::Succeeded);

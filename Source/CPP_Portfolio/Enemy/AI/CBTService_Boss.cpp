@@ -34,7 +34,7 @@ void UCBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	if (pattern == 0)
 	{
 		//TODO : 패턴 선택.
-		pattern = UKismetMathLibrary::RandomInteger(3) + 1;
+		pattern = UKismetMathLibrary::RandomInteger(4) + 1;
 		
 		OwnerComp.GetBlackboardComponent()->SetValueAsInt("Pattern", pattern);
 		return;

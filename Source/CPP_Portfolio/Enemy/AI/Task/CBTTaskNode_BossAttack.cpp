@@ -25,10 +25,8 @@ EBTNodeResult::Type UCBTTaskNode_BossAttack::ExecuteTask(UBehaviorTreeComponent&
 void UCBTTaskNode_BossAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
-
 	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
 	ACEnemy_AI_Boss* character = Cast<ACEnemy_AI_Boss>(controller->GetPawn());
-	
 	UCBehaviorComponent* behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);
 	ACharacter* target = behavior->GetTargetCharacter();
 

@@ -33,7 +33,7 @@ struct FCustomDamageEvent : public FDamageEvent
 
 public:
 	UPROPERTY(EditDefaultsOnly)
-		FQuat LaunchDirectAngle = FQuat(0, 180, 0, 0);
+		FRotator LaunchDirectAngle = FRotator(0, 180, 0);
 	UPROPERTY(EditDefaultsOnly)
 		float LaunchPower = 100;
 	UPROPERTY(EditDefaultsOnly)

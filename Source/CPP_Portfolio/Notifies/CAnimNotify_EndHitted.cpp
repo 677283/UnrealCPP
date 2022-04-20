@@ -12,9 +12,8 @@ void UCAnimNotify_EndHitted::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
 	Super::Notify(MeshComp, Animation);
 	CheckNull(MeshComp);
 	CheckNull(MeshComp->GetOwner());
-
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(MeshComp->GetOwner());
-
+	CheckNull(state);
 	state->SetStateIdle();
 }
 

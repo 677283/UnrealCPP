@@ -125,5 +125,9 @@ private:
 	bool bDash;
 
 	class UCSkill* Rope;
+
+	//UPROPERTY(EditDefaultsOnly)
+	//	TSubclassOf<class UCSkill_Active_Fence> FenceClass;
+	//class UCSkill_Active_Fence* Fence;
 };
 

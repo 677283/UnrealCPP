@@ -20,6 +20,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCSkill_Active_SpawnClone> SpawnCloneClass;
 	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCSkill_Active_Fence> FenceClass;
+	UPROPERTY(EditDefaultsOnly)
 		class UAnimMontage* DashMontage;
 	UPROPERTY(EditDefaultsOnly)
 		float DissolveP;
@@ -36,6 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Dash();
 	void EndDash();
+	void CastFence();
 	void ChangeMat(bool flag);
 	void DisTimer();
 
@@ -44,10 +47,11 @@ public:
 	FORCEINLINE void FinishPattern() { bIsPattern = false; }
 private:
 	UPROPERTY()
-		TArray<class UMaterialInterface*> OriMaterials;
+	TArray<class UMaterialInterface*> OriMaterials;
 	bool bIsPattern = true;
 	class UCSkill_Active_Subjugate* Subjugate;
 	class UCSkill_Active_SpawnClone* SpawnClone;
+	class UCSkill_Active_Fence* Fence;
 	
 	FTimerHandle DisHandle;
 	

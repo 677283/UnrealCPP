@@ -26,6 +26,9 @@
 #include "Skill/Active/Dual_Slash/CSkill_Active_Slash.h"
 #include "Skill/Passive/Rope/CSkill_Passive_Rope.h"
 
+#include "Skill/Active/Sevarog_Fence/CSkill_Active_Fence.h"
+
+
 #include "Widget/CWidget_PickUp.h"
 #include "Widget/CWidget_Inventory.h"
 #include "Widget/CWidget_Equip.h"
@@ -178,8 +181,6 @@ void ACPlayer::BeginPlay()
 				QuickSlotWidget = Cast<UCWidget_QuickSlot>(HUD->GetWidgetFromName("QuickSlot"));
 			}
 		}
-
-		
 	}
 
 	//Basic Item Create

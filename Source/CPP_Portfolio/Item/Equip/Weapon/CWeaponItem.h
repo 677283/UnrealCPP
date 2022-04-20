@@ -37,6 +37,7 @@ public:
 	void OffHands();
 	void ToggleHands();
 	void ResetWeapon();
+	bool IsCombo();
 
 	virtual void DropItem(FVector InDropPosition) override;
 	virtual void PickUpItem(class ACharacter* InOwner) override;

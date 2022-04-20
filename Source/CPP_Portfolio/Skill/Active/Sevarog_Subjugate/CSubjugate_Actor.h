@@ -31,4 +31,7 @@ protected:
 public:
 	void Cast(float delay);
 
+private:
+	UFUNCTION()
+	void Test(FName EventName, float EmitterTime, FVector Location, FVector Velocity);
 };

@@ -3,12 +3,11 @@
 #include "Components/CStateComponent.h"
 #include "particles/ParticleSystemComponent.h"
 #include "Skill/Active/Sevarog_Subjugate/CSubjugate_Actor.h"
+#include "Enemy/AI/CEnemy_AI_Boss.h"
 
 void UCSkill_Active_Subjugate::BeginPlay(class ACharacter* InOwner)
 {
 	Super::BeginPlay(InOwner);
-
-	//UParticleSystemComponent* particle;
 
 }
 
@@ -25,20 +24,22 @@ void UCSkill_Active_Subjugate::DoSkill()
 void UCSkill_Active_Subjugate::BeginDoSkill()
 {
 	Super::BeginDoSkill();
-	Pattern_0();
-	//FTransform transform;
-	//transform.SetLocation(UGameplayStatics::GetPlayerCharacter(OwnerCharacter->GetWorld(), 0)->GetActorLocation());
-	//
-	//FActorSpawnParameters param;
-	//param.Owner = OwnerCharacter;
-	//
-	//OwnerCharacter->GetWorld()->SpawnActor<AActor>(Subgate_Projectile, transform, param);
-	//UGameplayStatics::SpawnEmitterAtLocation(OwnerCharacter->GetWorld(), Particle, );
+
+	switch(UKismetMathLibrary::RandomIntegerInRange(0,1))
+	{
+		case 0:
+			Pattern_0();
+			break;
+		case 1:
+			Pattern_1();
+			break;
+	}
 }
 
 void UCSkill_Active_Subjugate::EndDoSkill()
 {
 	Super::EndDoSkill();
+	Cast<ACEnemy_AI_Boss>(OwnerCharacter)->FinishPattern();
 	State->SetStateIdle();
 }
 
@@ -68,5 +69,23 @@ void UCSkill_Active_Subjugate::Pattern_0()
 
 void UCSkill_Active_Subjugate::Pattern_1()
 {
+	float distance = 0;
+	FVector center = OwnerCharacter->GetActorLocation();
 
+	for (int i = 0; i < 4; i++)
+	{
+		int32 cnt = 5;
+
+		while (cnt--)
+		{
+			FRotator rot = FRotator::ZeroRotator;
+			FVector dir = FVector(1, 0, 0);
+			rot.Yaw = UKismetMathLibrary::RandomFloatInRange(90 * i, 90 * (i + 1));
+			distance = UKismetMathLibrary::RandomFloatInRange(200, 1200);
+			dir = rot.RotateVector(dir);
+
+			ACSubjugate_Actor* pj = OwnerCharacter->GetWorld()->SpawnActor<ACSubjugate_Actor>(Subgate_Projectile, center + dir * distance, FRotator::ZeroRotator)/*->Cast(UKismetMathLibrary::RandomFloatInRange(0.1f, 1.0f))*/;
+			if (!!pj)pj->Cast(UKismetMathLibrary::RandomFloatInRange(0.1f, 1.0f));
+		}
+	}
 }

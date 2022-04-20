@@ -57,7 +57,7 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 		damage->AddToViewport();
 	}
 
-	//if (damageEvent->AttackLevel < EndureLevel) return Damage;
+	if (damageEvent->AttackLevel < EndureLevel) return Damage;
 
 	if (life > 0)
 	{
@@ -67,14 +67,19 @@ float ACCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEve
 		{
 		case 0:
 			if (!Status->IsHitable()) break;
+			if (!State->IsStateIdle() && !State->IsStateHitted()) break;
 		case 1:
 		case 2:
 			Status->Hitted();
 			State->SetStateHitted();
 			if (!!hitMontage)
 				PlayAnimMontage(hitMontage);
-			FVector launchDir = GetActorForwardVector();
+			
+			FVector launchDir = EventInstigator->GetPawn()->GetActorLocation() - GetActorLocation();
+			launchDir.Normalize();
 			launchDir = damageEvent->LaunchDirectAngle.RotateVector(launchDir);
+			CLog::Log(launchDir);
+			CLog::Log(launchDir * damageEvent->LaunchPower);
 			LaunchCharacter(launchDir * damageEvent->LaunchPower, false, false);
 			break;
 		}

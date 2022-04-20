@@ -4,6 +4,7 @@
 #include "CEnemy_AI.h"
 #include "Components/CBehaviorComponent.h"
 #include "Components/CStateComponent.h"
+#include "Components/CEquipComponent.h"
 
 UCBTService_Melee::UCBTService_Melee()
 {
@@ -27,11 +28,17 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	}
 
 	ACharacter* target = behavior->GetTargetCharacter();
+	UCEquipComponent* weapon = CHelpers::GetComponent<UCEquipComponent>(ai);
 
 	if (target == NULL)
 	{
 		//TODO: ÆÐÆ®·Ñ
-		behavior->SetWaitMode();
+		if (weapon->IsHandsOn())
+		{
+			ai->UnequipWeapon();
+		}
+		behavior->SetPatrolMode();
+		//behavior->SetWaitMode();
 		return;
 	}
 	else 
@@ -46,6 +53,12 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	}
 
 	float distance = ai->GetDistanceTo(target);
+
+	if (!weapon->IsHandsOn())
+	{
+		CLog::Log("EQUIP");
+		ai->EquipWeapon();
+	}
 	if (ai->CanAttack())
 	{
 		behavior->SetActionMode();

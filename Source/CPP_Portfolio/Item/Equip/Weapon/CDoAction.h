@@ -24,6 +24,7 @@ public:
 
 	void SetOwnerCharacter(class ACharacter* InOwner);
 
+	FORCEINLINE bool IsCombo() { return bComboEnable; }
 	FORCEINLINE void OnCombo() { bComboEnable = true; }
 	FORCEINLINE void OffCombo() { bComboEnable = false; }
 	FORCEINLINE void InitHands(const bool* InHands) { bHands = InHands; }

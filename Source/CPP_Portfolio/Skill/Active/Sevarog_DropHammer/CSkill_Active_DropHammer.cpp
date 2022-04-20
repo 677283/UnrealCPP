@@ -57,9 +57,9 @@ void UCSkill_Active_DropHammer::OnComponentBeginOverlap(UPrimitiveComponent* Ove
 	//Super::OnComponentBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 	
 	FCustomDamageEvent damageEvent;
-	damageEvent.AttackLevel = 2;
-	damageEvent.LaunchDirectAngle = FQuat(0, 180, 0, 0);
-	damageEvent.LaunchPower = 100.0f;
+	//damageEvent.AttackLevel = 2;
+	//damageEvent.LaunchDirectAngle = FQuat(0, 180, 0, 0);
+	//damageEvent.LaunchPower = 100.0f;
 	OtherActor->TakeDamage(Damage, damageEvent, OwnerCharacter->GetController(), OwnerCharacter);
 }
 

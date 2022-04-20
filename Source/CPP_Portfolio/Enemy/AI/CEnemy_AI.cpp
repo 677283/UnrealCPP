@@ -14,6 +14,7 @@
 ACEnemy_AI::ACEnemy_AI()
 {
 	CHelpers::CreateComponent<UTextRenderComponent>(this, &Text, "Text", GetRootComponent());
+	Text->SetVisibility(false);
 	Text->Text = FText::FromString(FString::SanitizeFloat(RemineTime));
 }
 
@@ -82,12 +83,12 @@ void ACEnemy_AI::UnequipWeapon()
 
 void ACEnemy_AI::LeftAttack()
 {
-	if (Equip->GetWeapon() != nullptr)
+	if (Equip->GetWeapon() != nullptr && (Equip->GetWeapon()->IsCombo() || State->IsStateIdle()))
 	{
 		Equip->GetWeapon()->Do_Action(this, FKey("LeftMouseButton"));
 	}
 	
-	/*if (Equip->GetWeapon()->GetDoAction()->GetAttackCnt() < MaxAttackCnt)
+	if (Equip->GetWeapon()->GetDoAction()->GetAttackCnt() < MaxAttackCnt)
 		return;
 
 	Equip->GetWeapon()->GetDoAction()->InitializeCount();
@@ -106,5 +107,5 @@ void ACEnemy_AI::LeftAttack()
 		FTimerDelegate::CreateLambda([=]() { bCanAttack = true; }),
 		AttackDelay,
 		false
-	);*/
+	);
 }

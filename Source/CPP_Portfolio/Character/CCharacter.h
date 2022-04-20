@@ -57,6 +57,9 @@ protected:
 		float SecondJumpPower = 700;
 
 	UPROPERTY(EditDefaultsOnly)
+		int32 EndureLevel;
+
+	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class UCWidget_Damage> DamageWidget;
 
 public:
